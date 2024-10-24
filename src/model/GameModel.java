@@ -17,13 +17,18 @@ public class GameModel implements IGameModel {
 
   public GameModel() {
     this.playerHands = new HashMap<>();
+    this.isGameOver = false;
   }
 
   @Override
-  public void startGame(Grid grid, List<Card> cards, boolean shuffle) {
-    this.grid = grid;
+  public void startGame(Grid grid, List<Card> cards, boolean shuffle, int row, int col) {
 
+    this.grid = new Grid(row, col);
     int numCardCells = grid.getNumCardCells();
+    if (numCardCells % 2 == 0) {
+      throw new IllegalArgumentException("Number of card cells must be odd.");
+    }
+
     int totalCardsNeeded = numCardCells + 1;
 
     if (cards.size() < totalCardsNeeded) {
@@ -83,19 +88,9 @@ public class GameModel implements IGameModel {
     int redCardCount = pRed.getHand().size();
     int blueCardCount = pBlue.getHand().size();
 
-    for (int row = 0; row < grid.getRows(); row++) {
-      for (int col = 0; col < grid.getCols(); col++) {
-        Cell cell = grid.getCell(row, col);
-        if (cell.isOccupied()) {
-          Player owner = cell.getOwner();
-          if (owner.equals(pRed)) {
-            redCardCount++;
-          } else if (owner.equals(pBlue)) {
-            blueCardCount++;
-          }
-        }
-      }
-    }
+    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
+    redCardCount = counts[0];
+    blueCardCount = counts[1];
 
     if (redCardCount > blueCardCount) {
       // Red Player wins
@@ -109,8 +104,37 @@ public class GameModel implements IGameModel {
     }
   }
 
+  private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
+    for (int row = 0; row < grid.getRows(); row++) {
+      for (int col = 0; col < grid.getCols(); col++) {
+        Cell cell = grid.getCell(row, col);
+        if (cell.isOccupied()) {
+          Player owner = cell.getOwner();
+          if (owner.equals(pRed)) {
+            redCardCount++;
+          } else if (owner.equals(pBlue)) {
+            blueCardCount++;
+          }
+        }
+      }
+    }
+    return new int[]{redCardCount, blueCardCount};
+  }
+
   @Override
   public void playCard(Player player, Card card, int row, int col) {
+    if (!player.equals(currentPlayer)) {
+      throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
+    }
+
+    if (isGameOver) {
+      throw new IllegalArgumentException("Game is over.");
+    }
+
+    if (row < 0 || row >= grid.getRows() || col < 0 || col >= grid.getColumns()) {
+      throw new IllegalArgumentException("Invalid row or column.");
+    }
+
 
   }
 

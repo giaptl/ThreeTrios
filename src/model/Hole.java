@@ -1,29 +1,14 @@
 package model;
 
-public class Hole implements Cell {
+public class Hole extends CardCell {
+
+  public Hole() {
+    super(null, null);
+  }
 
   @Override
   public boolean isHole() {
-
+    return true;
   }
 
-  @Override
-  public boolean isEmpty() {
-
-  }
-
-  @Override
-  public boolean isOccupied() {
-
-  }
-
-  @Override
-  public Card getCard() {
-
-  }
-
-  @Override
-  public Player getOwner() {
-
-  }
 }
