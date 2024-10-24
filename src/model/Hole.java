@@ -1,6 +1,7 @@
 package model;
 
-public class CardCell implements Cell{
+public class Hole implements Cell {
+
   @Override
   public boolean isHole() {
 
@@ -25,5 +26,4 @@ public class CardCell implements Cell{
   public Player getOwner() {
 
   }
-
 }

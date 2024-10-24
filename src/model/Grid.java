@@ -4,24 +4,31 @@ public class Grid {
 
   private Cell[][] cells;
 
-  public Grid() {
 
+  public Grid() {
+    cells[1][2] = new Hole();
   }
 
   protected int getRows() {
-    return 0;
+    return cells.length;
   }
 
   protected int getColumns() {
-    return 0;
+    return cells[0].length;
   }
 
   protected Cell getCell(int row, int col) {
-    return null;
+    return cells[row][col];
   }
 
-  protected void SetCell(int row, int col, Cell cell) {
+  protected void SetCell(int row, int col, Cell cellToSet) {
+    cells[row][col] = cellToSet;
+  }
+
+  public int getNumCardCells() {
 
   }
 
+  public int getCols() {
+  }
 }

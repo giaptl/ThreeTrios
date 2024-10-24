@@ -2,24 +2,14 @@ package model;
 
 public interface Cell {
 
-  private boolean isHole(){
-    return false;
-  }
+  boolean isHole();
 
-  private boolean isEmpty() {
-    return false;
-  }
+  boolean isEmpty();
 
-  private boolean isOccupied() {
-    return false;
-  }
+  boolean isOccupied();
 
-  private Card getCard() {
-    return null;
-  }
+  Card getCard();
 
-  private Player getOwner() {
-    return null;
-  }
+  Player getOwner();
 
 }
