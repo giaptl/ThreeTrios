@@ -21,9 +21,13 @@ public class GameModel implements IGameModel {
   }
 
   @Override
-  public void startGame(Grid grid, List<Card> cards, boolean shuffle, int row, int col) {
+  public void startGame(Grid grid, List<Card> cards, boolean shuffle, int row, int col, boolean configFile) {
 
-    this.grid = new Grid(row, col);
+    if (configFile) {
+      this.grid = new Grid(row, col, true);
+    } else {
+      this.grid = new Grid(row, col, false);
+    }
     int numCardCells = grid.getNumCardCells();
     if (numCardCells % 2 == 0) {
       throw new IllegalArgumentException("Number of card cells must be odd.");
@@ -73,7 +77,7 @@ public class GameModel implements IGameModel {
   @Override
   public boolean isGameOver() {
     for (int row = 0; row < grid.getRows(); row++) {
-      for (int col = 0; col < grid.getCols(); col++) {
+      for (int col = 0; col < grid.getColumns(); col++) {
         Cell cell = grid.getCell(row, col);
         if (!cell.isHole() && cell.isEmpty()) {
           return false;
@@ -106,7 +110,7 @@ public class GameModel implements IGameModel {
 
   private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
     for (int row = 0; row < grid.getRows(); row++) {
-      for (int col = 0; col < grid.getCols(); col++) {
+      for (int col = 0; col < grid.getColumns(); col++) {
         Cell cell = grid.getCell(row, col);
         if (cell.isOccupied()) {
           Player owner = cell.getOwner();

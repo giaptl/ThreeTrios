@@ -5,39 +5,30 @@ public class Grid {
   private Cell[][] cells;
 
 
-  public Grid(int row, int col) {
+
+  // Default if given no config file but given row and col
+  public Grid(int row, int col, boolean isConfigFile) {
     cells = new Cell[row][col];
 
-    for (int rows = 0; rows < row; rows++) {
-      for (int cols = 0; cols < col; cols++) {
-        cells[rows][cols] = new CardCell();
-      }
-    }
-
-  }
-
-  public Grid(boolean[][] holePositions) {
-    int rows = holePositions.length;
-    int cols = holePositions[0].length;
-    cells = new Cell[rows][cols];
-
-    for (int row = 0; row < rows; row++) {
-      for (int col = 0; col < cols; col++) {
-        if (holePositions[row][col]) {
-          cells[row][col] = new Hole();
-        } else {
-          cells[row][col] = new CardCell();
+    if (!isConfigFile) {
+      for (int rows = 0; rows < row; rows++) {
+        for (int cols = 0; cols < col; cols++) {
+          // if hole then create an object of class hole
+          // if not hole then create an object of class CardCell
+          cells[rows][cols] = new CardCell();
         }
       }
     }
   }
 
+  // Constructor that will create a grid based on config file details
 
-  protected int getRows() {
+
+  public int getRows() {
     return cells.length;
   }
 
-  protected int getColumns() {
+  public int getColumns() {
     return cells[0].length;
   }
 
@@ -45,7 +36,7 @@ public class Grid {
     return cells[row][col];
   }
 
-  protected void SetCell(int row, int col, Cell cellToSet) {
+  public void SetCell(int row, int col, Cell cellToSet) {
     cells[row][col] = cellToSet;
   }
 
@@ -60,5 +51,4 @@ public class Grid {
     }
     return count;
   }
-
 }

@@ -15,7 +15,7 @@ public interface IGameModel {
    * @param grid  the grid on which the game will be played
    * @param cards the list of cards to be used in the game
    */
-  void startGame(Grid grid, List<Card> cards, boolean shuffle, int row, int col);
+  void startGame(Grid grid, List<Card> cards, boolean shuffle, int row, int col, boolean configFile);
 
   /**
    * Gets the current player whose turn it is to play.
