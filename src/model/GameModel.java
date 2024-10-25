@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the game model.
+ */
 public class GameModel implements IGameModel {
 
   private Grid grid;
@@ -15,6 +18,9 @@ public class GameModel implements IGameModel {
   private Player pBlue;
   boolean isGameOver;
 
+  /**
+   * Creates a new game model.
+   */
   public GameModel() {
     this.playerHands = new HashMap<>();
     this.isGameOver = false;

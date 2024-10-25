@@ -1,10 +1,11 @@
 package model;
 
+/**
+ * Represents the grid of the game.
+ */
 public class Grid {
 
   private Cell[][] cells;
-
-
 
   // Default if given no config file but given row and col
   public Grid(int row, int col, boolean isConfigFile) {
@@ -24,23 +25,47 @@ public class Grid {
   // Constructor that will create a grid based on config file details
 
 
+  /**
+   * Returns the number of rows in the grid
+   * @return the number of rows in the grid
+   */
   public int getRows() {
     return cells.length;
   }
 
+  /**
+   * Returns the number of columns in the grid
+   * @return the number of columns in the grid
+   */
   public int getColumns() {
     return cells[0].length;
   }
 
-  protected Cell getCell(int row, int col) {
+  /**
+   * Returns the cell at the given row and column
+   * @param row the row of the cell
+   * @param col the column of the cell
+   * @return the cell at the given row and column
+   */
+  public Cell getCell(int row, int col) {
     return cells[row][col];
   }
 
+  /**
+   * Sets the cell at the given row and column
+   * @param row the row of the cell
+   * @param col the column of the cell
+   * @param cellToSet the cell to set at the given row and column
+   */
   public void SetCell(int row, int col, Cell cellToSet) {
     cells[row][col] = cellToSet;
   }
 
-  public int getNumCardCells() {
+  /**
+   * Returns the number of cells that are not holes
+   * @return the number of cells that are not holes
+   */
+  protected int getNumCardCells() {
     int count = 0;
     for (int row = 0; row < getRows(); row++) {
       for (int col = 0; col < getColumns(); col++) {

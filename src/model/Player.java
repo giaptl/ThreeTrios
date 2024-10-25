@@ -2,22 +2,34 @@ package model;
 
 import java.util.List;
 
+/**
+ * Represents a player in the game.
+ */
 public class Player {
 
   List<Card> hand;
   String name;
 
-
+  /**
+   * Creates a new player with the given name and hand.
+   * @param playerName the name of the player
+   * @param hand the list of cards in the player's hand
+   */
   public Player(String playerName, List<Card> hand) {
     this.name = playerName;
     this.hand = hand;
   }
 
+  /**
+   * Gets the name of the player.
+   * @return the name of the player
+   */
   public String getName() {
     return name;
   }
 
-  public List<Card> getHand() {
+  // Returns an immutable copy of the current player's hand at any instance in the game.
+  protected List<Card> getHand() {
     return List.copyOf(hand);
   }
 }

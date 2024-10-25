@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Represents a cell on the grid that contains a card.
+ */
 public class CardCell implements Cell {
 
   private Card card;

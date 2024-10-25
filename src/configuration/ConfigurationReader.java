@@ -13,6 +13,9 @@ import model.CardCell;
 import model.Grid;
 import model.Hole;
 
+/**
+ * Reads configuration files for the grid and card data.
+ */
 public class ConfigurationReader {
 
   public static Grid readGridConfig(String filename) throws IOException {
@@ -50,13 +53,19 @@ public class ConfigurationReader {
       while ((line = reader.readLine()) != null) {
         String[] parts = line.split(" ");
         String name = parts[0];
+        // Check for duplicate card names
         if (!cardNames.add(name)) {
           throw new IllegalArgumentException("Duplicate card name found: " + name);
         }
-        int north = Integer.parseInt(parts[1]);
-        int south = Integer.parseInt(parts[2]);
-        int east = Integer.parseInt(parts[3]);
-        int west = Integer.parseInt(parts[4]);
+        // Check that the card data is in the correct format
+        if (parts.length != 5) {
+          throw new IllegalArgumentException("Invalid card data format");
+        }
+
+        int north = parts[1].equals("A") ? 10 : Integer.parseInt(parts[1]);
+        int south = parts[2].equals("A") ? 10 : Integer.parseInt(parts[2]);
+        int east = parts[3].equals("A") ? 10 : Integer.parseInt(parts[3]);
+        int west = parts[4].equals("A") ? 10 : Integer.parseInt(parts[4]);
         cards.add(new Card(name, north, south, east, west));
       }
     }
