@@ -42,4 +42,7 @@ public class CardCell implements Cell {
     return owner;
   }
 
+  public void setOwner(Player owner) {
+    this.owner = owner;
+  }
 }

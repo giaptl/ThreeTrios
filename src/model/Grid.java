@@ -57,7 +57,7 @@ public class Grid {
    * @param col the column of the cell
    * @param cellToSet the cell to set at the given row and column
    */
-  public void SetCell(int row, int col, Cell cellToSet) {
+  public void setCell(int row, int col, Cell cellToSet) {
     cells[row][col] = cellToSet;
   }
 

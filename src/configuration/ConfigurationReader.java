@@ -31,9 +31,9 @@ public class ConfigurationReader {
         for (int col = 0; col < cols; col++) {
           char cellType = line.charAt(col);
           if (cellType == 'X') {
-            grid.SetCell(row, col, new Hole());
+            grid.setCell(row, col, new Hole());
           } else if (cellType == 'C') {
-            grid.SetCell(row, col, new CardCell());
+            grid.setCell(row, col, new CardCell());
           } else {
             throw new IllegalArgumentException("Invalid cell type: " + cellType
                     + " at row " + row + ", col " + col);

@@ -146,10 +146,56 @@ public class GameModel implements IGameModel {
     }
 
 
+    Cell cell = grid.getCell(row, col);
+    if (!cell.isEmpty()) {
+      throw new IllegalArgumentException("Cell is not empty.");
+    }
+
+    CardCell cardCell = new CardCell(card, player);
+    grid.setCell(row, col, cardCell);
+    player.getHand().remove(card);
+
+    // Switch the current player
+    currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
+
+    // Check if the game is over
+    isGameOver = isGameOver();
+
   }
 
   @Override
   public void startBattlePhase(int row, int col) {
+    Cell cell = grid.getCell(row, col);
+    if (!(cell instanceof CardCell)) {
+      throw new IllegalArgumentException("No card at the specified cell.");
+    }
 
+    CardCell cardCell = (CardCell) cell;
+    Card card = cardCell.getCard();
+    Player owner = cardCell.getOwner();
+
+    // Battle logic (example: compare attack values with adjacent cards)
+    for (Direction direction : Direction.values()) {
+      int newRow = row + direction.getRowOffset();
+      int newCol = col + direction.getColOffset();
+
+      if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
+        Cell adjacentCell = grid.getCell(newRow, newCol);
+        if (adjacentCell instanceof CardCell) {
+          CardCell adjacentCardCell = (CardCell) adjacentCell;
+          Card adjacentCard = adjacentCardCell.getCard();
+          Player adjacentOwner = adjacentCardCell.getOwner();
+
+          if (!owner.equals(adjacentOwner)) {
+            int attackValue = card.getAttackValue(direction);
+            int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+
+            if (attackValue > defenseValue) {
+              adjacentCardCell.setOwner(owner);
+            }
+          }
+        }
+      }
+    }
   }
 }
