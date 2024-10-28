@@ -228,7 +228,7 @@ public class GameModel implements IGameModel {
 
         // Checks if the adjacent cell is a card cell and not a hole
         // REMEMEBER ME TOMORROW THAT HOLS EXTENDS A CARDCELL
-        if !(adjacentCell instanceof Hole) {
+        if (!(adjacentCell instanceof Hole)) {
           // Error is happening right here
           CardCell adjacentCardCell = (CardCell) adjacentCell;
           Card adjacentCard = adjacentCardCell.getCard();
@@ -237,6 +237,7 @@ public class GameModel implements IGameModel {
           // Checks if card is not owned by the same player, if it isn't then compare attack
           if (!owner.equals(adjacentOwner)) {
             int attackValue = card.getAttackValue(direction);
+            // Or this can be your problem (assuming it is in getOpposite)
             int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
             if (attackValue > defenseValue) {
               adjacentCardCell.setOwner(owner);
