@@ -45,6 +45,6 @@ public class TextView implements IGameView {
               " " + card.getAttackValue(Direction.EAST) +
               " " + card.getAttackValue(Direction.WEST));
     }
+    System.out.print("\n");
   }
-
 }

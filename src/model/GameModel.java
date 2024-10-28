@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import configuration.ConfigurationReader;
-
 /**
  * Represents the game model.
  */
@@ -106,7 +104,6 @@ public class GameModel implements IGameModel {
     currentPlayer = pRed;
     isGameOver = false;
   }
-
 
 
   @Override
@@ -208,10 +205,9 @@ public class GameModel implements IGameModel {
 
   @Override
   public void startBattlePhase(int row, int col) {
-
     Cell cell = grid.getCell(row, col);
-    if (cell.isEmpty()) {
-      throw new IllegalArgumentException("Cell is empty.");
+    if (!(cell instanceof CardCell)) {
+      throw new IllegalArgumentException("No card at the specified cell.");
     }
 
     CardCell cardCell = (CardCell) cell;
@@ -226,19 +222,16 @@ public class GameModel implements IGameModel {
       if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
         Cell adjacentCell = grid.getCell(newRow, newCol);
 
-        // Checks if the adjacent cell is a card cell and not a hole
-        // REMEMEBER ME TOMORROW THAT HOLS EXTENDS A CARDCELL
-        if (!(adjacentCell instanceof Hole)) {
-          // Error is happening right here
+        // Ensure the adjacent cell is a CardCell and not null
+        if (adjacentCell instanceof CardCell) {
           CardCell adjacentCardCell = (CardCell) adjacentCell;
           Card adjacentCard = adjacentCardCell.getCard();
           Player adjacentOwner = adjacentCardCell.getOwner();
 
-          // Checks if card is not owned by the same player, if it isn't then compare attack
-          if (!owner.equals(adjacentOwner)) {
+          if (adjacentCard != null && !owner.equals(adjacentOwner)) {
             int attackValue = card.getAttackValue(direction);
-            // Or this can be your problem (assuming it is in getOpposite)
             int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+
             if (attackValue > defenseValue) {
               adjacentCardCell.setOwner(owner);
             }
@@ -246,5 +239,8 @@ public class GameModel implements IGameModel {
         }
       }
     }
+
   }
 }
+
+

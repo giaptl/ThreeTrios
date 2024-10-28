@@ -14,7 +14,7 @@ public class Runner {
     try {
       // Define the paths to the configuration files
       String gridConfigPath = "configFiles" + File.separator + "board.config";
-      String cardDataPath = "configFiles" + File.separator + "cards.config";
+      String cardDataPath = "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
 
       // Read the grid configuration
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
