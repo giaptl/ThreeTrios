@@ -29,7 +29,7 @@ public class Player {
   }
 
   // Returns an immutable copy of the current player's hand at any instance in the game.
-  protected List<Card> getHand() {
-    return List.copyOf(hand);
+  public List<Card> getHand() {
+    return this.hand;
   }
 }

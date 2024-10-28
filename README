@@ -1,7 +1,55 @@
 OVERVIEW:
+This project is a Java-based application designed to read and parse configuration files for setting
+up the initial state of a grid-based card game. It ensures data integrity by validating the format
+and uniqueness of the configuration data. The application reads a grid configuration file to
+initialize a grid with holes and card cells, and a card database file to initialize a list of cards
+with unique names and predefined attack values. The game model manages the game state, including
+player hands, grid state, and game logic, and implements battle logic to handle card interactions
+based on their attack values and positions on the grid.
 
 QUICK START:
 
+public class Runner {
+
+  public static void main(String[] args) {
+    try {
+      String gridConfigPath = "configFiles" + File.separator + "board.config";
+      String cardDataPath = "configFiles" + File.separator + "cards.config";
+
+      Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
+      System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and " +
+              grid.getColumns() + " columns.");
+
+      List<Card> cards = ConfigurationReader.readCardData(cardDataPath);
+      System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
+
+    } catch (IOException e) {
+      System.err.println("Error reading configuration files: " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+      System.err.println("Invalid configuration: " + e.getMessage());
+    }
+  }
+}
+
+- This is the entry point for the application. It demonstrates how to use the ConfigurationReader
+to read and parse through the grid and card files.
+
+
 KEY COMPONENTS:
+ConfigurationReader: Reads and parses grid and card configuration files.
+readGridConfig: Initializes a grid with holes and card cells.
+readCardData: Initializes a list of cards with unique names and predefined attack values.
+GameModel: Manages the game state, including player hands, grid state, and game logic.
+Runner: Entry point for the application, demonstrating how to use the ConfigurationReader.
+
+KEY SUBCOMPONENTS:
+Grid: Represents the game grid with rows and columns.
+Card: Represents a card with a name and attack values for different directions.
+Player: Represents a player in the game with a hand of cards.
 
 SOURCE ORG:
+src/: Contains the main source code.
+model/: Contains the game model classes (Grid, Card, Player, etc.).
+configuration/: Contains the ConfigurationReader class.
+configFiles/: Contains the configuration files (board.config, cards.config).
+test/: Contains test cases for the application.

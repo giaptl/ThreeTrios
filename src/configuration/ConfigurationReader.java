@@ -18,13 +18,20 @@ import model.Hole;
  */
 public class ConfigurationReader {
 
+  /**
+   *
+   * Reads the grid configuration from the given file to use in the game.
+   * @param filename the name of the file to parse data from
+   * @return the grid configuration created based on file contents
+   * @throws IOException if an error occurs while reading the file
+   */
   public static Grid readGridConfig(String filename) throws IOException {
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
       String[] dimensions = reader.readLine().split(" ");
       int rows = Integer.parseInt(dimensions[0]);
       int cols = Integer.parseInt(dimensions[1]);
 
-      Grid grid = new Grid(rows, cols, true);
+      Grid grid = new Grid(rows, cols);
 
       for (int row = 0; row < rows; row++) {
         String line = reader.readLine();
@@ -45,6 +52,13 @@ public class ConfigurationReader {
     }
   }
 
+  /**
+   *
+   * Reads the card configuration from the given file to use in the game.
+   * @param filename the name of the file to parse data from
+   * @return list of cards created based on file contents
+   * @throws IOException if an error occurs while reading the file
+   */
   public static List<Card> readCardData(String filename) throws IOException {
     List<Card> cards = new ArrayList<>();
     Set<String> cardNames = new HashSet<>();

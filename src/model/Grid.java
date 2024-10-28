@@ -8,10 +8,8 @@ public class Grid {
   private Cell[][] cells;
 
   // Default if given no config file but given row and col
-  public Grid(int row, int col, boolean isConfigFile) {
+  public Grid(int row, int col) {
     cells = new Cell[row][col];
-
-    if (!isConfigFile) {
       for (int rows = 0; rows < row; rows++) {
         for (int cols = 0; cols < col; cols++) {
           // if hole then create an object of class hole
@@ -19,7 +17,6 @@ public class Grid {
           cells[rows][cols] = new CardCell();
         }
       }
-    }
   }
 
   // Constructor that will create a grid based on config file details

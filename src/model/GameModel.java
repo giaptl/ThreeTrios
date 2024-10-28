@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import configuration.ConfigurationReader;
+
 /**
  * Represents the game model.
  */
@@ -17,6 +19,7 @@ public class GameModel implements IGameModel {
   private Player pRed;
   private Player pBlue;
   boolean isGameOver;
+  private List<Card> deck;
 
   /**
    * Creates a new game model.
@@ -26,44 +29,85 @@ public class GameModel implements IGameModel {
     this.isGameOver = false;
   }
 
-  @Override
-  public void startGame(Grid grid, List<Card> cards, boolean shuffle, int row, int col, boolean configFile) {
+  public Player getRedPlayer() {
+    return pRed;
+  }
 
-    if (configFile) {
-      this.grid = new Grid(row, col, true);
-    } else {
-      this.grid = new Grid(row, col, false);
+  public Player getBluePlayer() {
+    return pBlue;
+  }
+
+  @Override
+  public void startGameDefault(boolean shuffle, int row, int col) {
+//    deck = new ArrayList<>();
+//
+//    this.grid = new Grid(row, col);
+//
+//    int numCardCells = grid.getNumCardCells();
+//    if (numCardCells % 2 == 0) {
+//      throw new IllegalArgumentException("Number of card cells must be odd.");
+//    }
+//
+//    int totalCardsNeeded = numCardCells + 1;
+//
+//    if (deck.size() < totalCardsNeeded) {
+//      throw new IllegalArgumentException("Not enough cards to start game.");
+//    }
+//
+//    if (shuffle) {
+//      Collections.shuffle(deck);
+//    }
+//
+//    int cardsPerPlayer = (numCardCells + 1) / 2;
+//    List<Card> redHand = new ArrayList<>(deck.subList(0, cardsPerPlayer));
+//    List<Card> blueHand = new ArrayList<>(deck.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
+//
+//    pRed = new Player("Red", redHand);
+//    pBlue = new Player("Blue", blueHand);
+//
+//    playerHands.put(pRed, redHand);
+//    playerHands.put(pBlue, blueHand);
+//    currentPlayer = pRed;
+//
+//
+//    isGameOver = false;
+  }
+
+
+  @Override
+  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle) {
+    this.grid = grid;
+    this.deck = cards;
+    if (shuffle) {
+      Collections.shuffle(deck);
     }
+
     int numCardCells = grid.getNumCardCells();
     if (numCardCells % 2 == 0) {
       throw new IllegalArgumentException("Number of card cells must be odd.");
     }
 
     int totalCardsNeeded = numCardCells + 1;
-
-    if (cards.size() < totalCardsNeeded) {
+    if (deck.size() < totalCardsNeeded) {
       throw new IllegalArgumentException("Not enough cards to start game.");
     }
 
-    if (shuffle) {
-      Collections.shuffle(cards);
-    }
 
     int cardsPerPlayer = (numCardCells + 1) / 2;
-
-    List<Card> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
-    List<Card> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
+    List<Card> redHand = new ArrayList<>(deck.subList(0, cardsPerPlayer));
+    List<Card> blueHand = new ArrayList<>(deck.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
 
     pRed = new Player("Red", redHand);
     pBlue = new Player("Blue", blueHand);
 
     playerHands.put(pRed, redHand);
     playerHands.put(pBlue, blueHand);
+
     currentPlayer = pRed;
-
-
     isGameOver = false;
   }
+
+
 
   @Override
   public Player getCurrentPlayer() {
@@ -145,7 +189,6 @@ public class GameModel implements IGameModel {
       throw new IllegalArgumentException("Invalid row or column.");
     }
 
-
     Cell cell = grid.getCell(row, col);
     if (!cell.isEmpty()) {
       throw new IllegalArgumentException("Cell is not empty.");
@@ -165,9 +208,10 @@ public class GameModel implements IGameModel {
 
   @Override
   public void startBattlePhase(int row, int col) {
+
     Cell cell = grid.getCell(row, col);
-    if (!(cell instanceof CardCell)) {
-      throw new IllegalArgumentException("No card at the specified cell.");
+    if (cell.isEmpty()) {
+      throw new IllegalArgumentException("Cell is empty.");
     }
 
     CardCell cardCell = (CardCell) cell;
@@ -181,15 +225,19 @@ public class GameModel implements IGameModel {
 
       if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
         Cell adjacentCell = grid.getCell(newRow, newCol);
-        if (adjacentCell instanceof CardCell) {
+
+        // Checks if the adjacent cell is a card cell and not a hole
+        // REMEMEBER ME TOMORROW THAT HOLS EXTENDS A CARDCELL
+        if !(adjacentCell instanceof Hole) {
+          // Error is happening right here
           CardCell adjacentCardCell = (CardCell) adjacentCell;
           Card adjacentCard = adjacentCardCell.getCard();
           Player adjacentOwner = adjacentCardCell.getOwner();
 
+          // Checks if card is not owned by the same player, if it isn't then compare attack
           if (!owner.equals(adjacentOwner)) {
             int attackValue = card.getAttackValue(direction);
             int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
-
             if (attackValue > defenseValue) {
               adjacentCardCell.setOwner(owner);
             }
