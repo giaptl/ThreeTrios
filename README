@@ -51,5 +51,5 @@ SOURCE ORG:
 src/: Contains the main source code.
 model/: Contains the game model classes (Grid, Card, Player, etc.).
 configuration/: Contains the ConfigurationReader class.
-configFiles/: Contains the configuration files (board.config, cards.config).
+configFiles/: Contains the example configuration files to test
 test/: Contains test cases for the application.

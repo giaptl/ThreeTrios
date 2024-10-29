@@ -21,8 +21,6 @@ public class GameModelInnerTests {
   private GameModel gameModel;
   private Grid grid;
   private List<Card> deck;
-  private Player redPlayer;
-  private Player bluePlayer;
 
   @Before
   public void setUp() {
