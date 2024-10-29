@@ -62,7 +62,7 @@ public class Grid {
    * Returns the number of cells that are not holes
    * @return the number of cells that are not holes
    */
-  protected int getNumCardCells() {
+  public int getNumCardCells() {
     int count = 0;
     for (int row = 0; row < getRows(); row++) {
       for (int col = 0; col < getColumns(); col++) {
