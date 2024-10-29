@@ -10,16 +10,6 @@ import java.util.List;
 public interface IGameModel {
 
   /**
-   * Starts the game with a grid created from the specified number of rows and columns. (Default
-   * way to start the game if no configuration files are given)
-   *
-   * @param shuffle true if the cards should be shuffled, false otherwise
-   * @param row the number of rows in the grid
-   * @param col the number of column in the grid
-   */
-  void startGameDefault(boolean shuffle, int row, int col);
-
-  /**
    * Starts the game using the given grid and list of cards (Second way to start the game in the
    * case where configuration files are given)
    *

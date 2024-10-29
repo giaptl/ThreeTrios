@@ -35,42 +35,6 @@ public class GameModel implements IGameModel {
     return pBlue;
   }
 
-  @Override
-  public void startGameDefault(boolean shuffle, int row, int col) {
-//    deck = new ArrayList<>();
-//
-//    this.grid = new Grid(row, col);
-//
-//    int numCardCells = grid.getNumCardCells();
-//    if (numCardCells % 2 == 0) {
-//      throw new IllegalArgumentException("Number of card cells must be odd.");
-//    }
-//
-//    int totalCardsNeeded = numCardCells + 1;
-//
-//    if (deck.size() < totalCardsNeeded) {
-//      throw new IllegalArgumentException("Not enough cards to start game.");
-//    }
-//
-//    if (shuffle) {
-//      Collections.shuffle(deck);
-//    }
-//
-//    int cardsPerPlayer = (numCardCells + 1) / 2;
-//    List<Card> redHand = new ArrayList<>(deck.subList(0, cardsPerPlayer));
-//    List<Card> blueHand = new ArrayList<>(deck.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
-//
-//    pRed = new Player("Red", redHand);
-//    pBlue = new Player("Blue", blueHand);
-//
-//    playerHands.put(pRed, redHand);
-//    playerHands.put(pBlue, blueHand);
-//    currentPlayer = pRed;
-//
-//
-//    isGameOver = false;
-  }
-
 
   @Override
   public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle) {

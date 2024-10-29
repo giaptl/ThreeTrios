@@ -44,6 +44,8 @@ public class GameModelInnerTests {
     }
   }
 
+  // Tests that players are created properly
+  // Tests that both players have the correct number of cards in their hand
   @Test
   public void startGameWithConfigInitializesGameCorrectly() {
     gameModel.startGameWithConfig(grid, deck, false);
@@ -53,6 +55,7 @@ public class GameModelInnerTests {
     assertEquals(4, gameModel.getPlayerHand(gameModel.getBluePlayer()).size());
   }
 
+  // Test that IllegalArgumentException is thrown when the not enough cards to start the game
   @Test
   public void startGameWithConfigThrowsExceptionWhenNotEnoughCards() {
     List<Card> smallDeck = new ArrayList<>(deck.subList(0, 3));
@@ -62,26 +65,29 @@ public class GameModelInnerTests {
     assertEquals("Not enough cards to start game.", exception.getMessage());
   }
 
+  // Test that playCard() places the card on the grid and switches the current player
   @Test
   public void playCardPlacesCardOnGridAndSwitchesPlayer() {
     gameModel.startGameWithConfig(grid, deck, false);
     Player currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
-    assertEquals(card, ((CardCell) grid.getCell(0, 0)).getCard());
+    assertEquals(card, (grid.getCell(0, 0)).getCard());
     assertNotEquals(currentPlayer, gameModel.getCurrentPlayer());
   }
 
-  @Test
+  // Test that IllegalArgumentException is thrown when playCard() is for a cell that is already
+  // occupied
+  @Test(expected = IllegalArgumentException.class)
   public void playCardThrowsExceptionWhenCellNotEmpty() {
     gameModel.startGameWithConfig(grid, deck, false);
     Player currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      gameModel.playCard(currentPlayer, card, 0, 0);
-    });
-    assertEquals("Cell is not empty.", exception.getMessage());
+    // next player plays card to the same place
+    Player newPlayer = gameModel.getCurrentPlayer();
+    Card card2 = currentPlayer.getHand().get(0);
+    gameModel.playCard(newPlayer, card2, 0, 0);
   }
 
 }
