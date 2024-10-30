@@ -5,6 +5,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for the Hole class in model.
+ */
 public class HoleTest {
 
   @Test

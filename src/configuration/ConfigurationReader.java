@@ -19,7 +19,6 @@ import model.Hole;
 public class ConfigurationReader {
 
   /**
-   *
    * Reads the grid configuration from the given file to use in the game.
    * @param filename the name of the file to parse data from
    * @return the grid configuration created based on file contents
@@ -53,7 +52,6 @@ public class ConfigurationReader {
   }
 
   /**
-   *
    * Reads the card configuration from the given file to use in the game.
    * @param filename the name of the file to parse data from
    * @return list of cards created based on file contents

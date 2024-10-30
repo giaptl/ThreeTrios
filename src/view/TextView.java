@@ -8,12 +8,13 @@ import model.Direction;
 import model.Grid;
 import model.Player;
 
+/**
+ * A text based view for the game. Default view but will be changed to a GUI in the future.
+ */
 public class TextView implements IGameView {
 
-  public TextView() {
 
-  }
-
+  @Override
   public void renderGrid(Grid grid) {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
@@ -35,6 +36,7 @@ public class TextView implements IGameView {
     }
   }
 
+  @Override
   public void renderPlayerHand(Player player, List<Card> hand) {
     System.out.println("Player: " + player.getName().toUpperCase());
     System.out.println("Hand:");

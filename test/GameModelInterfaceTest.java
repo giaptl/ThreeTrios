@@ -9,7 +9,12 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import model.Player;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -22,6 +27,9 @@ public class GameModelInterfaceTest {
   private Grid grid;
   private List<Card> deck;
 
+  /**
+   * Set up the game model and load the grid and deck files.
+   */
   @BeforeEach
   public void setUp() {
     gameModel = new GameModel();
@@ -212,7 +220,8 @@ public class GameModelInterfaceTest {
   public void testPlayCardWithEmptyHand() {
     gameModel.startGameWithConfig(grid, deck, false);
     Player currentPlayer = gameModel.getCurrentPlayer();
-    int row = 0, col = 0;
+    int row = 0;
+    int col = 0;
 
     while (!currentPlayer.getHand().isEmpty()) {
       Card card = currentPlayer.getHand().get(0);
@@ -335,7 +344,7 @@ public class GameModelInterfaceTest {
     }
     Card card = wrongPlayer.getHand().get(0);
     assertThrows(IllegalArgumentException.class, ()
-            -> gameModel.playCard(wrongPlayer, card, 0, 0));
+        -> gameModel.playCard(wrongPlayer, card, 0, 0));
   }
 
   // GetGrid tests

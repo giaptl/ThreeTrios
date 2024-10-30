@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents the game model.
+ * Represents the initial game model created for ThreeTrios.
  */
 public class GameModel implements IGameModel {
 
@@ -17,7 +17,6 @@ public class GameModel implements IGameModel {
   private Player pRed;
   private Player pBlue;
   boolean isGameOver;
-  private List<Card> deck;
 
   /**
    * Creates a new game model.
@@ -27,21 +26,25 @@ public class GameModel implements IGameModel {
     this.isGameOver = false;
   }
 
+  /**
+   * Getter method to return the red player.
+   */
   public Player getRedPlayer() {
     return pRed;
   }
 
+  /**
+   * Getter method ot return the blue player.
+   */
   public Player getBluePlayer() {
     return pBlue;
   }
 
-
   @Override
   public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle) {
     this.grid = grid;
-    this.deck = cards;
     if (shuffle) {
-      Collections.shuffle(deck);
+      Collections.shuffle(cards);
     }
 
     int numCardCells = grid.getNumCardCells();
@@ -50,14 +53,13 @@ public class GameModel implements IGameModel {
     }
 
     int totalCardsNeeded = numCardCells + 1;
-    if (deck.size() < totalCardsNeeded) {
+    if (cards.size() < totalCardsNeeded) {
       throw new IllegalArgumentException("Not enough cards to start game.");
     }
 
-
     int cardsPerPlayer = (numCardCells + 1) / 2;
-    List<Card> redHand = new ArrayList<>(deck.subList(0, cardsPerPlayer));
-    List<Card> blueHand = new ArrayList<>(deck.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
+    List<Card> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
+    List<Card> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
 
     pRed = new Player("Red", redHand);
     pBlue = new Player("Blue", blueHand);
@@ -119,6 +121,7 @@ public class GameModel implements IGameModel {
     }
   }
 
+  // Helper method that counts the number of occupied cells for each player.
   private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
@@ -138,6 +141,22 @@ public class GameModel implements IGameModel {
 
   @Override
   public void playCard(Player player, Card card, int row, int col) {
+    playCardConditions(player, row, col);
+
+    CardCell cardCell = new CardCell(card, player);
+    grid.setCell(row, col, cardCell);
+    player.getHand().remove(card);
+
+    // Switch the current player
+    currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
+
+    // Check if the game is over
+    isGameOver = isGameOver();
+
+  }
+
+  // Helper method to check the conditions for playing a card.
+  private void playCardConditions(Player player, int row, int col) {
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
     }
@@ -154,26 +173,15 @@ public class GameModel implements IGameModel {
     if (!cell.isEmpty()) {
       throw new IllegalArgumentException("Cell is not empty.");
     }
-
-    CardCell cardCell = new CardCell(card, player);
-    grid.setCell(row, col, cardCell);
-    player.getHand().remove(card);
-
-    // Switch the current player
-    currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
-
-    // Check if the game is over
-    isGameOver = isGameOver();
-
   }
 
   @Override
   public void startBattlePhase(int row, int col) {
+
     Cell cell = grid.getCell(row, col);
     if (!(cell instanceof CardCell)) {
-      throw new IllegalArgumentException("No card at the specified cell.");
+      throw new IllegalArgumentException("No card at the specified cell or cell is a hole.");
     }
-
     CardCell cardCell = (CardCell) cell;
     Card card = cardCell.getCard();
     Player owner = cardCell.getOwner();
@@ -182,28 +190,33 @@ public class GameModel implements IGameModel {
     for (Direction direction : Direction.values()) {
       int newRow = row + direction.getRowOffset();
       int newCol = col + direction.getColOffset();
+      cardAttackDirections(direction, newRow, newCol, owner, card);
+    }
+  }
 
-      if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
-        Cell adjacentCell = grid.getCell(newRow, newCol);
+  // Helper method which extracts the logic behind cards attacking and changing ownership.
+  private void cardAttackDirections(Direction direction, int newRow,
+                                    int newCol, Player owner, Card card) {
 
-        // Ensure the adjacent cell is a CardCell and not null
-        if (adjacentCell instanceof CardCell) {
-          CardCell adjacentCardCell = (CardCell) adjacentCell;
-          Card adjacentCard = adjacentCardCell.getCard();
-          Player adjacentOwner = adjacentCardCell.getOwner();
+    if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
+      Cell adjacentCell = grid.getCell(newRow, newCol);
 
-          if (adjacentCard != null && !owner.equals(adjacentOwner)) {
-            int attackValue = card.getAttackValue(direction);
-            int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+      // Ensure the adjacent cell is a CardCell and not null
+      if (adjacentCell instanceof CardCell) {
+        CardCell adjacentCardCell = (CardCell) adjacentCell;
+        Card adjacentCard = adjacentCardCell.getCard();
+        Player adjacentOwner = adjacentCardCell.getOwner();
 
-            if (attackValue > defenseValue) {
-              adjacentCardCell.setOwner(owner);
-            }
+        if (adjacentCard != null && !owner.equals(adjacentOwner)) {
+          int attackValue = card.getAttackValue(direction);
+          int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+
+          if (attackValue > defenseValue) {
+            adjacentCardCell.setOwner(owner);
           }
         }
       }
     }
-
   }
 }
 

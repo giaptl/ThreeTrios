@@ -2,7 +2,8 @@ package model;
 
 /**
  * The Cell interface represents a cell in the game grid.
- * It provides methods to check the state of the cell and retrieve information about the card and player associated with the cell.
+ * It provides methods to check the state of the cell and retrieve information about the card
+ * and player associated with the cell.
  */
 public interface Cell {
 

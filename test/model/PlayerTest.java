@@ -8,6 +8,9 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+/**
+ * Test class for the Player class in model.
+ */
 public class PlayerTest {
 
   @Test

@@ -6,6 +6,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for the Grid class in model.
+ */
 public class GridTest {
 
   @Test

@@ -28,8 +28,10 @@ public class Player {
     return name;
   }
 
-  // Returns an immutable copy of the current player's hand at any instance in the game.
+  /**
+   * Returns an immutable copy of the current player's hand at any instance in the game.
+   */
   public List<Card> getHand() {
-    return this.hand;
+    return List.copyOf(this.hand);
   }
 }

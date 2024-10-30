@@ -17,6 +17,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+
+/**
+ * Test class for ConfigurationReader.
+ */
 public class ConfigurationReaderTest {
 
   // Load data from board.config
@@ -64,7 +68,8 @@ public class ConfigurationReaderTest {
   // Load data from board3WithSeparateGroupsOfCells.config
   @Test
   public void testReadGridConfig3() throws IOException {
-    String gridConfigPath = "configFiles" + File.separator + "board3WithSeparateGroupsOfCells.config";
+    String gridConfigPath = "configFiles" + File.separator
+            + "board3WithSeparateGroupsOfCells.config";
     Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
     assertNotNull(grid);
     assertEquals(4, grid.getRows());
@@ -92,7 +97,7 @@ public class ConfigurationReaderTest {
     assertEquals(10, firstCard.getAttackValue(Direction.WEST));
 
     // Check the last card was loaded properly
-    Card lastCard = deck.get(deck.size()-1);
+    Card lastCard = deck.get(deck.size() - 1);
     assertEquals("RubyTiger", lastCard.getName());
     assertEquals(8, lastCard.getAttackValue(Direction.NORTH));
     assertEquals(5, lastCard.getAttackValue(Direction.SOUTH));
@@ -100,8 +105,4 @@ public class ConfigurationReaderTest {
     assertEquals(6, lastCard.getAttackValue(Direction.WEST));
 
   }
-
-  // Load data from cardsNotEnoughForAllBoards3.config
-  // TO BE IMPLEMENTED after data is added to this file
-
 }

@@ -16,6 +16,9 @@ import model.Player;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for the text view class in view.
+ */
 public class TextViewTest {
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final PrintStream originalOut = System.out;
@@ -56,7 +59,8 @@ public class TextViewTest {
 
   @Test
   public void testRenderGridForBoard2() throws IOException {
-    Grid grid = ConfigurationReader.readGridConfig("configFiles/board2WithReachableCells.config");
+    Grid grid = ConfigurationReader.readGridConfig(
+            "configFiles/board2WithReachableCells.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "____\n"
@@ -67,7 +71,8 @@ public class TextViewTest {
 
   @Test
   public void testRenderGridForBoard3() throws IOException {
-    Grid grid = ConfigurationReader.readGridConfig("configFiles/board3WithSeparateGroupsOfCells.config");
+    Grid grid = ConfigurationReader.readGridConfig(
+            "configFiles/board3WithSeparateGroupsOfCells.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "____    \n"

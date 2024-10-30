@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Test class for the Direction enum class.
+ */
 public class DirectionTest {
   @Test
   public void testGetRowOffset() {

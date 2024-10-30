@@ -10,8 +10,8 @@ import java.util.List;
 public interface IGameModel {
 
   /**
-   * Starts the game using the given grid and list of cards (Second way to start the game in the
-   * case where configuration files are given)
+   * Starts the game using the given grid and list of cards. (Second way to start the game in the
+   * case where configuration files are given).
    *
    * @param grid the grid on which the game will be played
    * @param cards the list of cards to be used in the game

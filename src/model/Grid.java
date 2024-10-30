@@ -7,23 +7,22 @@ public class Grid {
 
   private Cell[][] cells;
 
-  // Default if given no config file but given row and col
+  /**
+   * Default if given no config file but given row and col.
+   * Not used yet (Waiting for further implementation).
+   */
   public Grid(int row, int col) {
     cells = new Cell[row][col];
-      for (int rows = 0; rows < row; rows++) {
-        for (int cols = 0; cols < col; cols++) {
-          // if hole then create an object of class hole
-          // if not hole then create an object of class CardCell
-          cells[rows][cols] = new CardCell();
-        }
+    for (int rows = 0; rows < row; rows++) {
+      for (int cols = 0; cols < col; cols++) {
+        cells[rows][cols] = new CardCell();
       }
+    }
   }
-
-  // Constructor that will create a grid based on config file details
 
 
   /**
-   * Returns the number of rows in the grid
+   * Returns the number of rows in the grid.
    * @return the number of rows in the grid
    */
   public int getRows() {
@@ -31,7 +30,7 @@ public class Grid {
   }
 
   /**
-   * Returns the number of columns in the grid
+   * Returns the number of columns in the grid.
    * @return the number of columns in the grid
    */
   public int getColumns() {
@@ -39,7 +38,7 @@ public class Grid {
   }
 
   /**
-   * Returns the cell at the given row and column
+   * Returns the cell at the given row and column.
    * @param row the row of the cell
    * @param col the column of the cell
    * @return the cell at the given row and column
@@ -49,7 +48,7 @@ public class Grid {
   }
 
   /**
-   * Sets the cell at the given row and column
+   * Sets the cell at the given row and column.
    * @param row the row of the cell
    * @param col the column of the cell
    * @param cellToSet the cell to set at the given row and column
@@ -59,7 +58,7 @@ public class Grid {
   }
 
   /**
-   * Returns the number of cells that are not holes
+   * Returns the number of cells that are not holes.
    * @return the number of cells that are not holes
    */
   public int getNumCardCells() {

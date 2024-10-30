@@ -1,5 +1,8 @@
 package model;
 
+/**
+ * Enum for card values. Used to represent the value of a card.
+ */
 public enum CardValues {
   ONE(1),
   TWO(2),
@@ -18,6 +21,9 @@ public enum CardValues {
     this.value = value;
   }
 
+  /**
+   * Gets value of the card.
+   */
   public int getValue() {
     return value;
   }
