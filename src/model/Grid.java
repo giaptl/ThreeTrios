@@ -2,6 +2,11 @@ package model;
 
 /**
  * Represents the grid of the game.
+ *
+ * Grid Structure:
+ *  - The grid is rectangular, with rows and columns specified in the configuration.
+ *  - Each cell can be either a card cell (playable) or a hole (non-playable).
+ *  - The number of card cells must be odd.
  */
 public class Grid {
 

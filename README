@@ -54,3 +54,9 @@ configuration/: Contains the ConfigurationReader class.
 configFiles/: Contains the example configuration files to test
 test/: Contains test cases for the application.
 
+INVARIANT:
+The currentPlayer must always be either pRed or pBlue.
+This is enforced through the constructor and methods of the GameModel class. The constructor
+initializes the currentPlayer to either pRed, so the invariant is ensured by the constructor. Methods
+that modify currentPlayer ensure it is set to either pRed or pBlue. For example, the playCard method
+switches the current player after a card is played to either Red or Blue.

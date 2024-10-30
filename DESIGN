@@ -1,0 +1,11 @@
+Design Document for ThreeTrios Game
+
+Overview:
+This document outlines the design of the ThreeTrios game, focusing on the player interface and how
+different player implementations (human and AI) can interact with the game model. The goal is to
+create a flexible design that allows for various player types and game scenarios, including human
+vs. computer and fully automated play.
+
+INCLUDE: It's the result of an object-oriented analysis for a player object. What behaviors does it
+have? Is there anything the client can assume about its representation / what is known about players
+without diving into their implementation (that should not yet exist).

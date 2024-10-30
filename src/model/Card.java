@@ -5,7 +5,12 @@ import java.util.Map;
 
 /**
  * Represents a card in the game.
- * A card has a name and 4 attack values, one for each direction.
+ * A card has a name and 4 attack values, one for each direction in the order of north, south, east,
+ * and west.
+ *
+ * Card Structure:
+ * - Name: A unique identifier for the card
+ * - Attack Values: Four integers (1-10) or 'A' (representing 10) for North, South, East, and West
  */
 public class Card {
 

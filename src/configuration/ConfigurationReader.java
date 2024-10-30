@@ -29,7 +29,9 @@ public class ConfigurationReader {
    * - The number of rows and columns must match the dimensions of the grid.
    * - The number of rows and columns must be positive integers.
    * - The grid must contain at least one card cell.
+   * - The grid must be a rectangle.
    * NOTE: Configuration files must be stored in the configFiles directory.
+   *
    *
    * @param filename the name of the file to parse data from
    * @return the grid configuration created based on file contents
