@@ -24,7 +24,7 @@ public enum CardValues {
   /**
    * Gets value of the card.
    */
-  public int getValue() {
+  int getValue() {
     return value;
   }
 }

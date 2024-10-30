@@ -13,7 +13,7 @@ public enum Direction {
    * @return -1 if the direction is NORTH, 1 if the direction is SOUTH,
    *         and 0 for all other directions.
    */
-  public int getRowOffset() {
+  int getRowOffset() {
     switch (this) {
       case NORTH:
         return -1;
@@ -30,7 +30,7 @@ public enum Direction {
    * @return 1 if the direction is EAST, -1 if the direction is WEST,
    *         and 0 for all other directions.
    */
-  public int getColOffset() {
+  int getColOffset() {
     switch (this) {
       case EAST:
         return 1;
@@ -47,7 +47,7 @@ public enum Direction {
    * @return the opposite direction.
    * @throws IllegalArgumentException if the direction is invalid.
    */
-  public Direction getOpposite() {
+  Direction getOpposite() {
     switch (this) {
       case NORTH:
         return SOUTH;

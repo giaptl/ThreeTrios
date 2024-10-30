@@ -16,7 +16,7 @@ public class GameModel implements IGameModel {
   private Map<Player, List<Card>> playerHands;
   private Player pRed;
   private Player pBlue;
-  boolean isGameOver;
+  private boolean isGameOver;
 
   /**
    * Creates a new game model.

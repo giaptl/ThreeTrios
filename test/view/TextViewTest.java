@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Arrays;
@@ -35,15 +36,19 @@ public class TextViewTest {
 
   @Test
   public void testRenderGridForExampleBoardN() throws IOException {
-    Grid grid = ConfigurationReader.readGridConfig("configFiles/board.config");
+    Grid grid = ConfigurationReader.readGridConfig("configFiles" + File.separator + "board.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "__    _\n"
-                          + "_ _   _\n"
-                          + "_  _  _\n"
-                          + "_   _ _\n"
-                          + "_    __\n";
-    assertEquals(expectedOutput, outContent.toString());
+            + "_ _   _\n"
+            + "_  _  _\n"
+            + "_   _ _\n"
+            + "_    __\n";
+    String actualOutput = outContent.toString();
+    // Normalize line separators
+    expectedOutput = expectedOutput.replace("\r\n", "\n").replace("\r", "\n");
+    actualOutput = actualOutput.replace("\r\n", "\n").replace("\r", "\n");
+    assertEquals(expectedOutput, actualOutput);
   }
 
   @Test
@@ -54,7 +59,13 @@ public class TextViewTest {
     String expectedOutput = "___\n"
                           + "___\n"
                           + "___\n";
-    assertEquals(expectedOutput, outContent.toString());
+    String actualOutput = outContent.toString();
+    // Normalize line separators
+    expectedOutput = expectedOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    actualOutput = actualOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    assertEquals(expectedOutput, actualOutput);
   }
 
   @Test
@@ -66,7 +77,13 @@ public class TextViewTest {
     String expectedOutput = "____\n"
                           + "_  _\n"
                           + "____\n";
-    assertEquals(expectedOutput, outContent.toString());
+    String actualOutput = outContent.toString();
+    // Normalize line separators ( IF ON MAC COMMENT THESE TWO LINES BELOW OUT)
+    expectedOutput = expectedOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    actualOutput = actualOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    assertEquals(expectedOutput, actualOutput);
   }
 
   @Test
@@ -79,7 +96,13 @@ public class TextViewTest {
                           + "____ ___\n"
                           + "     ___\n"
                           + "___     \n";
-    assertEquals(expectedOutput, outContent.toString());
+    String actualOutput = outContent.toString();
+    // Normalize line separators
+    expectedOutput = expectedOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    actualOutput = actualOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    assertEquals(expectedOutput, actualOutput);
   }
 
   @Test
@@ -94,6 +117,12 @@ public class TextViewTest {
     view.renderPlayerHand(player, hand);
 
     String expectedOutput = "Player: TESTPLAYER\nHand:\nCard1 1 2 3 4\nCard2 5 6 7 8\n\n";
-    assertEquals(expectedOutput, outContent.toString());
+    String actualOutput = outContent.toString();
+    // Normalize line separators
+    expectedOutput = expectedOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    actualOutput = actualOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    assertEquals(expectedOutput, actualOutput);
   }
 }

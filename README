@@ -59,4 +59,5 @@ The currentPlayer must always be either pRed or pBlue.
 This is enforced through the constructor and methods of the GameModel class. The constructor
 initializes the currentPlayer to either pRed, so the invariant is ensured by the constructor. Methods
 that modify currentPlayer ensure it is set to either pRed or pBlue. For example, the playCard method
-switches the current player after a card is played to either Red or Blue.
+switches the current player after a card is played to either Red or Blue, which proves that the
+methods of this class also maintain the invariant.

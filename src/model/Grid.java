@@ -2,11 +2,11 @@ package model;
 
 /**
  * Represents the grid of the game.
- *
  * Grid Structure:
  *  - The grid is rectangular, with rows and columns specified in the configuration.
  *  - Each cell can be either a card cell (playable) or a hole (non-playable).
  *  - The number of card cells must be odd.
+ *  - Rows and Cols start at index 0.
  */
 public class Grid {
 
@@ -47,8 +47,12 @@ public class Grid {
    * @param row the row of the cell
    * @param col the column of the cell
    * @return the cell at the given row and column
+   * @throws IllegalArgumentException if the row or column is out of bounds
    */
   public Cell getCell(int row, int col) {
+    if (row < 0 || row >= cells.length || col < 0 || col >= cells[0].length) {
+      throw new IllegalArgumentException("Index out of bounds: row " + row + ", col " + col);
+    }
     return cells[row][col];
   }
 

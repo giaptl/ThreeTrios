@@ -41,11 +41,11 @@ public class TextView implements IGameView {
     System.out.println("Player: " + player.getName().toUpperCase());
     System.out.println("Hand:");
     for (Card card : hand) {
-      System.out.println(card.getName() +
-              " " + card.getAttackValue(Direction.NORTH) +
-              " " + card.getAttackValue(Direction.SOUTH) +
-              " " + card.getAttackValue(Direction.EAST) +
-              " " + card.getAttackValue(Direction.WEST));
+      System.out.println(card.getName()
+              + " " + card.getAttackValue(Direction.NORTH)
+              + " " + card.getAttackValue(Direction.SOUTH)
+              + " " + card.getAttackValue(Direction.EAST)
+              + " " + card.getAttackValue(Direction.WEST));
     }
     System.out.print("\n");
   }

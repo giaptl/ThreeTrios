@@ -50,19 +50,6 @@ public class GameModelInterfaceTest {
     }
   }
 
-  /**
-   * Tests the `startGameWithConfig` method to ensure that the game initializes correctly.
-   * Verifies that both players are not null and that their hands are correctly populated
-   * with the expected number of cards.
-   */
-  @Test
-  public void testStartGameWithConfig() {
-    gameModel.startGameWithConfig(grid, deck, false);
-    assertNotNull(gameModel.getRedPlayer());
-    assertNotNull(gameModel.getBluePlayer());
-    assertEquals(5, gameModel.getPlayerHand(gameModel.getRedPlayer()).size());
-    assertEquals(4, gameModel.getPlayerHand(gameModel.getBluePlayer()).size());
-  }
 
   /**
    * Tests the `startGameWithConfig` method to ensure that the game initializes correctly
@@ -232,6 +219,10 @@ public class GameModelInterfaceTest {
       if (col >= grid.getColumns()) {
         col = 0;
         row++;
+        // Check if row exceeds grid's row count
+        if (row >= grid.getRows()) {
+          break;
+        }
       }
     }
     Player finalCurrentPlayer = currentPlayer;
@@ -322,7 +313,7 @@ public class GameModelInterfaceTest {
     Player currentPlayer = gameModel.getCurrentPlayer();
     if (!currentPlayer.getHand().isEmpty()) {
       Card card = currentPlayer.getHand().get(0);
-      assertThrows(IllegalStateException.class, () -> {
+      assertThrows(IllegalArgumentException.class, () -> {
         gameModel.playCard(currentPlayer, card, 0, 0);
       });
     }

@@ -46,7 +46,7 @@ public class CardCell implements Cell {
    * Sets the card in the cell.
    * @param owner the owner to set for the CardCell
    */
-  public void setOwner(Player owner) {
+  void setOwner(Player owner) {
     this.owner = owner;
   }
 }

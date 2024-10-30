@@ -30,7 +30,7 @@ public class Player {
   }
 
   /**
-   * Returns a mutable copy of the current player's hand at any instance in the game.
+   * Returns a copy of the current player's hand at any instance in the game.
    */
   public List<Card> getHand() {
     return new ArrayList<>(this.hand);

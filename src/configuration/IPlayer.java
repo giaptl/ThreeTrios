@@ -4,6 +4,10 @@ import java.util.List;
 
 import model.Card;
 
+/**
+ * Represents a player in the game. Provides methods for interacting with the player, such as
+ * playing cards and retrieving the player's hand and score. TO BE IMPLEMENTED.
+ */
 public interface IPlayer {
 
   /**
