@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,9 +30,9 @@ public class Player {
   }
 
   /**
-   * Returns an immutable copy of the current player's hand at any instance in the game.
+   * Returns a mutable copy of the current player's hand at any instance in the game.
    */
   public List<Card> getHand() {
-    return List.copyOf(this.hand);
+    return new ArrayList<>(this.hand);
   }
 }
