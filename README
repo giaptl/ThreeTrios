@@ -53,3 +53,4 @@ model/: Contains the game model classes (Grid, Card, Player, etc.).
 configuration/: Contains the ConfigurationReader class.
 configFiles/: Contains the example configuration files to test
 test/: Contains test cases for the application.
+

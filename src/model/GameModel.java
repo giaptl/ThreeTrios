@@ -102,6 +102,7 @@ public class GameModel implements IGameModel {
 
   @Override
   public Player getWinner() {
+
     int redCardCount = pRed.getHand().size();
     int blueCardCount = pBlue.getHand().size();
 
@@ -141,7 +142,7 @@ public class GameModel implements IGameModel {
 
   @Override
   public void playCard(Player player, Card card, int row, int col) {
-    playCardConditions(player, row, col);
+    playCardConditions(player, row, col, card);
 
     CardCell cardCell = new CardCell(card, player);
     grid.setCell(row, col, cardCell);
@@ -156,23 +157,28 @@ public class GameModel implements IGameModel {
   }
 
   // Helper method to check the conditions for playing a card.
-  private void playCardConditions(Player player, int row, int col) {
+  private void playCardConditions(Player player, int row, int col, Card cardToPlay) {
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
     }
 
-    if (isGameOver) {
-      throw new IllegalArgumentException("Game is over.");
-    }
-
-    if (row < 0 || row >= grid.getRows() || col < 0 || col >= grid.getColumns()) {
-      throw new IllegalArgumentException("Invalid row or column.");
+    if (!player.getHand().contains(cardToPlay)) {
+      throw new IllegalArgumentException("Card is not in player's hand.");
     }
 
     Cell cell = grid.getCell(row, col);
     if (!cell.isEmpty()) {
       throw new IllegalArgumentException("Cell is not empty.");
     }
+
+    if (row < 0 || row >= grid.getRows() || col < 0 || col >= grid.getColumns()) {
+      throw new IllegalArgumentException("Invalid row or column.");
+    }
+
+    if (isGameOver) {
+      throw new IllegalArgumentException("Game is over.");
+    }
+
   }
 
   @Override

@@ -20,6 +20,17 @@ public class ConfigurationReader {
 
   /**
    * Reads the grid configuration from the given file to use in the game.
+   * Configuration file format:
+   * - First line: two integers separated by a space representing the number of rows and columns
+   * - Next lines: each row of the grid represented by a string of characters (X or C)
+   *  - X represents a hole
+   *  - C represents a card cell
+   *  - Any other character is invalid
+   * - The number of rows and columns must match the dimensions of the grid.
+   * - The number of rows and columns must be positive integers.
+   * - The grid must contain at least one card cell.
+   * NOTE: Configuration files must be stored in the configFiles directory.
+   *
    * @param filename the name of the file to parse data from
    * @return the grid configuration created based on file contents
    * @throws IOException if an error occurs while reading the file
@@ -52,7 +63,18 @@ public class ConfigurationReader {
   }
 
   /**
-   * Reads the card configuration from the given file to use in the game.
+   * Reads the card configuration from the given file to use in the game. Also check that all cards
+   * are unique.
+   * Configuration file format:
+   * - Each line represents a card with the following format:
+   * - Card name followed by four integers separated by spaces representing the attack values
+   *  for each direction (N, S, E, W)
+   *  - The card name must be unique
+   *  - The attack values must be integers between 1 and 10 or 'A' for 10
+   *  - The card name and attack values must be separated by a space
+   *  - The card name must not contain spaces
+   *  - The card name must not be empty
+   *
    * @param filename the name of the file to parse data from
    * @return list of cards created based on file contents
    * @throws IOException if an error occurs while reading the file
