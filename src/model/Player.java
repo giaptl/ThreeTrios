@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Represents a player in the game.
  */
-public class Player implements {
+public class Player {
 
   List<Card> hand;
   String name;
