@@ -288,5 +288,3 @@ public class GameModel implements ThreeTriosModel {
     return -1;
   }
 }
-
-

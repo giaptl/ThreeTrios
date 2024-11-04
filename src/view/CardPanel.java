@@ -9,12 +9,14 @@ public class CardPanel extends JPanel {
   private final int leftValue;
   private final int rightValue;
   private final int bottomValue;
+  private final Color backgroundColor;
 
-  public CardPanel(int topValue, int leftValue, int rightValue, int bottomValue) {
+  public CardPanel(int topValue, int leftValue, int rightValue, int bottomValue, Color backgroundColor) {
     this.topValue = topValue;
     this.leftValue = leftValue;
     this.rightValue = rightValue;
     this.bottomValue = bottomValue;
+    this.backgroundColor = backgroundColor;
 
     // Set preferred size for each card
     setPreferredSize(new Dimension(100, 150));
@@ -26,7 +28,7 @@ public class CardPanel extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
 
     // Draw card background
-    g2d.setColor(Color.WHITE);
+    g2d.setColor(backgroundColor);
     g2d.fillRect(0, 0, getWidth(), getHeight());
 
     // Draw border around the card

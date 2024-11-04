@@ -52,27 +52,27 @@ public class GameView extends JFrame implements IGameView {
   /**
    * Creates a panel to display a player's hand.
    */
-  private JPanel createHandPanel(Player player) {
-    JPanel handPanel = new JPanel();
-    handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
-    handPanel.setBackground(player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN);
-
-    List<Card> hand = model.getPlayerHand(player);
-    for (int i = 0; i < hand.size(); i++) {
-      JLabel cardLabel = new JLabel(hand.get(i).toString(), SwingConstants.CENTER);
-      cardLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-      int index = i;
-      cardLabel.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          handleCardClick(player, index);
-        }
-      });
-      handPanel.add(cardLabel);
-    }
-
-    return handPanel;
-  }
+//  private JPanel createHandPanel(Player player) {
+//    JPanel handPanel = new JPanel();
+//    handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
+//    handPanel.setBackground(player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN);
+//
+//    List<Card> hand = model.getPlayerHand(player);
+//    for (int i = 0; i < hand.size(); i++) {
+//      JLabel cardLabel = new JLabel(hand.get(i).toString(), SwingConstants.CENTER);
+//      cardLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//      int index = i;
+//      cardLabel.addMouseListener(new MouseAdapter() {
+//        @Override
+//        public void mouseClicked(MouseEvent e) {
+//          handleCardClick(player, index);
+//        }
+//      });
+//      handPanel.add(cardLabel);
+//    }
+//
+//    return handPanel;
+//  }
 
   /**
    * Creates a panel to display the game grid.
@@ -147,7 +147,7 @@ public class GameView extends JFrame implements IGameView {
   private JPanel createHandPanel(Player player) {
     JPanel handPanel = new JPanel();
     handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
-    handPanel.setBackground(player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN);
+    Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
 
     List<Card> hand = model.getPlayerHand(player);
     for (int i = 0; i < hand.size(); i++) {
@@ -157,7 +157,8 @@ public class GameView extends JFrame implements IGameView {
       CardPanel cardPanel = new CardPanel(card.getAttackValue(Direction.NORTH),
               card.getAttackValue(Direction.SOUTH),
               card.getAttackValue(Direction.EAST),
-              card.getAttackValue(Direction.WEST));
+              card.getAttackValue(Direction.WEST),
+              backgroundColor);
 
       // Add mouse listener to handle clicks on cards
       int index = i;
