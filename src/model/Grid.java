@@ -81,4 +81,19 @@ public class Grid {
     }
     return count;
   }
+
+  public Grid copyOfGrid() {
+    Grid newGrid = new Grid(getRows(), getColumns());
+    for (int row = 0; row < getRows(); row++) {
+      for (int col = 0; col < getColumns(); col++) {
+        if (cells[row][col].isHole()) {
+          newGrid.setCell(row, col, new Hole());
+        } else {
+          CardCell cell = (CardCell) cells[row][col];
+          newGrid.setCell(row, col, new CardCell(cell.getCard(), cell.getOwner()));
+        }
+      }
+    }
+    return newGrid;
+  }
 }

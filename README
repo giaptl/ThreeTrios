@@ -62,3 +62,6 @@ that modify currentPlayer ensure it is set to either pRed or pBlue. For example,
 switches the current player after a card is played to either Red or Blue, which proves that the
 methods of this class also maintain the invariant.
 
+----------------------------------------------------------------------------------------------------
+Changes for part 2:
+We can

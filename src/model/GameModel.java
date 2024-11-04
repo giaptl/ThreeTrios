@@ -79,7 +79,7 @@ public class GameModel implements ThreeTriosModel {
 
   @Override
   public Grid getGrid() {
-    return grid;
+    return grid.copyOfGrid();
   }
 
   @Override
