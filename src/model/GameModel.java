@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Represents the initial game model created for ThreeTrios.
  */
-public class GameModel implements IGameModel {
+public class GameModel implements ThreeTriosModel {
 
   private Grid grid;
   private Player currentPlayer;

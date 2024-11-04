@@ -91,9 +91,8 @@ public class GameModelInterfaceTest {
     List<Card> smallDeck = new ArrayList<>(deck.subList(0, 3));
 
     // Verify that starting the game with insufficient cards throws an IllegalArgumentException
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-      gameModel.startGameWithConfig(grid, smallDeck, false);
-    });
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+            gameModel.startGameWithConfig(grid, smallDeck, false));
 
     // Check that the exception message is as expected
     assertEquals("Not enough cards to start game.", exception.getMessage());

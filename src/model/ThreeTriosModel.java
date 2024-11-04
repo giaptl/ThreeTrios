@@ -9,7 +9,7 @@ import java.util.List;
  * Game Objective: Players take turns placing cards on the grid and battling adjacent cards.
  * The goal is to have the most cards on the grid and in hand at the end of the game.
  */
-public interface IGameModel {
+public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
 
   /**
    * Starts the game using the given grid and list of cards. (We are assuming that we will ALWAYS
