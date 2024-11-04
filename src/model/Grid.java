@@ -83,14 +83,15 @@ public class Grid {
   }
 
   public Grid copyOfGrid() {
-    Grid newGrid = new Grid(getRows(), getColumns());
-    for (int row = 0; row < getRows(); row++) {
-      for (int col = 0; col < getColumns(); col++) {
-        if (cells[row][col].isHole()) {
+    Grid newGrid = new Grid(this.getRows(), this.getColumns());
+    for (int row = 0; row < this.getRows(); row++) {
+      for (int col = 0; col < this.getColumns(); col++) {
+        Cell originalCell = cells[row][col];
+        if (originalCell.isHole()) {
           newGrid.setCell(row, col, new Hole());
-        } else {
-          CardCell cell = (CardCell) cells[row][col];
-          newGrid.setCell(row, col, new CardCell(cell.getCard(), cell.getOwner()));
+        } else if (originalCell instanceof CardCell) {
+          CardCell originalCardCell = (CardCell) originalCell;
+          newGrid.setCell(row, col, new CardCell(originalCardCell.getCard(), originalCardCell.getOwner()));
         }
       }
     }

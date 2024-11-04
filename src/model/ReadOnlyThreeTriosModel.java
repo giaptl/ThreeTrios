@@ -27,6 +27,20 @@ public interface ReadOnlyThreeTriosModel {
   List<Card> getPlayerHand(Player player);
 
   /**
+   * Gets the red player.
+   *
+   * @return the red player
+   */
+  Player getRedPlayer();
+
+  /**
+   * Gets the blue player
+   *
+   * @return the blue player
+   */
+  Player getBluePlayer();
+
+  /**
    * Checks if the game is over. Game is over when all empty card cells are filled.
    *
    * @return true if the game is over, false otherwise
@@ -46,6 +60,7 @@ public interface ReadOnlyThreeTriosModel {
   /**
    * Gets the score of the specified player. The score of a player is the number of cards they have
    * on the grid plus the number of cards they have left in their hand at any given time.
+   *
    * @param player the player whose score is to be retrieved (red or blue)
    * @return the score of the player
    */

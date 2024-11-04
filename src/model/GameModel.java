@@ -26,16 +26,12 @@ public class GameModel implements ThreeTriosModel {
     this.isGameOver = false;
   }
 
-  /**
-   * Getter method to return the red player.
-   */
+  @Override
   public Player getRedPlayer() {
     return pRed;
   }
 
-  /**
-   * Getter method ot return the blue player.
-   */
+  @Override
   public Player getBluePlayer() {
     return pBlue;
   }

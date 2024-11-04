@@ -1,11 +1,15 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import javax.swing.*;
+
 import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
 import model.Player;
+import view.GameView;
 import view.TextView;
 
 /**
@@ -29,32 +33,17 @@ public class Runner {
       List<Card> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
-      // Create a new GameModel instance and start game
+      // Create a new GameModel instance and start the game
       GameModel gameModel = new GameModel();
       gameModel.startGameWithConfig(grid, cards, true);
       System.out.println("Game started successfully.");
 
-      // Create a new TextView instance (Testing)
-      TextView textView = new TextView();
-      textView.renderGrid(grid);
-      Player currentPlayer = gameModel.getCurrentPlayer();
-      textView.renderPlayerHand(currentPlayer, currentPlayer.getHand());
-
-      // Simulate a move (Testing)
-      int cardIndex = 0; // Select the first card in the hand
-      int row = 0; // Select the row to place the card
-      int col = 0; // Select the column to place the card
-
-      // Play the card
-      Card card = currentPlayer.getHand().get(cardIndex);
-      gameModel.playCard(currentPlayer, card, row, col);
-
-      // Start the battle phase
-      gameModel.startBattlePhase(row, col);
-
-      // Render the grid and the current player's hand again
-      textView.renderGrid(grid);
-      textView.renderPlayerHand(currentPlayer, currentPlayer.getHand());
+      // Launch the GUI on the Swing event dispatch thread
+      SwingUtilities.invokeLater(() -> {
+        GameView gameView = new GameView(gameModel);
+        gameView.setVisible(true);
+      });
+      System.out.print("GUI launched successfully.");
 
     } catch (IOException e) {
       System.err.println("Error reading configuration files: " + e.getMessage());
