@@ -13,7 +13,7 @@ public class GameModel implements ThreeTriosModel {
 
   private Grid grid;
   private Player currentPlayer;
-  private Map<Player, List<Card>> playerHands;
+  private final Map<Player, List<Card>> playerHands;
   private Player pRed;
   private Player pBlue;
   private boolean isGameOver;
@@ -223,6 +223,73 @@ public class GameModel implements ThreeTriosModel {
         }
       }
     }
+  }
+
+
+  @Override
+  public int getNumCardsAbleToFlip(Card card, int row, int col) {
+  // Save the current state of the cell
+    Cell originalCell = grid.getCell(row, col);
+
+    // Temporarily place the card on the grid
+    CardCell tempCardCell = new CardCell(card, currentPlayer);
+    grid.setCell(row, col, tempCardCell);
+
+    // Simulate the battle phase and count the number of cards flipped
+    int cardsFlipped = 0;
+    for (Direction direction : Direction.values()) {
+      int newRow = row + direction.getRowOffset();
+      int newCol = col + direction.getColOffset();
+      cardsFlipped += simulateCardAttack(direction, newRow, newCol, currentPlayer, card);
+    }
+
+    // Revert the grid to its original state
+    grid.setCell(row, col, originalCell);
+
+    return cardsFlipped;
+  }
+
+  // Helper method to simulate a card attack and return the number of cards flipped
+  private int simulateCardAttack(Direction direction, int newRow, int newCol, Player owner, Card card) {
+    int cardsFlipped = 0;
+
+    if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
+      Cell adjacentCell = grid.getCell(newRow, newCol);
+
+      if (adjacentCell instanceof CardCell) {
+        CardCell adjacentCardCell = (CardCell) adjacentCell;
+        Card adjacentCard = adjacentCardCell.getCard();
+        Player adjacentOwner = adjacentCardCell.getOwner();
+
+        if (adjacentCard != null && !owner.equals(adjacentOwner)) {
+          int attackValue = card.getAttackValue(direction);
+          int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+
+          if (attackValue > defenseValue) {
+            cardsFlipped++;
+          }
+        }
+      }
+    }
+    return cardsFlipped;
+  }
+
+
+  @Override
+  public int getPlayerScore(Player player) {
+    int redCardCount = pRed.getHand().size();
+    int blueCardCount = pBlue.getHand().size();
+
+    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
+    redCardCount = counts[0];
+    blueCardCount = counts[1];
+
+    if (player == pRed) {
+      return redCardCount;
+    } else if (player == pBlue) {
+      return blueCardCount;
+    }
+    return -1;
   }
 }
 

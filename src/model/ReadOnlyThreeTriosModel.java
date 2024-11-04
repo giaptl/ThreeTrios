@@ -43,4 +43,12 @@ public interface ReadOnlyThreeTriosModel {
    */
   Player getWinner();
 
+  /**
+   * Gets the score of the specified player. The score of a player is the number of cards they have
+   * on the grid plus the number of cards they have left in their hand at any given time.
+   * @param player the player whose score is to be retrieved (red or blue)
+   * @return the score of the player
+   */
+  int getPlayerScore(Player player);
+
 }

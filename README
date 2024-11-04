@@ -39,7 +39,7 @@ KEY COMPONENTS:
 ConfigurationReader: Reads and parses grid and card configuration files.
 readGridConfig: Initializes a grid with holes and card cells.
 readCardData: Initializes a list of cards with unique names and predefined attack values.
-GameModel: Manages the game state, including player hands, grid state, and game logic.
+ThreeTriosModel: Manages the game state, including player hands, grid state, and game logic.
 Runner: Entry point for the application, demonstrating how to use the ConfigurationReader.
 
 KEY SUBCOMPONENTS:
@@ -64,4 +64,16 @@ methods of this class also maintain the invariant.
 
 ----------------------------------------------------------------------------------------------------
 Changes for part 2:
-We can
+
+Adding missing functionality to the ThreeTriosModel class: We added a method copyOfGrid() to the
+Grid class so that a copy of the grid can be retrieved from the model by calling this method on
+the grid object. This functionality was originally missing because we previously did not account
+for making sure that getGrid() in the model returned an immutable copy of the grid. We also added a
+method called getNumCardsAbleToFlip() which returns the number of cards that can be flipped given a
+card and a position on the grid. We were originally missing this functionality because we did not
+account for the AI player when we were setting up our model. We also updated our ThreeTriosModel
+interface to include this new method. We also added a method called getPlayerScore() that takes in
+a player and returns that player's score. We originally had a method called getWinner() which was
+basically the same code as getPlayerScore() but returned the player object instead of the score. So,
+to be more specific according to the requirements of the functionality, we added the method which
+utilizes the same helper method as getWinner().
