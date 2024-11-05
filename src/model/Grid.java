@@ -1,8 +1,5 @@
 package model;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 /**
  * Represents the grid of the game.
  * Grid Structure:
@@ -70,6 +67,17 @@ public class Grid {
     cells[row][col] = cellToSet;
   }
 
+  public void setGrid(Grid newGrid) {
+    if (newGrid.getRows() != getRows() || newGrid.getColumns() != getColumns()) {
+      throw new IllegalArgumentException("New grid dimensions must match current grid dimensions");
+    }
+    for (int row = 0; row < getRows(); row++) {
+      for (int col = 0; col < getColumns(); col++) {
+        this.cells[row][col] = newGrid.getCell(row, col);
+      }
+    }
+  }
+
   /**
    * Returns the number of cells that are not holes.
    * @return the number of cells that are not holes
@@ -119,4 +127,6 @@ public class Grid {
     }
     return sb.toString();
   }
+
+
 }

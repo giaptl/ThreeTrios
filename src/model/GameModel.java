@@ -3,8 +3,12 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * Represents the initial game model created for ThreeTrios.
@@ -143,9 +147,11 @@ public class GameModel implements ThreeTriosModel {
     CardCell cardCell = new CardCell(card, player);
     grid.setCell(row, col, cardCell);
     player.getHand().remove(card);
+    startBattlePhase(row, col);
 
     // Switch the current player
     currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
+
 
     // Check if the game is over
     isGameOver = isGameOver();
@@ -177,9 +183,9 @@ public class GameModel implements ThreeTriosModel {
 
   }
 
+  // make sure the combo move is working here too
   @Override
   public void startBattlePhase(int row, int col) {
-
     Cell cell = grid.getCell(row, col);
     if (cell.isHole()) {
       throw new IllegalArgumentException("No card at the specified cell or cell is a hole.");
@@ -195,14 +201,95 @@ public class GameModel implements ThreeTriosModel {
       cardAttackDirections(direction, newRow, newCol, owner, card);
     }
   }
+// changed to int from void
+//private int cardAttackDirections(Direction direction, int newRow, int newCol, Player owner, Card card) {
+//  int cardsFlipped = 0;
+//  if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
+//    Cell adjacentCell = grid.getCell(newRow, newCol);
+//
+//    if (!(adjacentCell.isHole())) {
+//      CardCell adjacentCardCell = (CardCell) adjacentCell;
+//      Card adjacentCard = adjacentCardCell.getCard();
+//      Player adjacentOwner = adjacentCardCell.getOwner();
+//
+//      if (adjacentCard != null && !owner.equals(adjacentOwner)) {
+//        int attackValue = parseAttackValue(card.getAttackValue(direction));
+//        int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
+//
+//        if (attackValue > defenseValue) {
+//          adjacentCardCell.setOwner(owner);
+//          cardsFlipped++;
+//          // Recursively call simulateEntireBattlePhase for the newly flipped card
+//          cardsFlipped += simulateEntireBattlePhase(owner, newRow, newCol);
+//        }
+//      }
+//    }
+//  }
+//  return cardsFlipped;
+//}
 
-  private void cardAttackDirections(Direction direction, int newRow,
-                                    int newCol, Player owner, Card card) {
+  private int parseAttackValue(String value) {
+    return "A".equals(value) ? 10 : Integer.parseInt(value);
+  }
 
+
+  protected int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
+    // Save the current state of the grid
+    Grid originalGrid = grid.copyOfGrid();
+
+    // Temporarily place the card on the grid
+    CardCell tempCardCell = new CardCell(card, player);
+    grid.setCell(row, col, tempCardCell);
+
+    // Simulate the battle phase and count the number of cards flipped
+    int cardsFlipped = simulateEntireBattlePhase(player, row, col);
+
+    // Revert the grid to its original state
+    grid.setGrid(originalGrid);
+    return cardsFlipped;
+  }
+
+  // this works for now want to try easier ways and stuff
+  private int simulateEntireBattlePhase(Player player, int startRow, int startCol) {
+    int cardsFlipped = 0;
+    Queue<int[]> toProcess = new LinkedList<>();
+    Set<String> visited = new HashSet<>();
+    toProcess.offer(new int[]{startRow, startCol});
+    visited.add(startRow + "," + startCol);
+
+    while (!toProcess.isEmpty()) {
+      int[] current = toProcess.poll();
+      int row = current[0];
+      int col = current[1];
+      CardCell currentCell = (CardCell) grid.getCell(row, col);
+      if (currentCell == null || currentCell.getCard() == null) {
+        continue;
+      }
+      Card currentCard = currentCell.getCard();
+
+      for (Direction direction : Direction.values()) {
+        int newRow = row + direction.getRowOffset();
+        int newCol = col + direction.getColOffset();
+        if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
+          if (!visited.contains(newRow + "," + newCol)) {
+            visited.add(newRow + "," + newCol);
+            int flipped = cardAttackDirections(direction, newRow, newCol, player, currentCard);
+            cardsFlipped += flipped;
+            if (flipped > 0) {
+              toProcess.offer(new int[]{newRow, newCol});
+            }
+          }
+        }
+      }
+    }
+    return cardsFlipped;
+  }
+
+  private int cardAttackDirections(Direction direction, int newRow, int newCol, Player owner, Card card) {
+    int cardsFlipped = 0;
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
 
-      // Ensure the adjacent cell is a CardCell and not null
       if (!(adjacentCell.isHole())) {
         CardCell adjacentCardCell = (CardCell) adjacentCell;
         Card adjacentCard = adjacentCardCell.getCard();
@@ -214,54 +301,6 @@ public class GameModel implements ThreeTriosModel {
 
           if (attackValue > defenseValue) {
             adjacentCardCell.setOwner(owner);
-          }
-        }
-      }
-    }
-  }
-
-  private int parseAttackValue(String value) {
-    return "A".equals(value) ? 10 : Integer.parseInt(value);
-  }
-
-  protected int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
-    // Save the current state of the cell
-    Cell originalCell = grid.getCell(row, col);
-
-    // Temporarily place the card on the grid
-    CardCell tempCardCell = new CardCell(card, player);
-    grid.setCell(row, col, tempCardCell);
-
-    // Simulate the battle phase and count the number of cards flipped
-    int cardsFlipped = 0;
-    for (Direction direction : Direction.values()) {
-      int newRow = row + direction.getRowOffset();
-      int newCol = col + direction.getColOffset();
-      cardsFlipped += simulateCardAttack(direction, newRow, newCol, player, card);
-    }
-
-    // Revert the cell to its original state
-    grid.setCell(row, col, originalCell);
-    return cardsFlipped;
-  }
-
-  // Helper method to simulate a card attack and return the number of cards flipped
-  private int simulateCardAttack(Direction direction, int newRow, int newCol, Player owner, Card card) {
-    int cardsFlipped = 0;
-
-    if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
-      Cell adjacentCell = grid.getCell(newRow, newCol);
-
-      if (!(adjacentCell.isHole())) {
-        CardCell adjacentCardCell = (CardCell) adjacentCell;
-        Card adjacentCard = adjacentCardCell.getCard();
-        Player adjacentOwner = adjacentCardCell.getOwner();
-
-        if (adjacentCard != null && !owner.equals(adjacentOwner)) {
-          int attackValue = parseAttackValue(card.getAttackValue(direction));
-          int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
-
-          if (attackValue > defenseValue) {
             cardsFlipped++;
           }
         }
@@ -269,7 +308,6 @@ public class GameModel implements ThreeTriosModel {
     }
     return cardsFlipped;
   }
-
 
   @Override
   public int getPlayerScore(Player player) {

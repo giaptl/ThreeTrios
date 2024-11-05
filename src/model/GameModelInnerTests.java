@@ -113,17 +113,6 @@ public class GameModelInnerTests {
   }
 
   @Test
-  public void testGetNumCardsAbleToFlipMultipleAdjacentCards() {
-    Card bluesCard = new Card("Card1", 1, 2, 3, 4);
-    Card bluesCard2 = new Card("Card2", 5, 6, 7, 8);
-    grid.setCell(0, 0, new CardCell(bluesCard, gameModel.getBluePlayer()));
-    grid.setCell(0, 1, new CardCell(bluesCard2, gameModel.getBluePlayer()));
-    Card redsCard2 = new Card("Card1", 1, 2, 3, 8);
-    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), redsCard2, 0, 2);
-    assertEquals(2, numFlips);
-  }
-
-  @Test
   public void testGetNumCardsAbleToFlipNoFlips() {
     Card redsCard = new Card("Card1", 1, 2, 3, 4);
     Card bluesCard = new Card("Card2", 1, 1, 1, 1);
@@ -134,6 +123,70 @@ public class GameModelInnerTests {
     int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(),
             new Card("Card1", 1, 2, 3, 4), 2, 2);
     assertEquals(0, numFlips);
+  }
+
+  @Test
+  public void testGetNumCardsAbleToFlipAllAdjacentCards() {
+    Card centerCard = new Card("CenterCard", 9, 9, 9, 9);
+    Card topCard = new Card("TopCard", 1, 1, 1, 1);
+    Card rightCard = new Card("RightCard", 1, 1, 1, 1);
+    Card bottomCard = new Card("BottomCard", 1, 1, 1, 1);
+    Card leftCard = new Card("LeftCard", 1, 1, 1, 1);
+
+    grid.setCell(0, 1, new CardCell(topCard, gameModel.getBluePlayer()));
+    grid.setCell(1, 2, new CardCell(rightCard, gameModel.getBluePlayer()));
+    grid.setCell(2, 1, new CardCell(bottomCard, gameModel.getBluePlayer()));
+    grid.setCell(1, 0, new CardCell(leftCard, gameModel.getBluePlayer()));
+
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), centerCard, 1, 1);
+    assertEquals(4, numFlips);
+  }
+
+
+  // -------------------------------------------------------------------------------
+
+  @Test
+  public void testGetNumCardsAbleToFlipCornerCase() {
+    Card cornerCard = new Card("CornerCard", 9, 9, 9, 9);
+    Card adjacentCard1 = new Card("Adjacent1", 1, 1, 1, 1);
+    Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
+
+    grid.setCell(0, 1, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
+    grid.setCell(1, 0, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
+
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), cornerCard, 0, 0);
+    assertEquals(2, numFlips);
+  }
+
+  @Test
+  public void testGetNumCardsAbleToFlipConsecutiveCards() {
+    Card cornerCard = new Card("Card", 9, 9, 9, 9);
+    Card adjacentCard1 = new Card("Adjacent1", 2, 2, 2, 2);
+    Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
+
+//    grid.setCell(0, 0, new CardCell(cornerCard, gameModel.getRedPlayer()));
+    grid.setCell(0, 1, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
+    grid.setCell(0, 2, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
+
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), cornerCard, 0, 0);
+    assertEquals(2, numFlips);
+  }
+
+  // -------------------------------------------------------------------------------
+
+  @Test
+  public void testGetNumCardsAbleToFlipEdgeCase() {
+    Card edgeCard = new Card("EdgeCard", 9, 9, 9, 9);
+    Card adjacentCard1 = new Card("Adjacent1", 1, 1, 1, 1);
+    Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
+    Card adjacentCard3 = new Card("Adjacent3", 1, 1, 1, 1);
+
+    grid.setCell(0, 0, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
+    grid.setCell(0, 2, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
+    grid.setCell(1, 1, new CardCell(adjacentCard3, gameModel.getBluePlayer()));
+
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), edgeCard, 0, 1);
+    assertEquals(3, numFlips);
   }
 
 }
