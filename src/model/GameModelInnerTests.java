@@ -43,7 +43,7 @@ public class GameModelInnerTests {
       throw new RuntimeException("Error reading deck configuration.", e);
     }
 
-    gameModel.startGameWithConfig(grid, deck,false);
+    gameModel.startGameWithConfig(grid, deck, false);
   }
 
   // Tests that players are created properly
@@ -94,33 +94,45 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipNoAdjacentCards() {
-    grid.setCell(1, 1, new CardCell(new Card("Card1", 1, 2, 3, 4), gameModel.getRedPlayer()));
-    int numFlips = gameModel.getNumCardsAbleToFlip(new Card("Card1", 1, 2, 3, 4), 1, 1);
+    grid.setCell(1, 1, new CardCell(new Card("Card1", 1, 2, 3,
+            4), gameModel.getRedPlayer()));
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), new Card("Card1", 1, 2,
+            3, 4), 1, 1);
     assertEquals(0, numFlips);
   }
 
   @Test
   public void testGetNumCardsAbleToFlipOneAdjacentCard() {
-    grid.setCell(1, 1, new CardCell(new Card("Card1", 1, 2, 3, 4), gameModel.getRedPlayer()));
-    grid.setCell(1, 2, new CardCell(new Card("Card2", 5, 6, 7, 8), gameModel.getBluePlayer()));
-    int numFlips = gameModel.getNumCardsAbleToFlip(new Card("Card1", 1, 2, 3, 4), 1, 1);
+    Card redsCard = new Card("Card1", 1, 2, 3, 4);
+    Card bluesCard = new Card("Card2", 5, 6, 7, 8);
+    grid.setCell(0, 0, new CardCell(redsCard, gameModel.getRedPlayer()));
+    grid.setCell(0, 1, new CardCell(bluesCard, gameModel.getBluePlayer()));
+    Card redsCard2 = new Card("Card1", 1, 2, 3, 8);
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), redsCard2, 0, 2);
     assertEquals(1, numFlips);
   }
 
   @Test
   public void testGetNumCardsAbleToFlipMultipleAdjacentCards() {
-    grid.setCell(1, 1, new CardCell(new Card("Card1", 1, 2, 3, 4), gameModel.getRedPlayer()));
-    grid.setCell(1, 2, new CardCell(new Card("Card2", 5, 6, 7, 8), gameModel.getBluePlayer()));
-    grid.setCell(2, 1, new CardCell(new Card("Card2", 5, 6, 7, 8), gameModel.getBluePlayer()));
-    int numFlips = gameModel.getNumCardsAbleToFlip(new Card("Card1", 1, 2, 3, 4), 1, 1);
+    Card bluesCard = new Card("Card1", 1, 2, 3, 4);
+    Card bluesCard2 = new Card("Card2", 5, 6, 7, 8);
+    grid.setCell(0, 0, new CardCell(bluesCard, gameModel.getBluePlayer()));
+    grid.setCell(0, 1, new CardCell(bluesCard2, gameModel.getBluePlayer()));
+    Card redsCard2 = new Card("Card1", 1, 2, 3, 8);
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), redsCard2, 0, 2);
     assertEquals(2, numFlips);
   }
 
   @Test
   public void testGetNumCardsAbleToFlipNoFlips() {
-    grid.setCell(1, 1, new CardCell(new Card("Card1", 1, 2, 3, 4), gameModel.getRedPlayer()));
-    grid.setCell(1, 2, new CardCell(new Card("Card2", 1, 1, 1, 1), gameModel.getBluePlayer()));
-    int numFlips = gameModel.getNumCardsAbleToFlip(new Card("Card1", 1, 2, 3, 4), 1, 1);
+    Card redsCard = new Card("Card1", 1, 2, 3, 4);
+    Card bluesCard = new Card("Card2", 1, 1, 1, 1);
+
+    grid.setCell(1, 1, new CardCell(redsCard, gameModel.getRedPlayer()));
+    grid.setCell(1, 2, new CardCell(bluesCard, gameModel.getBluePlayer()));
+
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(),
+            new Card("Card1", 1, 2, 3, 4), 2, 2);
     assertEquals(0, numFlips);
   }
 

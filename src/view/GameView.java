@@ -10,9 +10,7 @@ import java.util.List;
 
 import javax.swing.*;
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 
 import model.Card;
@@ -24,8 +22,8 @@ import model.ReadOnlyThreeTriosModel;
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
   private final JPanel gridPanel;
-  private JPanel redHandPanel;
-  private JPanel blueHandPanel;
+  private final JPanel redHandPanel;
+  private final JPanel blueHandPanel;
   private Card selectedCard = null;
   private Player selectedPlayer = null;
   private JPanel previouslySelectedCardPanel = null;
@@ -50,31 +48,6 @@ public class GameView extends JFrame implements IGameView {
     pack(); // Adjusts window size based on component sizes
     setVisible(true);
   }
-
-  /**
-   * Creates a panel to display a player's hand.
-   */
-//  private JPanel createHandPanel(Player player) {
-//    JPanel handPanel = new JPanel();
-//    handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
-//    handPanel.setBackground(player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN);
-//
-//    List<Card> hand = model.getPlayerHand(player);
-//    for (int i = 0; i < hand.size(); i++) {
-//      JLabel cardLabel = new JLabel(hand.get(i).toString(), SwingConstants.CENTER);
-//      cardLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//      int index = i;
-//      cardLabel.addMouseListener(new MouseAdapter() {
-//        @Override
-//        public void mouseClicked(MouseEvent e) {
-//          handleCardClick(player, index);
-//        }
-//      });
-//      handPanel.add(cardLabel);
-//    }
-//
-//    return handPanel;
-//  }
 
   /**
    * Creates a panel to display the game grid.

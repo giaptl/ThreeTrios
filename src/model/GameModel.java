@@ -224,12 +224,12 @@ public class GameModel implements ThreeTriosModel {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
   }
 
-  protected int getNumCardsAbleToFlip(Card card, int row, int col) {
-  // Save the current state of the cell
+  protected int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
+    // Save the current state of the cell
     Cell originalCell = grid.getCell(row, col);
 
     // Temporarily place the card on the grid
-    CardCell tempCardCell = new CardCell(card, currentPlayer);
+    CardCell tempCardCell = new CardCell(card, player);
     grid.setCell(row, col, tempCardCell);
 
     // Simulate the battle phase and count the number of cards flipped
@@ -237,12 +237,11 @@ public class GameModel implements ThreeTriosModel {
     for (Direction direction : Direction.values()) {
       int newRow = row + direction.getRowOffset();
       int newCol = col + direction.getColOffset();
-      cardsFlipped += simulateCardAttack(direction, newRow, newCol, currentPlayer, card);
+      cardsFlipped += simulateCardAttack(direction, newRow, newCol, player, card);
     }
 
-    // Revert the grid to its original state
+    // Revert the cell to its original state
     grid.setCell(row, col, originalCell);
-
     return cardsFlipped;
   }
 
