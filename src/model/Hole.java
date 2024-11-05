@@ -1,15 +1,17 @@
 package model;
 
+import java.util.Objects;
+
 /**
  * Represents a hole on the grid. These are cells are not playable to.
  */
-public class Hole extends CardCell {
+public class Hole implements Cell {
 
   /**
-   * Creates a new hole.
-   */
+  * Creates a new hole.
+  */
   public Hole() {
-    super(null, null);
+    //Empty constructor
   }
 
   @Override
@@ -17,4 +19,29 @@ public class Hole extends CardCell {
     return true;
   }
 
+  @Override
+  public Card getCard() {
+    return null; // Holes do not have cards
+  }
+
+  @Override
+  public Player getOwner() {
+    return null;
+  }
+
+  @Override
+  public boolean isEmpty() {
+    // Always saying it is not possible to place a card on a hole.
+    return false;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    return obj instanceof Hole;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash("Hole");
+  }
 }

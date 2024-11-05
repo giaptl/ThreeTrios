@@ -87,7 +87,7 @@ public class GameModel implements ThreeTriosModel {
   public boolean isGameOver() {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
-        Cell cell = grid.getCell(row, col);
+        CardCell cell = (CardCell) grid.getCell(row, col);
         if (!cell.isHole() && cell.isEmpty()) {
           return false;
         }
@@ -122,7 +122,7 @@ public class GameModel implements ThreeTriosModel {
   private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
-        Cell cell = grid.getCell(row, col);
+        CardCell cell = (CardCell) grid.getCell(row, col);
         if (cell.isOccupied()) {
           Player owner = cell.getOwner();
           if (owner.equals(pRed)) {
@@ -162,7 +162,7 @@ public class GameModel implements ThreeTriosModel {
       throw new IllegalArgumentException("Card is not in player's hand.");
     }
 
-    Cell cell = grid.getCell(row, col);
+    CardCell cell = (CardCell) grid.getCell(row, col);
     if (!cell.isEmpty()) {
       throw new IllegalArgumentException("Cell is not empty.");
     }
@@ -181,7 +181,7 @@ public class GameModel implements ThreeTriosModel {
   public void startBattlePhase(int row, int col) {
 
     Cell cell = grid.getCell(row, col);
-    if (!(cell instanceof CardCell)) {
+    if (cell.isHole()) {
       throw new IllegalArgumentException("No card at the specified cell or cell is a hole.");
     }
     CardCell cardCell = (CardCell) cell;
@@ -196,7 +196,6 @@ public class GameModel implements ThreeTriosModel {
     }
   }
 
-  // Helper method which extracts the logic behind cards attacking and changing ownership.
   private void cardAttackDirections(Direction direction, int newRow,
                                     int newCol, Player owner, Card card) {
 
@@ -204,14 +203,14 @@ public class GameModel implements ThreeTriosModel {
       Cell adjacentCell = grid.getCell(newRow, newCol);
 
       // Ensure the adjacent cell is a CardCell and not null
-      if (adjacentCell instanceof CardCell) {
+      if (!(adjacentCell.isHole())) {
         CardCell adjacentCardCell = (CardCell) adjacentCell;
         Card adjacentCard = adjacentCardCell.getCard();
         Player adjacentOwner = adjacentCardCell.getOwner();
 
         if (adjacentCard != null && !owner.equals(adjacentOwner)) {
-          int attackValue = card.getAttackValue(direction);
-          int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+          int attackValue = parseAttackValue(card.getAttackValue(direction));
+          int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
 
           if (attackValue > defenseValue) {
             adjacentCardCell.setOwner(owner);
@@ -221,9 +220,11 @@ public class GameModel implements ThreeTriosModel {
     }
   }
 
+  private int parseAttackValue(String value) {
+    return "A".equals(value) ? 10 : Integer.parseInt(value);
+  }
 
-  @Override
-  public int getNumCardsAbleToFlip(Card card, int row, int col) {
+  protected int getNumCardsAbleToFlip(Card card, int row, int col) {
   // Save the current state of the cell
     Cell originalCell = grid.getCell(row, col);
 
@@ -252,14 +253,14 @@ public class GameModel implements ThreeTriosModel {
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
 
-      if (adjacentCell instanceof CardCell) {
+      if (!(adjacentCell.isHole())) {
         CardCell adjacentCardCell = (CardCell) adjacentCell;
         Card adjacentCard = adjacentCardCell.getCard();
         Player adjacentOwner = adjacentCardCell.getOwner();
 
         if (adjacentCard != null && !owner.equals(adjacentOwner)) {
-          int attackValue = card.getAttackValue(direction);
-          int defenseValue = adjacentCard.getAttackValue(direction.getOpposite());
+          int attackValue = parseAttackValue(card.getAttackValue(direction));
+          int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
 
           if (attackValue > defenseValue) {
             cardsFlipped++;

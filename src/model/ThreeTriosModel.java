@@ -64,13 +64,4 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    */
   void startBattlePhase(int row, int col);
 
-  /**
-   * Gets the number of cards that can be flipped by the given card at the specified cell position.
-   * To be used by the AI player...
-   * @param card the card "to be placed"
-   * @param row the row position on the grid
-   * @param col the column position on the grid
-   * @return the number of cards that can be flipped by the given card
-   */
-  int getNumCardsAbleToFlip(Card card, int row, int col);
 }

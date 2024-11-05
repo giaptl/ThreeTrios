@@ -1,21 +1,21 @@
 package view;
 
 import java.awt.*;
-
 import javax.swing.JPanel;
 
 public class CardPanel extends JPanel {
-  private final int topValue;
-  private final int leftValue;
-  private final int rightValue;
-  private final int bottomValue;
+  private final String northValue;
+  private final String southValue;
+  private final String eastValue;
+  private final String westValue;
   private final Color backgroundColor;
 
-  public CardPanel(int topValue, int leftValue, int rightValue, int bottomValue, Color backgroundColor) {
-    this.topValue = topValue;
-    this.leftValue = leftValue;
-    this.rightValue = rightValue;
-    this.bottomValue = bottomValue;
+  public CardPanel(String northValue, String southValue, String eastValue,
+                   String westValue, Color backgroundColor) {
+    this.northValue = northValue;
+    this.southValue = southValue;
+    this.eastValue = eastValue;
+    this.westValue = westValue;
     this.backgroundColor = backgroundColor;
 
     // Set preferred size for each card
@@ -39,24 +39,21 @@ public class CardPanel extends JPanel {
     g2d.setFont(new Font("Arial", Font.BOLD, 20));
     FontMetrics fm = g.getFontMetrics();
 
-    // Draw top value
-    String topText = String.valueOf(topValue);
-    int topX = (getWidth() - fm.stringWidth(topText)) / 2;
-    g2d.drawString(topText, topX, fm.getHeight());
+    // Draw north value
+    int northX = (getWidth() - fm.stringWidth(northValue)) / 2;
+    g2d.drawString(northValue, northX, fm.getHeight());
 
-    // Draw left value
-    String leftText = String.valueOf(leftValue);
-    int leftY = (getHeight() + fm.getAscent()) / 2;
-    g2d.drawString(leftText, fm.getAscent(), leftY);
+    // Draw south value
+    int southX = (getWidth() - fm.stringWidth(southValue)) / 2;
+    g2d.drawString(southValue, southX, getHeight() - fm.getDescent());
 
-    // Draw right value
-    String rightText = String.valueOf(rightValue);
-    int rightX = getWidth() - fm.stringWidth(rightText) - fm.getAscent();
-    g2d.drawString(rightText, rightX, leftY);
+    // Draw east value
+    int eastX = getWidth() - fm.stringWidth(eastValue) - fm.getAscent();
+    int eastY = (getHeight() + fm.getAscent()) / 2;
+    g2d.drawString(eastValue, eastX, eastY);
 
-    // Draw bottom value
-    String bottomText = String.valueOf(bottomValue);
-    int bottomX = (getWidth() - fm.stringWidth(bottomText)) / 2;
-    g2d.drawString(bottomText, bottomX, getHeight() - fm.getDescent());
+    // Draw west value
+    int westY = (getHeight() + fm.getAscent()) / 2;
+    g2d.drawString(westValue, fm.getAscent(), westY);
   }
 }

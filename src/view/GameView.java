@@ -28,6 +28,8 @@ public class GameView extends JFrame implements IGameView {
   private JPanel blueHandPanel;
   private Card selectedCard = null;
   private Player selectedPlayer = null;
+  private JPanel previouslySelectedCardPanel = null;
+
 
   public GameView(ReadOnlyThreeTriosModel model) {
     this.model = model;
@@ -87,7 +89,8 @@ public class GameView extends JFrame implements IGameView {
       for (int col = 0; col < cols; col++) {
         JPanel cellPanel = new JPanel();
         cellPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        cellPanel.setBackground(model.getGrid().getCell(row, col).isHole() ? Color.YELLOW : Color.GRAY);
+        cellPanel.setBackground(model.getGrid()
+                .getCell(row, col).isHole() ? Color.YELLOW : Color.GRAY);
 
         int finalRow = row;
         int finalCol = col;
@@ -110,16 +113,40 @@ public class GameView extends JFrame implements IGameView {
    * Handles clicking on a card in a player's hand.
    */
   private void handleCardClick(Player player, int cardIndex) {
-    if (selectedCard != null && selectedPlayer == player && model.getPlayerHand(player).get(cardIndex).equals(selectedCard)) {
+    JPanel currentCardPanel;
+    if (player.equals(model.getRedPlayer())) {
+      currentCardPanel = (JPanel) redHandPanel.getComponent(cardIndex);
+    } else {
+      currentCardPanel = (JPanel) blueHandPanel.getComponent(cardIndex);
+    }
+
+    if (selectedCard != null && selectedPlayer == player &&
+            model.getPlayerHand(player).get(cardIndex).equals(selectedCard)) {
       // Deselect card if clicked again
       selectedCard = null;
       selectedPlayer = null;
       System.out.println("Deselected card from " + player.getName());
+
+      // Reset border of the previously selected card panel
+      if (previouslySelectedCardPanel != null) {
+        previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        previouslySelectedCardPanel = null;
+      }
     } else {
       // Select new card
       selectedCard = model.getPlayerHand(player).get(cardIndex);
       selectedPlayer = player;
-      System.out.println("Selected card " + selectedCard + " from " + player.getName());
+      System.out.println("Selected card " + selectedCard.getName()
+              + " from " + player.getName() + " at index: " + cardIndex);
+
+      // Reset border of the previously selected card panel
+      if (previouslySelectedCardPanel != null) {
+        previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+      }
+
+      // Highlight the current card panel by changing its border
+      currentCardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+      previouslySelectedCardPanel = currentCardPanel;
     }
 
     // Optionally update UI to highlight selected card
@@ -133,8 +160,8 @@ public class GameView extends JFrame implements IGameView {
 
     if (selectedCard != null && selectedPlayer != null) {
       // Logic to place card on grid can go here in future controller implementation
-      System.out.println("Attempting to place " + selectedCard + " from " + selectedPlayer.getName() +
-              " at (" + row + ", " + col + ")");
+      System.out.println("Attempting to place " + selectedCard.getName() + " from "
+              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
 
       // Deselect after placing
       selectedCard = null;
@@ -154,7 +181,8 @@ public class GameView extends JFrame implements IGameView {
       Card card = hand.get(i);
 
       // Create a CardPanel for each card with its values
-      CardPanel cardPanel = new CardPanel(card.getAttackValue(Direction.NORTH),
+      CardPanel cardPanel = new CardPanel(
+              card.getAttackValue(Direction.NORTH),
               card.getAttackValue(Direction.SOUTH),
               card.getAttackValue(Direction.EAST),
               card.getAttackValue(Direction.WEST),

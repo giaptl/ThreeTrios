@@ -15,20 +15,6 @@ public interface Cell {
   boolean isHole();
 
   /**
-   * Checks if the cell is empty.
-   *
-   * @return true if the cell is empty, false otherwise.
-   */
-  boolean isEmpty();
-
-  /**
-   * Checks if the cell is occupied.
-   *
-   * @return true if the cell is occupied, false otherwise.
-   */
-  boolean isOccupied();
-
-  /**
    * Retrieves the card associated with the cell.
    *
    * @return the card in the cell, or null if the cell is empty.
@@ -41,4 +27,11 @@ public interface Cell {
    * @return the player who owns the cell, or null if the cell is not owned by any player.
    */
   Player getOwner();
+
+  /**
+   * Checks if the cell is empty.
+   *
+   * @return true if the cell is empty, false otherwise.
+   */
+  boolean isEmpty();
 }

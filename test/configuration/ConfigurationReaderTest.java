@@ -91,18 +91,17 @@ public class ConfigurationReaderTest {
     // Check the first card was loaded properly
     Card firstCard = deck.get(0);
     assertEquals("CorruptKing", firstCard.getName());
-    assertEquals(7, firstCard.getAttackValue(Direction.NORTH));
-    assertEquals(3, firstCard.getAttackValue(Direction.SOUTH));
-    assertEquals(9, firstCard.getAttackValue(Direction.EAST));
-    assertEquals(10, firstCard.getAttackValue(Direction.WEST));
+    assertEquals("7", firstCard.getAttackValue(Direction.NORTH));
+    assertEquals("3", firstCard.getAttackValue(Direction.SOUTH));
+    assertEquals("9", firstCard.getAttackValue(Direction.EAST));
+    assertEquals("A", firstCard.getAttackValue(Direction.WEST));
 
     // Check the last card was loaded properly
     Card lastCard = deck.get(deck.size() - 1);
     assertEquals("RubyTiger", lastCard.getName());
-    assertEquals(8, lastCard.getAttackValue(Direction.NORTH));
-    assertEquals(5, lastCard.getAttackValue(Direction.SOUTH));
-    assertEquals(10, lastCard.getAttackValue(Direction.EAST));
-    assertEquals(6, lastCard.getAttackValue(Direction.WEST));
-
+    assertEquals("8", lastCard.getAttackValue(Direction.NORTH));
+    assertEquals("5", lastCard.getAttackValue(Direction.SOUTH));
+    assertEquals("A", lastCard.getAttackValue(Direction.EAST));
+    assertEquals("6", lastCard.getAttackValue(Direction.WEST));
   }
 }

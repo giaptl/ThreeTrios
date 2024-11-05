@@ -3,6 +3,7 @@ package model;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -71,15 +72,55 @@ public class CardTest {
   @Test
   public void testGetAttackValuesWorks() {
     Card card = new Card("MysticEagle", 5, 10, 4, 2);
-    assertEquals(5, card.getAttackValue(Direction.NORTH));
-    assertEquals(10, card.getAttackValue(Direction.SOUTH));
-    assertEquals(4, card.getAttackValue(Direction.EAST));
-    assertEquals(2, card.getAttackValue(Direction.WEST));
+    assertEquals("5", card.getAttackValue(Direction.NORTH));
+    assertEquals("A", card.getAttackValue(Direction.SOUTH));
+    assertEquals("4", card.getAttackValue(Direction.EAST));
+    assertEquals("2", card.getAttackValue(Direction.WEST));
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetAttackValueInvalidDirection() {
     Card card = new Card("MysticEagle", 5, 10, 4, 2);
     card.getAttackValue(null);
+  }
+
+  @Test
+  public void testEqualsSameObject() {
+    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    assertEquals(card, card);
+  }
+
+  @Test
+  public void testEqualsEqualObjects() {
+    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    Card card2 = new Card("MysticEagle", 5, 10, 4, 2);
+    assertEquals(card1, card2);
+  }
+
+  @Test
+  public void testEqualsDifferentObjects() {
+    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    Card card2 = new Card("DragonWarrior", 5, 10, 4, 2);
+    assertNotEquals(card1, card2);
+  }
+
+  @Test
+  public void testEqualsNull() {
+    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    assertNotEquals(card, null);
+  }
+
+  @Test
+  public void testHashCodeEqualObjects() {
+    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    Card card2 = new Card("MysticEagle", 5, 10, 4, 2);
+    assertEquals(card1.hashCode(), card2.hashCode());
+  }
+
+  @Test
+  public void testHashCodeDifferentObjects() {
+    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    Card card2 = new Card("DragonWarrior", 5, 10, 4, 2);
+    assertNotEquals(card1.hashCode(), card2.hashCode());
   }
 }

@@ -2,6 +2,7 @@ package model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a card in the game.
@@ -66,10 +67,25 @@ public class Card {
    * @return integer for that value
    * @throws IllegalArgumentException if the direction is null
    */
-  public int getAttackValue(Direction direction) {
+  public String getAttackValue(Direction direction) {
     if (direction == null) {
       throw new IllegalArgumentException("Direction cannot be null.");
     }
-    return attackValues.get(direction);
+    int value = attackValues.get(direction);
+    return value == 10 ? "A" : String.valueOf(value);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Card card = (Card) obj;
+    return name.equals(card.name) && attackValues.equals(card.attackValues);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, attackValues.get(Direction.NORTH), attackValues.get(Direction.SOUTH),
+            attackValues.get(Direction.EAST), attackValues.get(Direction.WEST));
   }
 }

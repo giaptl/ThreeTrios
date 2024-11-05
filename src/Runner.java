@@ -8,9 +8,8 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
-import model.Player;
 import view.GameView;
-import view.TextView;
+
 
 /**
  * Main class to run the game from.

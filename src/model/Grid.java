@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  * Represents the grid of the game.
  * Grid Structure:
@@ -24,6 +27,7 @@ public class Grid {
       }
     }
   }
+
 
 
   /**
@@ -82,19 +86,37 @@ public class Grid {
     return count;
   }
 
-  public Grid copyOfGrid() {
+  protected Grid copyOfGrid() {
     Grid newGrid = new Grid(this.getRows(), this.getColumns());
     for (int row = 0; row < this.getRows(); row++) {
       for (int col = 0; col < this.getColumns(); col++) {
-        Cell originalCell = cells[row][col];
+        Cell originalCell = this.getCell(row, col);
         if (originalCell.isHole()) {
           newGrid.setCell(row, col, new Hole());
-        } else if (originalCell instanceof CardCell) {
+        } else {
           CardCell originalCardCell = (CardCell) originalCell;
           newGrid.setCell(row, col, new CardCell(originalCardCell.getCard(), originalCardCell.getOwner()));
         }
       }
     }
     return newGrid;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    for (int row = 0; row < getRows(); row++) {
+      for (int col = 0; col < getColumns(); col++) {
+        Cell cell = getCell(row, col);
+        if (cell.isHole()) {
+          sb.append("H ");
+        } else {
+          CardCell cardCell = (CardCell) cell;
+          sb.append(cardCell.getCard() != null ? "C " : "E ");
+        }
+      }
+      sb.append("\n");
+    }
+    return sb.toString();
   }
 }

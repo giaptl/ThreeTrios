@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a player in the game.
@@ -34,5 +35,18 @@ public class Player {
    */
   public List<Card> getHand() {
     return new ArrayList<>(this.hand);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Player player = (Player) obj;
+    return Objects.equals(name, player.name) && Objects.equals(hand, player.hand);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, hand);
   }
 }
