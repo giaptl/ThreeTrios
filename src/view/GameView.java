@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
-import java.util.Observable;
 
 import javax.swing.*;
 import javax.swing.BorderFactory;
@@ -15,12 +14,10 @@ import javax.swing.JPanel;
 
 
 import model.Card;
-import model.CardCell;
 import model.Direction;
 import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
-import model.ThreeTriosModel;
 
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
@@ -52,7 +49,6 @@ public class GameView extends JFrame implements IGameView {
     setVisible(true);
   }
 
-
   /**
    * Creates a panel to display the game grid.
    */
@@ -67,7 +63,7 @@ public class GameView extends JFrame implements IGameView {
         JPanel cellPanel = new JPanel();
         cellPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         cellPanel.setBackground(model.getGrid()
-                .getCell(row, col).isHole() ? Color.YELLOW : Color.GRAY);
+                .getCell(row, col).isHole() ? Color.GRAY : Color.YELLOW);
 
         int finalRow = row;
         int finalCol = col;
@@ -125,116 +121,26 @@ public class GameView extends JFrame implements IGameView {
       currentCardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
       previouslySelectedCardPanel = currentCardPanel;
     }
-
-    // Optionally update UI to highlight selected card
   }
 
   /**
    * Handles clicking on a grid cell.
    */
-  private void handleGridClick(int row, int col) {
-    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
-
-    if (selectedCard != null && selectedPlayer != null) {
-      // Check if the cell is a valid CardCell
-      if (model.getGrid().getCell(row, col) instanceof CardCell) {
-        // Cast model to ThreeTriosModel to access playCard method
-        if (model instanceof ThreeTriosModel) {
-          ThreeTriosModel gameModel = (ThreeTriosModel) model;
-
-          // Place the selected card on the grid
-          gameModel.playCard(selectedPlayer, selectedCard, row, col);
-
-          // Remove the card from the player's hand
-          gameModel.getPlayerHand(selectedPlayer).remove(selectedCard);
-
-          // Deselect the card and player
-          selectedCard = null;
-          selectedPlayer = null;
-
-          // Reset the border of the previously selected card panel
-          if (previouslySelectedCardPanel != null) {
-            previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            previouslySelectedCardPanel = null;
-          }
-
-          // Update the GUI
-          updateGridPanel();
-          updateHandPanel(redHandPanel, gameModel.getRedPlayer());
-          updateHandPanel(blueHandPanel, gameModel.getBluePlayer());
-        } else {
-          System.out.println("Model is not an instance of ThreeTriosModel.");
-        }
-      } else {
-        System.out.println("Invalid cell selected. Cannot place card on a hole.");
-      }
-    }
-  }
-
-  private void updateGridPanel() {
-    gridPanel.removeAll();
-    int rows = model.getGrid().getRows();
-    int cols = model.getGrid().getColumns();
-
-    for (int row = 0; row < rows; row++) {
-      for (int col = 0; col < cols; col++) {
-        JPanel cellPanel = new JPanel();
-        cellPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        cellPanel.setBackground(model.getGrid().getCell(row, col).isHole() ? Color.YELLOW : Color.GRAY);
-
-        CardCell cell = (CardCell) model.getGrid().getCell(row, col);
-        if (cell != null && cell.getCard() != null) {
-          JLabel cardLabel = new JLabel(cell.getCard().getName());
-          cellPanel.add(cardLabel);
-        }
-
-        int finalRow = row;
-        int finalCol = col;
-
-        cellPanel.addMouseListener(new MouseAdapter() {
-          @Override
-          public void mouseClicked(MouseEvent e) {
-            handleGridClick(finalRow, finalCol);
-          }
-        });
-
-        gridPanel.add(cellPanel);
-      }
-    }
-
-    gridPanel.revalidate();
-    gridPanel.repaint();
-  }
-
-  private void updateHandPanel(JPanel handPanel, Player player) {
-    handPanel.removeAll();
-    List<Card> hand = model.getPlayerHand(player);
-    Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
-
-    for (int i = 0; i < hand.size(); i++) {
-      Card card = hand.get(i);
-
-      CardPanel cardPanel = new CardPanel(
-              card.getAttackValue(Direction.NORTH),
-              card.getAttackValue(Direction.SOUTH),
-              card.getAttackValue(Direction.EAST),
-              card.getAttackValue(Direction.WEST),
-              backgroundColor);
-
-      int index = i;
-      cardPanel.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          handleCardClick(player, index);
-        }
-      });
-
-      handPanel.add(cardPanel);
-    }
-
-    handPanel.revalidate();
-    handPanel.repaint();
-  }
+//  private void handleGridClick(int row, int col) {
+//    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
+//
+//    if (selectedCard != null && selectedPlayer != null) {
+//      // Logic to place card on grid can go here in future controller implementation
+//      System.out.println("Attempting to place " + selectedCard.getName() + " from "
+//              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
+//
+//      // Deselect after placing
+//      selectedCard = null;
+//      selectedPlayer = null;
+//
+//      // Optionally update UI to reflect changes in the grid
+//    }
+//  }
 
   private JPanel createHandPanel(Player player) {
     JPanel handPanel = new JPanel();
@@ -266,6 +172,56 @@ public class GameView extends JFrame implements IGameView {
     }
 
     return handPanel;
+  }
+
+  private void handleGridClick(int row, int col) {
+    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
+
+    if (selectedCard != null && selectedPlayer != null) {
+      // Update the grid visually
+      JPanel cellPanel = (JPanel) gridPanel.getComponent(row * 3 + col);
+      cellPanel.removeAll();
+      cellPanel.add(createCardLabel(selectedCard));
+      cellPanel.revalidate();
+      cellPanel.repaint();
+
+      System.out.println("Placed " + selectedCard.getName() + " from "
+              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
+
+      // Remove the card from the player's hand visually
+      JPanel handPanel = selectedPlayer == model.getRedPlayer() ? redHandPanel : blueHandPanel;
+      handPanel.remove(previouslySelectedCardPanel);
+      handPanel.revalidate();
+      handPanel.repaint();
+
+      // Deselect after placing
+      selectedCard = null;
+      selectedPlayer = null;
+      previouslySelectedCardPanel = null;
+
+      // Switch the current player (visually only)
+      Player currentPlayer = model.getCurrentPlayer();
+      Player nextPlayer = currentPlayer == model.getRedPlayer() ? model.getBluePlayer() : model.getRedPlayer();
+      // You would need to implement setCurrentPlayer in your model for this to work
+//       model.setCurrentPlayer(nextPlayer);
+
+      // Update the UI to reflect changes
+      updatePlayerHandsVisibility();
+    }
+  }
+
+  private JLabel createCardLabel(Card card) {
+    JLabel label = new JLabel(card.getName());
+    label.setPreferredSize(new Dimension(60, 80));
+    label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    label.setHorizontalAlignment(JLabel.CENTER);
+    return label;
+  }
+
+  private void updatePlayerHandsVisibility() {
+    Player currentPlayer = model.getCurrentPlayer();
+    redHandPanel.setVisible(currentPlayer == model.getRedPlayer());
+    blueHandPanel.setVisible(currentPlayer == model.getBluePlayer());
   }
 
   @Override

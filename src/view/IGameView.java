@@ -1,7 +1,6 @@
 package view;
 
 import java.util.List;
-import java.util.Observable;
 
 import model.Card;
 import model.Grid;

@@ -8,7 +8,6 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
-import model.Player;
 import view.GameView;
 
 
@@ -50,13 +49,10 @@ public final class ThreeTrios {
       gameModel.playCard(gameModel.getRedPlayer(), gameModel.getPlayerHand(gameModel.getRedPlayer()).get(0), 0, 0);
       gameModel.playCard(gameModel.getBluePlayer(), gameModel.getPlayerHand(gameModel.getBluePlayer()).get(0), 1, 0);
 
-
     } catch (IOException e) {
       System.err.println("Error reading configuration files: " + e.getMessage());
     } catch (IllegalArgumentException e) {
       System.err.println("Invalid configuration: " + e.getMessage());
     }
   }
-
-
 }
