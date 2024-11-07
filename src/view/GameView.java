@@ -21,9 +21,9 @@ import model.ReadOnlyThreeTriosModel;
 
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
-  private final JPanel gridPanel;
-  private final JPanel redHandPanel;
-  private final JPanel blueHandPanel;
+  private JPanel gridPanel;
+  private JPanel redHandPanel;
+  private JPanel blueHandPanel;
   private Card selectedCard = null;
   private Player selectedPlayer = null;
   private JPanel previouslySelectedCardPanel = null;
@@ -132,16 +132,39 @@ public class GameView extends JFrame implements IGameView {
     System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
 
     if (selectedCard != null && selectedPlayer != null) {
-      // Logic to place card on grid can go here in future controller implementation
-      System.out.println("Attempting to place " + selectedCard.getName() + " from "
-              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
+      try {
+        // Place the card on the grid via model
+        model.playCard(selectedPlayer, selectedCard, row, col);
 
-      // Deselect after placing
-      selectedCard = null;
-      selectedPlayer = null;
+        // Deselect after placing
+        selectedCard = null;
+        selectedPlayer = null;
 
-      // Optionally update UI to reflect changes in the grid
+        // Refresh view to update both hands and grid
+        refreshView();
+      } catch (IllegalArgumentException e) {
+        System.out.println("Invalid move: " + e.getMessage());
+      }
     }
+  }
+
+  private void refreshView() {
+    // Remove old panels
+    getContentPane().removeAll();
+
+    // Recreate panels for hands and grid based on updated model state
+    redHandPanel = createHandPanel(model.getRedPlayer());
+    blueHandPanel = createHandPanel(model.getBluePlayer());
+    gridPanel = createGridPanel();
+
+    // Add panels back to frame
+    add(redHandPanel, BorderLayout.WEST);
+    add(blueHandPanel, BorderLayout.EAST);
+    add(gridPanel, BorderLayout.CENTER);
+
+    // Revalidate and repaint to update UI
+    revalidate();
+    repaint();
   }
 
   private JPanel createHandPanel(Player player) {

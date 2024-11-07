@@ -24,18 +24,19 @@ public class CardCell implements Cell {
     return false;
   }
 
+  @Override
   public boolean isEmpty() {
     return card == null;
   }
 
-/**
- * Checks if the cell is occupied.
- *
- * @return true if the cell is occupied, false otherwise.
- */
- public boolean isOccupied() {
-   return card != null;
- }
+  /**
+   * Checks if the cell is occupied.
+   *
+   * @return true if the cell is occupied, false otherwise.
+   */
+  public boolean isOccupied() {
+    return card != null;
+  }
 
 
   @Override
@@ -50,6 +51,7 @@ public class CardCell implements Cell {
 
   /**
    * Sets the card in the cell.
+   *
    * @param owner the owner to set for the CardCell
    */
   void setOwner(Player owner) {

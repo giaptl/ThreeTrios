@@ -152,7 +152,6 @@ public class GameModel implements ThreeTriosModel {
     // Switch the current player
     currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
 
-
     // Check if the game is over
     isGameOver = isGameOver();
 
@@ -169,12 +168,13 @@ public class GameModel implements ThreeTriosModel {
     }
 
     CardCell cell = (CardCell) grid.getCell(row, col);
-    if (!cell.isEmpty()) {
-      throw new IllegalArgumentException("Cell is not empty.");
-    }
 
     if (!(isValidCell(row, col))) {
       throw new IllegalArgumentException("Invalid row or column.");
+    }
+
+    if (!cell.isEmpty()) {
+      throw new IllegalArgumentException("Cell is not empty.");
     }
 
     if (isGameOver) {
