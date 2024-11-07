@@ -189,4 +189,32 @@ public class GameModelInnerTests {
     assertEquals(3, numFlips);
   }
 
+  @Test
+  public void testStartBattlePhase() {
+    // Set up the initial game state
+    gameModel.startGameWithConfig(grid, deck, false);
+
+    // Place initial cards on the grid
+    Card redCard = new Card("RedCard", 5, 5, 5, 5);
+    Card blueCard1 = new Card("BlueCard1", 2, 2, 2, 2);
+    Card blueCard2 = new Card("BlueCard2", 1, 1, 1, 1);
+    Card blueCard3 = new Card("BlueCard2", 2, 2, 2, 2);
+    Card blueCard4 = new Card("BlueCard2", 1, 1, 1, 1);
+
+    grid.setCell(0, 0, new CardCell(redCard, gameModel.getRedPlayer()));
+    grid.setCell(0, 1, new CardCell(blueCard1, gameModel.getBluePlayer()));
+    grid.setCell(0, 2, new CardCell(blueCard2, gameModel.getBluePlayer()));
+    grid.setCell(1, 0, new CardCell(blueCard3, gameModel.getBluePlayer()));
+    grid.setCell(2, 0, new CardCell(blueCard4, gameModel.getBluePlayer()));
+
+    // Start the battle phase from the red card
+    gameModel.startBattlePhase(0, 0);
+
+    // Check that the blue cards have been flipped to red
+    assertEquals(gameModel.getRedPlayer(), (grid.getCell(0, 1)).getOwner());
+    assertEquals(gameModel.getRedPlayer(), (grid.getCell(0, 2)).getOwner());
+    assertEquals(gameModel.getRedPlayer(), (grid.getCell(1, 0)).getOwner());
+    assertEquals(gameModel.getRedPlayer(), (grid.getCell(2, 0)).getOwner());
+  }
+
 }

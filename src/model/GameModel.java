@@ -173,7 +173,7 @@ public class GameModel implements ThreeTriosModel {
       throw new IllegalArgumentException("Cell is not empty.");
     }
 
-    if (row < 0 || row >= grid.getRows() || col < 0 || col >= grid.getColumns()) {
+    if (!(isValidCell(row, col))) {
       throw new IllegalArgumentException("Invalid row or column.");
     }
 
@@ -191,47 +191,10 @@ public class GameModel implements ThreeTriosModel {
       throw new IllegalArgumentException("No card at the specified cell or cell is a hole.");
     }
     CardCell cardCell = (CardCell) cell;
-    Card card = cardCell.getCard();
     Player owner = cardCell.getOwner();
 
-    // Battle logic (example: compare attack values with adjacent cards)
-    for (Direction direction : Direction.values()) {
-      int newRow = row + direction.getRowOffset();
-      int newCol = col + direction.getColOffset();
-      cardAttackDirections(direction, newRow, newCol, owner, card);
-    }
+    processBattlePhase(owner, row, col);
   }
-// changed to int from void
-//private int cardAttackDirections(Direction direction, int newRow, int newCol, Player owner, Card card) {
-//  int cardsFlipped = 0;
-//  if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
-//    Cell adjacentCell = grid.getCell(newRow, newCol);
-//
-//    if (!(adjacentCell.isHole())) {
-//      CardCell adjacentCardCell = (CardCell) adjacentCell;
-//      Card adjacentCard = adjacentCardCell.getCard();
-//      Player adjacentOwner = adjacentCardCell.getOwner();
-//
-//      if (adjacentCard != null && !owner.equals(adjacentOwner)) {
-//        int attackValue = parseAttackValue(card.getAttackValue(direction));
-//        int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
-//
-//        if (attackValue > defenseValue) {
-//          adjacentCardCell.setOwner(owner);
-//          cardsFlipped++;
-//          // Recursively call simulateEntireBattlePhase for the newly flipped card
-//          cardsFlipped += simulateEntireBattlePhase(owner, newRow, newCol);
-//        }
-//      }
-//    }
-//  }
-//  return cardsFlipped;
-//}
-
-  private int parseAttackValue(String value) {
-    return "A".equals(value) ? 10 : Integer.parseInt(value);
-  }
-
 
   protected int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
     // Save the current state of the grid
@@ -251,6 +214,10 @@ public class GameModel implements ThreeTriosModel {
 
   // this works for now want to try easier ways and stuff
   private int simulateEntireBattlePhase(Player player, int startRow, int startCol) {
+    return processBattlePhase(player, startRow, startCol);
+  }
+
+  private int processBattlePhase(Player player, int startRow, int startCol) {
     int cardsFlipped = 0;
     Queue<int[]> toProcess = new LinkedList<>();
     Set<String> visited = new HashSet<>();
@@ -259,31 +226,44 @@ public class GameModel implements ThreeTriosModel {
 
     while (!toProcess.isEmpty()) {
       int[] current = toProcess.poll();
-      int row = current[0];
-      int col = current[1];
+      int row = current[0], col = current[1];
       CardCell currentCell = (CardCell) grid.getCell(row, col);
+
       if (currentCell == null || currentCell.getCard() == null) {
         continue;
       }
-      Card currentCard = currentCell.getCard();
 
-      for (Direction direction : Direction.values()) {
-        int newRow = row + direction.getRowOffset();
-        int newCol = col + direction.getColOffset();
-        if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
-          if (!visited.contains(newRow + "," + newCol)) {
-            visited.add(newRow + "," + newCol);
-            int flipped = cardAttackDirections(direction, newRow, newCol, player, currentCard);
-            cardsFlipped += flipped;
-            if (flipped > 0) {
-              toProcess.offer(new int[]{newRow, newCol});
-            }
-          }
-        }
-      }
+      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, visited, toProcess);
     }
     return cardsFlipped;
   }
+
+  private int processAdjacentCells(Player player, Card currentCard, int row, int col,
+                                   Set<String> visited, Queue<int[]> toProcess) {
+    int flipped = 0;
+    for (Direction direction : Direction.values()) {
+      int newRow = row + direction.getRowOffset();
+      int newCol = col + direction.getColOffset();
+      String cellKey = newRow + "," + newCol;
+
+      if (isValidCell(newRow, newCol) && !visited.contains(cellKey)) {
+        visited.add(cellKey);
+        int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
+        flipped += flippedInDirection;
+        if (flippedInDirection > 0) {
+          toProcess.offer(new int[]{newRow, newCol});
+        }
+      }
+    }
+    return flipped;
+  }
+
+
+  private boolean isValidCell(int row, int col) {
+    return row >= 0 && row < grid.getRows() && col >= 0
+            && col < grid.getColumns() && !grid.getCell(row, col).isHole();
+  }
+
 
   private int cardAttackDirections(Direction direction, int newRow, int newCol, Player owner, Card card) {
     int cardsFlipped = 0;
@@ -308,6 +288,12 @@ public class GameModel implements ThreeTriosModel {
     }
     return cardsFlipped;
   }
+
+
+  private int parseAttackValue(String value) {
+    return "A".equals(value) ? 10 : Integer.parseInt(value);
+  }
+
 
   @Override
   public int getPlayerScore(Player player) {
