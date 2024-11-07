@@ -91,7 +91,7 @@ public class GameModel implements ThreeTriosModel {
   public boolean isGameOver() {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
-        CardCell cell = (CardCell) grid.getCell(row, col);
+        Cell cell =  grid.getCell(row, col);
         if (!cell.isHole() && cell.isEmpty()) {
           return false;
         }

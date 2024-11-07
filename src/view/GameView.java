@@ -49,6 +49,39 @@ public class GameView extends JFrame implements IGameView {
     setVisible(true);
   }
 
+
+  private JPanel createHandPanel(Player player) {
+    JPanel handPanel = new JPanel();
+    handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
+    Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
+
+    List<Card> hand = model.getPlayerHand(player);
+    for (int i = 0; i < hand.size(); i++) {
+      Card card = hand.get(i);
+
+      // Create a CardPanel for each card with its values
+      CardPanel cardPanel = new CardPanel(
+              card.getAttackValue(Direction.NORTH),
+              card.getAttackValue(Direction.SOUTH),
+              card.getAttackValue(Direction.EAST),
+              card.getAttackValue(Direction.WEST),
+              backgroundColor);
+
+      // Add mouse listener to handle clicks on cards
+      int index = i;
+      cardPanel.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          handleCardClick(player, index);
+        }
+      });
+
+      handPanel.add(cardPanel);
+    }
+
+    return handPanel;
+  }
+
   /**
    * Creates a panel to display the game grid.
    */
@@ -135,10 +168,10 @@ public class GameView extends JFrame implements IGameView {
       try {
         // Place the card on the grid via model
         model.playCard(selectedPlayer, selectedCard, row, col);
-
-        // Deselect after placing
-        selectedCard = null;
-        selectedPlayer = null;
+        // Update the grid cell with the played card
+        updateGridCell(row, col, selectedCard);
+        // Remove the card from the player's hand panel
+        removeCardFromHandPanel(selectedPlayer, selectedCard);
 
         // Refresh view to update both hands and grid
         refreshView();
@@ -148,18 +181,50 @@ public class GameView extends JFrame implements IGameView {
     }
   }
 
+  private void updateGridCell(int row, int col, Card card) {
+    JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
+    cellPanel.removeAll();
+    cellPanel.setLayout(new BorderLayout());
+
+    CardPanel cardPanel = new CardPanel(
+            card.getAttackValue(Direction.NORTH),
+            card.getAttackValue(Direction.SOUTH),
+            card.getAttackValue(Direction.EAST),
+            card.getAttackValue(Direction.WEST),
+            selectedPlayer.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
+    );
+
+    cellPanel.add(cardPanel, BorderLayout.CENTER);
+    cellPanel.revalidate();
+    cellPanel.repaint();
+  }
+
+  private void removeCardFromHandPanel(Player player, Card card) {
+    JPanel handPanel = player.equals(model.getRedPlayer()) ? redHandPanel : blueHandPanel;
+    List<Card> hand = model.getPlayerHand(player);
+
+    for (int i = 0; i < hand.size(); i++) {
+      if (hand.get(i).equals(card)) {
+        handPanel.remove(i);
+        break;
+      }
+    }
+    handPanel.revalidate();
+    handPanel.repaint();
+  }
+
   private void refreshView() {
-    // Remove old panels
-    getContentPane().removeAll();
+    // Remove old grid panel
+    remove(gridPanel);
 
-    // Recreate panels for hands and grid based on updated model state
-    redHandPanel = createHandPanel(model.getRedPlayer());
-    blueHandPanel = createHandPanel(model.getBluePlayer());
-    gridPanel = createGridPanel();
+    // Update the existing gridPanel
+    updateGridPanel();
 
-    // Add panels back to frame
-    add(redHandPanel, BorderLayout.WEST);
-    add(blueHandPanel, BorderLayout.EAST);
+    // Update hand panels
+    updateHandPanel(redHandPanel, model.getRedPlayer());
+    updateHandPanel(blueHandPanel, model.getBluePlayer());
+
+    // Add grid panel back to frame
     add(gridPanel, BorderLayout.CENTER);
 
     // Revalidate and repaint to update UI
@@ -167,24 +232,18 @@ public class GameView extends JFrame implements IGameView {
     repaint();
   }
 
-  private JPanel createHandPanel(Player player) {
-    JPanel handPanel = new JPanel();
-    handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
-    Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
-
+  private void updateHandPanel(JPanel handPanel, Player player) {
+    handPanel.removeAll();
     List<Card> hand = model.getPlayerHand(player);
     for (int i = 0; i < hand.size(); i++) {
       Card card = hand.get(i);
-
-      // Create a CardPanel for each card with its values
       CardPanel cardPanel = new CardPanel(
               card.getAttackValue(Direction.NORTH),
               card.getAttackValue(Direction.SOUTH),
               card.getAttackValue(Direction.EAST),
               card.getAttackValue(Direction.WEST),
-              backgroundColor);
-
-      // Add mouse listener to handle clicks on cards
+              player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
+      );
       int index = i;
       cardPanel.addMouseListener(new MouseAdapter() {
         @Override
@@ -192,11 +251,37 @@ public class GameView extends JFrame implements IGameView {
           handleCardClick(player, index);
         }
       });
-
       handPanel.add(cardPanel);
     }
+    handPanel.revalidate();
+    handPanel.repaint();
+  }
 
-    return handPanel;
+  private void updateGridPanel() {
+    for (int row = 0; row < model.getGrid().getRows(); row++) {
+      for (int col = 0; col < model.getGrid().getColumns(); col++) {
+        JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
+        cellPanel.removeAll();
+        cellPanel.setLayout(new BorderLayout());
+
+        Card card = model.getGrid().getCell(row, col).getCard();
+        if (card != null) {
+          CardPanel cardPanel = new CardPanel(
+                  card.getAttackValue(Direction.NORTH),
+                  card.getAttackValue(Direction.SOUTH),
+                  card.getAttackValue(Direction.EAST),
+                  card.getAttackValue(Direction.WEST),
+                  model.getGrid().getCell(row, col).getOwner().equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
+          );
+          cellPanel.add(cardPanel, BorderLayout.CENTER);
+        } else {
+          cellPanel.setBackground(model.getGrid().getCell(row, col).isHole() ? Color.GRAY : Color.YELLOW);
+        }
+
+        cellPanel.revalidate();
+        cellPanel.repaint();
+      }
+    }
   }
 
   @Override
