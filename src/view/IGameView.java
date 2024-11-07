@@ -1,6 +1,7 @@
 package view;
 
 import java.util.List;
+import java.util.Observable;
 
 import model.Card;
 import model.Grid;
@@ -25,5 +26,6 @@ public interface IGameView {
    * @param hand the list of cards in the player's hand
    */
   void renderPlayerHand(Player player, List<Card> hand);
+
 
 }

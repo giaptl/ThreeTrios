@@ -9,7 +9,7 @@ based on their attack values and positions on the grid.
 
 QUICK START:
 
-public class Runner {
+public class ThreeTrios {
 
   public static void main(String[] args) {
     try {
@@ -40,7 +40,7 @@ ConfigurationReader: Reads and parses grid and card configuration files.
 readGridConfig: Initializes a grid with holes and card cells.
 readCardData: Initializes a list of cards with unique names and predefined attack values.
 ThreeTriosModel: Manages the game state, including player hands, grid state, and game logic.
-Runner: Entry point for the application, demonstrating how to use the ConfigurationReader.
+ThreeTrios: Entry point for the application, demonstrating how to use the ConfigurationReader.
 
 KEY SUBCOMPONENTS:
 Grid: Represents the game grid with rows and columns.

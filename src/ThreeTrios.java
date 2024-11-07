@@ -8,13 +8,14 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
+import model.Player;
 import view.GameView;
 
 
 /**
  * Main class to run the game from.
  */
-public class Runner {
+public final class ThreeTrios {
 
   /**
    * Main method to run the game from.
@@ -37,6 +38,7 @@ public class Runner {
       gameModel.startGameWithConfig(grid, cards, true);
       System.out.println("Game started successfully.");
 
+
       // Launch the GUI on the Swing event dispatch thread
       SwingUtilities.invokeLater(() -> {
         GameView gameView = new GameView(gameModel);
@@ -44,10 +46,17 @@ public class Runner {
       });
       System.out.print("GUI launched successfully.");
 
+      // Simulate both players playing cards to the board
+      gameModel.playCard(gameModel.getRedPlayer(), gameModel.getPlayerHand(gameModel.getRedPlayer()).get(0), 0, 0);
+      gameModel.playCard(gameModel.getBluePlayer(), gameModel.getPlayerHand(gameModel.getBluePlayer()).get(0), 1, 0);
+
+
     } catch (IOException e) {
       System.err.println("Error reading configuration files: " + e.getMessage());
     } catch (IllegalArgumentException e) {
       System.err.println("Invalid configuration: " + e.getMessage());
     }
   }
+
+
 }
