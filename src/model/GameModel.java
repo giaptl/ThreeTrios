@@ -167,13 +167,18 @@ public class GameModel implements ThreeTriosModel {
       throw new IllegalArgumentException("Card is not in player's hand.");
     }
 
-    CardCell cell = (CardCell) grid.getCell(row, col);
+    Cell cell = grid.getCell(row, col);
 
     if (!(isValidCell(row, col))) {
       throw new IllegalArgumentException("Invalid row or column.");
     }
 
+    if (cell.isHole()) {
+      throw new IllegalArgumentException("Card cannot be placed on a hole.");
+    }
+
     if (!cell.isEmpty()) {
+      System.out.println("Cell at (" + row + "," + col + ") isEmpty: " + cell.isEmpty());
       throw new IllegalArgumentException("Cell is not empty.");
     }
 
@@ -261,7 +266,7 @@ public class GameModel implements ThreeTriosModel {
 
   private boolean isValidCell(int row, int col) {
     return row >= 0 && row < grid.getRows() && col >= 0
-            && col < grid.getColumns() && !grid.getCell(row, col).isHole();
+            && col < grid.getColumns();
   }
 
 

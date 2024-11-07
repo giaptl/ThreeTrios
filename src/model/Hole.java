@@ -31,7 +31,6 @@ public class Hole implements Cell {
 
   @Override
   public boolean isEmpty() {
-    // Always saying it is not possible to place a card on a hole.
     return false;
   }
 

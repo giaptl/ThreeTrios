@@ -47,6 +47,7 @@ public class CardCellTest {
     assertEquals(player2, cell.getOwner());
   }
 
+
   @Test
   public void testEqualsEqualObjects() {
     Card card = new Card("MysticEagle", 5, 10, 4, 2);
