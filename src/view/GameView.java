@@ -121,26 +121,28 @@ public class GameView extends JFrame implements IGameView {
       currentCardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
       previouslySelectedCardPanel = currentCardPanel;
     }
+
+    // Optionally update UI to highlight selected card
   }
 
   /**
    * Handles clicking on a grid cell.
    */
-//  private void handleGridClick(int row, int col) {
-//    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
-//
-//    if (selectedCard != null && selectedPlayer != null) {
-//      // Logic to place card on grid can go here in future controller implementation
-//      System.out.println("Attempting to place " + selectedCard.getName() + " from "
-//              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
-//
-//      // Deselect after placing
-//      selectedCard = null;
-//      selectedPlayer = null;
-//
-//      // Optionally update UI to reflect changes in the grid
-//    }
-//  }
+  private void handleGridClick(int row, int col) {
+    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
+
+    if (selectedCard != null && selectedPlayer != null) {
+      // Logic to place card on grid can go here in future controller implementation
+      System.out.println("Attempting to place " + selectedCard.getName() + " from "
+              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
+
+      // Deselect after placing
+      selectedCard = null;
+      selectedPlayer = null;
+
+      // Optionally update UI to reflect changes in the grid
+    }
+  }
 
   private JPanel createHandPanel(Player player) {
     JPanel handPanel = new JPanel();
@@ -172,56 +174,6 @@ public class GameView extends JFrame implements IGameView {
     }
 
     return handPanel;
-  }
-
-  private void handleGridClick(int row, int col) {
-    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
-
-    if (selectedCard != null && selectedPlayer != null) {
-      // Update the grid visually
-      JPanel cellPanel = (JPanel) gridPanel.getComponent(row * 3 + col);
-      cellPanel.removeAll();
-      cellPanel.add(createCardLabel(selectedCard));
-      cellPanel.revalidate();
-      cellPanel.repaint();
-
-      System.out.println("Placed " + selectedCard.getName() + " from "
-              + selectedPlayer.getName() + " at (" + row + ", " + col + ")");
-
-      // Remove the card from the player's hand visually
-      JPanel handPanel = selectedPlayer == model.getRedPlayer() ? redHandPanel : blueHandPanel;
-      handPanel.remove(previouslySelectedCardPanel);
-      handPanel.revalidate();
-      handPanel.repaint();
-
-      // Deselect after placing
-      selectedCard = null;
-      selectedPlayer = null;
-      previouslySelectedCardPanel = null;
-
-      // Switch the current player (visually only)
-      Player currentPlayer = model.getCurrentPlayer();
-      Player nextPlayer = currentPlayer == model.getRedPlayer() ? model.getBluePlayer() : model.getRedPlayer();
-      // You would need to implement setCurrentPlayer in your model for this to work
-//       model.setCurrentPlayer(nextPlayer);
-
-      // Update the UI to reflect changes
-      updatePlayerHandsVisibility();
-    }
-  }
-
-  private JLabel createCardLabel(Card card) {
-    JLabel label = new JLabel(card.getName());
-    label.setPreferredSize(new Dimension(60, 80));
-    label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    label.setHorizontalAlignment(JLabel.CENTER);
-    return label;
-  }
-
-  private void updatePlayerHandsVisibility() {
-    Player currentPlayer = model.getCurrentPlayer();
-    redHandPanel.setVisible(currentPlayer == model.getRedPlayer());
-    blueHandPanel.setVisible(currentPlayer == model.getBluePlayer());
   }
 
   @Override
