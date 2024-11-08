@@ -2,11 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -17,7 +15,6 @@ public class GameModel implements ThreeTriosModel {
 
   private Grid grid;
   private Player currentPlayer;
-  private final Map<Player, List<Card>> playerHands;
   private Player pRed;
   private Player pBlue;
   private boolean isGameOver;
@@ -26,7 +23,6 @@ public class GameModel implements ThreeTriosModel {
    * Creates a new game model.
    */
   public GameModel() {
-    this.playerHands = new HashMap<>();
     this.isGameOver = false;
   }
 
@@ -64,9 +60,6 @@ public class GameModel implements ThreeTriosModel {
     pRed = new Player("Red", redHand);
     pBlue = new Player("Blue", blueHand);
 
-    playerHands.put(pRed, redHand);
-    playerHands.put(pBlue, blueHand);
-
     currentPlayer = pRed;
     isGameOver = false;
   }
@@ -78,13 +71,21 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
+  public Player getOpponent(Player player) {
+    if (player.equals(pRed)) {
+      return pBlue;
+    }
+    return pRed;
+  }
+
+  @Override
   public Grid getGrid() {
     return grid.copyOfGrid();
   }
 
   @Override
   public List<Card> getPlayerHand(Player player) {
-    return playerHands.get(player);
+    return player.getHand();
   }
 
   @Override
@@ -146,7 +147,7 @@ public class GameModel implements ThreeTriosModel {
 
     CardCell cardCell = new CardCell(card, player);
     grid.setCell(row, col, cardCell);
-    player.getHand().remove(card);
+    player.removeCard(card);
     startBattlePhase(row, col);
 
     // Switch the current player
@@ -201,7 +202,8 @@ public class GameModel implements ThreeTriosModel {
     processBattlePhase(owner, row, col);
   }
 
-  protected int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
+  @Override
+  public int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
     // Save the current state of the grid
     Grid originalGrid = grid.copyOfGrid();
 

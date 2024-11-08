@@ -1,5 +1,11 @@
 package controller;
 
+import model.Player;
+import model.ReadOnlyThreeTriosModel;
+import strategy.FlipMaximizerStrategy;
+import strategy.Move;
+import strategy.Strategy;
+
 /**
  * Game Setup and Flow:
  * 1. Load grid configuration from file
@@ -15,5 +21,28 @@ package controller;
  * 8. Winner is determined by the most cards on the grid and in hand
  */
 public class Controller {
+
+  private final ReadOnlyThreeTriosModel model;
+
+  public Controller(ReadOnlyThreeTriosModel model) {
+    this.model = model;
+  }
+
+  public void playComputerTurn(Player computerPlayer) {
+    Strategy strategy = new FlipMaximizerStrategy(); // Or CornerStrategy or another strategy
+
+    Move bestMove = strategy.selectMove(computerPlayer, model);
+
+    if (bestMove != null) {
+      model.playCard(computerPlayer, bestMove.getCard(), bestMove.getRow(), bestMove.getCol());
+      System.out.println("Computer played " + bestMove.getCard().getName() + " at (" + bestMove.getRow() + ", " + bestMove.getCol() + ")");
+
+      // Update view after computer plays its turn...
+      // view.refreshView();
+    } else {
+      System.out.println("No valid moves left for computer.");
+      // Handle case where no valid moves are available...
+    }
+  }
 
 }

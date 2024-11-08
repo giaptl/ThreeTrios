@@ -37,6 +37,14 @@ public class Player {
     return new ArrayList<>(this.hand);
   }
 
+  public void removeCard(Card card) {
+    this.hand.remove(card);
+  }
+
+  public void addCard(Card card) {
+    this.hand.add(card);
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj) return true;

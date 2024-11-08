@@ -87,4 +87,9 @@ public interface ReadOnlyThreeTriosModel {
    * @throws IllegalArgumentException if the game is over
    */
   void playCard(Player player, Card card, int row, int col);
+
+
+  int getNumCardsAbleToFlip(Player player, Card card, int row, int col);
+
+  Player getOpponent(Player player);
 }
