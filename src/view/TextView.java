@@ -3,7 +3,6 @@ package view;
 import java.util.List;
 
 import model.Card;
-import model.CardCell;
 import model.Cell;
 import model.Direction;
 import model.Grid;
@@ -12,11 +11,16 @@ import model.Player;
 /**
  * A text based view for the game. Default view but will be changed to a GUI in the future.
  */
-public class TextView implements IGameView {
+public class TextView {
 
 
-  @Override
-  public void renderGrid(Grid grid) {
+  /**
+   * Renders the game grid in a text format. Holes are represented by spaces, empty cells by underscores,
+   * and cells occupied by players' cards are represented by 'R' for Red player and 'B' for Blue player.
+   *
+   * @param grid the game grid to be rendered
+   */
+  protected void renderGrid(Grid grid) {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
         Cell cell = grid.getCell(row, col);
@@ -37,8 +41,14 @@ public class TextView implements IGameView {
     }
   }
 
-  @Override
-  public void renderPlayerHand(Player player, List<Card> hand) {
+  /**
+   * Renders the player's hand in a text format. Each card is displayed with its name and attack values
+   * in the four directions (north, south, east, and west).
+   *
+   * @param player the player whose hand is to be rendered
+   * @param hand the list of cards in the player's hand
+   */
+  protected void renderPlayerHand(Player player, List<Card> hand) {
     System.out.println("Player: " + player.getName().toUpperCase());
     System.out.println("Hand:");
     for (Card card : hand) {

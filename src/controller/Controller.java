@@ -1,10 +1,57 @@
 package controller;
 
+import model.Card;
 import model.Player;
-import model.ReadOnlyThreeTriosModel;
-import strategy.FlipMaximizerStrategy;
-import strategy.Move;
-import strategy.Strategy;
+import model.ThreeTriosModel;  // Change to ThreeTriosModel instead of ReadOnly
+import view.IGameView;
+
+public class Controller {
+  private final ThreeTriosModel model;  // Change to ThreeTriosModel
+  private final IGameView view;
+  private Card selectedCard = null;
+  private Player selectedPlayer = null;
+
+  public Controller(ThreeTriosModel model, IGameView view) {
+    this.model = model;
+    this.view = view;
+  }
+
+  public void handleCardClick(Player player, int cardIndex) {
+    Card clickedCard = model.getPlayerHand(player).get(cardIndex);
+
+    if (selectedPlayer == player && clickedCard.equals(selectedCard)) {
+      // Deselect card if clicked again
+      selectedCard = null;
+      selectedPlayer = null;
+      System.out.println("Deselected card from " + player.getName());
+      view.updateCardSelection(null, null);
+    } else {
+      // Select new card
+      selectedCard = clickedCard;
+      selectedPlayer = player;
+      System.out.println("Selected card " + selectedCard.getName()
+              + " from " + player.getName() + " at index: " + cardIndex);
+      view.updateCardSelection(player, selectedCard);
+    }
+  }
+
+
+  public void handleGridClick(int row, int col) {
+    Card selectedCard = view.getSelectedCard();
+    Player selectedPlayer = view.getSelectedPlayer();
+
+    if (selectedCard != null && selectedPlayer != null) {
+      try {
+        model.playCard(selectedPlayer, selectedCard, row, col);
+        view.updateGridCell(row, col, selectedCard);
+        view.removeCardFromHandPanel(selectedPlayer, selectedCard);
+        view.refreshView();
+      } catch (IllegalArgumentException e) {
+        view.showError("Invalid move: " + e.getMessage());
+      }
+    }
+  }
+}
 
 /**
  * Game Setup and Flow:
@@ -20,29 +67,3 @@ import strategy.Strategy;
  * 7. Game ends when all card cells are filled
  * 8. Winner is determined by the most cards on the grid and in hand
  */
-public class Controller {
-
-  private final ReadOnlyThreeTriosModel model;
-
-  public Controller(ReadOnlyThreeTriosModel model) {
-    this.model = model;
-  }
-
-  public void playComputerTurn(Player computerPlayer) {
-    Strategy strategy = new FlipMaximizerStrategy(); // Or CornerStrategy or another strategy
-
-    Move bestMove = strategy.selectMove(computerPlayer, model);
-
-    if (bestMove != null) {
-      model.playCard(computerPlayer, bestMove.getCard(), bestMove.getRow(), bestMove.getCol());
-      System.out.println("Computer played " + bestMove.getCard().getName() + " at (" + bestMove.getRow() + ", " + bestMove.getCol() + ")");
-
-      // Update view after computer plays its turn...
-      // view.refreshView();
-    } else {
-      System.out.println("No valid moves left for computer.");
-      // Handle case where no valid moves are available...
-    }
-  }
-
-}

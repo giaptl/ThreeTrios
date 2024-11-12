@@ -1,6 +1,7 @@
 package strategy;
 
 import java.util.List;
+import java.util.Objects;
 
 import model.Card;
 import model.Grid;
@@ -26,7 +27,7 @@ public class FlipMaximizerStrategy implements Strategy {
             int flips = model.getNumCardsAbleToFlip(player, card, row, col);
 
             // If this move flips more cards than previous best, choose it
-            if (flips > maxFlips || (flips == maxFlips && isUpperLeft(row, col, bestMove))) {
+            if (flips > maxFlips || (flips == maxFlips && isUpperLeft(row, col, Objects.requireNonNull(bestMove)))) {
               bestMove = new Move(card, row, col);
               maxFlips = flips;
             }
@@ -35,15 +36,11 @@ public class FlipMaximizerStrategy implements Strategy {
       }
     }
 
-    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid);
+    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
   }
 
   private boolean isUpperLeft(int row, int col, Move currentBest) {
     // Break ties by choosing upper-leftmost coordinate
-    if (currentBest == null) {
-      return true;
-    }
     return row < currentBest.getRow() || (row == currentBest.getRow() && col < currentBest.getCol());
   }
-
 }

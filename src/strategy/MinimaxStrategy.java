@@ -35,7 +35,7 @@ public class MinimaxStrategy implements Strategy {
       }
     }
 
-    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid); // Fallback if no valid move found
+    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player); // Fallback if no valid move found
   }
 
   /**
@@ -45,7 +45,7 @@ public class MinimaxStrategy implements Strategy {
   private int simulateOpponentBestMove(Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
 
     // Place this player's card on the simulated grid
-    model.playCard(player, card, row, col);
+//    model.playCard(player, card, row, col);
 
     // Get opponent player
     Player opponent = model.getOpponent(player);

@@ -66,27 +66,6 @@ public interface ReadOnlyThreeTriosModel {
    */
   int getPlayerScore(Player player);
 
-  /**
-   * Allows a player to play a card at the specified position on the grid. That position on the
-   * grid must be empty and a valid position for the card to be placed (CardCell). Card can NOT be
-   * placed on a Hole. The card must be in the player's hand and the player must be the current
-   * player. After playing the card, the current player is switched to the other player,
-   * regardless of whether a battle phase occurs or not. After playing a card, a battle phase
-   * occurs automatically for the newly placed card if there are adjacent cards that are owned by
-   * the opponent; otherwise, the turn is over. The card is removed from the player's hand after it
-   * is played.
-   *
-   * @param player the player who is playing the card
-   * @param card   the card to be played
-   * @param row    the row position on the grid
-   * @param col    the column position on the grid
-   * @throws IllegalArgumentException if the player is not the current player
-   * @throws IllegalArgumentException if the card is not in the player's hand
-   * @throws IllegalArgumentException if the cell at the specified position is not empty
-   * @throws IllegalArgumentException if the card is not placed in a valid position
-   * @throws IllegalArgumentException if the game is over
-   */
-  void playCard(Player player, Card card, int row, int col);
 
 
   int getNumCardsAbleToFlip(Player player, Card card, int row, int col);

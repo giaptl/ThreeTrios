@@ -10,6 +10,8 @@ import java.util.Set;
 
 /**
  * Represents the initial game model created for ThreeTrios.
+ * This class manages the state and logic of the game, including the grid, players, and game rules.
+ * It provides methods to start the game, play cards, and determine the game's status and winner.
  */
 public class GameModel implements ThreeTriosModel {
 

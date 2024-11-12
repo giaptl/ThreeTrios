@@ -13,14 +13,15 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 
+import controller.Controller;
 import model.Card;
 import model.Direction;
-import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
+  private Controller controller;
   private JPanel gridPanel;
   private JPanel redHandPanel;
   private JPanel blueHandPanel;
@@ -47,6 +48,27 @@ public class GameView extends JFrame implements IGameView {
 
     pack(); // Adjusts window size based on component sizes
     setVisible(true);
+  }
+
+  @Override
+  public Card getSelectedCard() {
+    return selectedCard;
+  }
+
+  @Override
+  public Player getSelectedPlayer() {
+    return selectedPlayer;
+  }
+
+  @Override
+  public void setSelectedCard(Card card, Player player) {
+    this.selectedCard = card;
+    this.selectedPlayer = player;
+  }
+
+  @Override
+  public void showError(String message) {
+    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
 
 
@@ -119,69 +141,69 @@ public class GameView extends JFrame implements IGameView {
    * Handles clicking on a card in a player's hand.
    */
   private void handleCardClick(Player player, int cardIndex) {
-    JPanel currentCardPanel;
-    if (player.equals(model.getRedPlayer())) {
-      currentCardPanel = (JPanel) redHandPanel.getComponent(cardIndex);
-    } else {
-      currentCardPanel = (JPanel) blueHandPanel.getComponent(cardIndex);
-    }
-
-    if (selectedCard != null && selectedPlayer == player &&
-            model.getPlayerHand(player).get(cardIndex).equals(selectedCard)) {
-      // Deselect card if clicked again
-      selectedCard = null;
-      selectedPlayer = null;
-      System.out.println("Deselected card from " + player.getName());
-
-      // Reset border of the previously selected card panel
-      if (previouslySelectedCardPanel != null) {
-        previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        previouslySelectedCardPanel = null;
-      }
-    } else {
-      // Select new card
-      selectedCard = model.getPlayerHand(player).get(cardIndex);
-      selectedPlayer = player;
-      System.out.println("Selected card " + selectedCard.getName()
-              + " from " + player.getName() + " at index: " + cardIndex);
-
-      // Reset border of the previously selected card panel
-      if (previouslySelectedCardPanel != null) {
-        previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-      }
-
-      // Highlight the current card panel by changing its border
-      currentCardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
-      previouslySelectedCardPanel = currentCardPanel;
-    }
-
-    // Optionally update UI to highlight selected card
+    controller.handleCardClick(player, cardIndex);
   }
+
+
+  @Override
+  public void updateCardSelection(Player player, Card card) {
+    // Reset previous selection
+    if (previouslySelectedCardPanel != null) {
+      previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+      previouslySelectedCardPanel = null;
+    }
+
+    // If there's a new selection, highlight it
+    if (player != null && card != null) {
+      JPanel cardPanel;
+      int cardIndex = model.getPlayerHand(player).indexOf(card);
+
+      if (player.equals(model.getRedPlayer())) {
+        cardPanel = (JPanel) redHandPanel.getComponent(cardIndex);
+      } else {
+        cardPanel = (JPanel) blueHandPanel.getComponent(cardIndex);
+      }
+
+      cardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+      previouslySelectedCardPanel = cardPanel;
+    }
+  }
+
+
+  @Override
+  public void highlightSelectedCard(int cardIndex, Player player) {
+    JPanel handPanel;
+    // Get the correct hand panel
+    if (player.equals(model.getRedPlayer())) {
+      handPanel = (JPanel) redHandPanel.getComponent(cardIndex);
+    } else {
+      handPanel = (JPanel) blueHandPanel.getComponent(cardIndex);
+    }
+
+    // Reset border of the previously selected card panel
+    if (previouslySelectedCardPanel != null) {
+      previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+    }
+
+    // Highlight the current card panel by changing its border
+    handPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
+    previouslySelectedCardPanel = handPanel;
+
+    handPanel.revalidate();
+    handPanel.repaint();
+  }
+
+
 
   /**
    * Handles clicking on a grid cell.
    */
   private void handleGridClick(int row, int col) {
-    System.out.println("Clicked on grid cell at (" + row + ", " + col + ")");
-
-    if (selectedCard != null && selectedPlayer != null) {
-      try {
-        // Place the card on the grid via model
-        model.playCard(selectedPlayer, selectedCard, row, col);
-        // Update the grid cell with the played card
-        updateGridCell(row, col, selectedCard);
-        // Remove the card from the player's hand panel
-        removeCardFromHandPanel(selectedPlayer, selectedCard);
-
-        // Refresh view to update both hands and grid
-        refreshView();
-      } catch (IllegalArgumentException e) {
-        System.out.println("Invalid move: " + e.getMessage());
-      }
-    }
+    controller.handleGridClick(row, col);
   }
 
-  private void updateGridCell(int row, int col, Card card) {
+  @Override
+  public void updateGridCell(int row, int col, Card card) {
     JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
     cellPanel.removeAll();
     cellPanel.setLayout(new BorderLayout());
@@ -199,7 +221,8 @@ public class GameView extends JFrame implements IGameView {
     cellPanel.repaint();
   }
 
-  private void removeCardFromHandPanel(Player player, Card card) {
+  @Override
+  public void removeCardFromHandPanel(Player player, Card card) {
     JPanel handPanel = player.equals(model.getRedPlayer()) ? redHandPanel : blueHandPanel;
     List<Card> hand = model.getPlayerHand(player);
 
@@ -213,7 +236,8 @@ public class GameView extends JFrame implements IGameView {
     handPanel.repaint();
   }
 
-  private void refreshView() {
+  @Override
+  public void refreshView() {
     // Remove old grid panel
     remove(gridPanel);
 
@@ -287,15 +311,5 @@ public class GameView extends JFrame implements IGameView {
   @Override
   public Dimension getPreferredSize() {
     return new Dimension(800, 600); // Default window size
-  }
-
-  @Override
-  public void renderGrid(Grid grid) {
-
-  }
-
-  @Override
-  public void renderPlayerHand(Player player, List<Card> hand) {
-
   }
 }

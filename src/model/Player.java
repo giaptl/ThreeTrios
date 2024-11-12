@@ -9,8 +9,8 @@ import java.util.Objects;
  */
 public class Player {
 
-  List<Card> hand;
-  String name;
+  private final List<Card> hand;
+  private final String name;
 
   /**
    * Creates a new player with the given name and hand.
