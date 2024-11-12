@@ -110,6 +110,17 @@ public class Grid {
     return newGrid;
   }
 
+  /**
+   * Returns whether a certain cell is empty.
+   *
+   * @param row represents the row of the cell that is being checked
+   * @param col represents the column of the cell that is being checked
+   * @return true if the cell is empty, false otherwise
+   */
+  public boolean isCellEmpty(int row, int col) {
+    return cells[row][col].isEmpty();
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
