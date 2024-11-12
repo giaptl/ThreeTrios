@@ -25,8 +25,6 @@ public class GameView extends JFrame implements IGameView {
   private JPanel gridPanel;
   private JPanel redHandPanel;
   private JPanel blueHandPanel;
-  private Card selectedCard = null;
-  private Player selectedPlayer = null;
   private JPanel previouslySelectedCardPanel = null;
 
 
@@ -50,20 +48,8 @@ public class GameView extends JFrame implements IGameView {
     setVisible(true);
   }
 
-  @Override
-  public Card getSelectedCard() {
-    return selectedCard;
-  }
-
-  @Override
-  public Player getSelectedPlayer() {
-    return selectedPlayer;
-  }
-
-  @Override
-  public void setSelectedCard(Card card, Player player) {
-    this.selectedCard = card;
-    this.selectedPlayer = player;
+  public void setController(Controller controller) {
+    this.controller = controller;
   }
 
   @Override
@@ -94,7 +80,7 @@ public class GameView extends JFrame implements IGameView {
       cardPanel.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-          handleCardClick(player, index);
+          controller.handleCardClick(player, index);
         }
       });
 
@@ -126,7 +112,7 @@ public class GameView extends JFrame implements IGameView {
         cellPanel.addMouseListener(new MouseAdapter() {
           @Override
           public void mouseClicked(MouseEvent e) {
-            handleGridClick(finalRow, finalCol);
+            controller.handleGridClick(finalRow, finalCol);
           }
         });
 
@@ -135,13 +121,6 @@ public class GameView extends JFrame implements IGameView {
     }
 
     return panel;
-  }
-
-  /**
-   * Handles clicking on a card in a player's hand.
-   */
-  private void handleCardClick(Player player, int cardIndex) {
-    controller.handleCardClick(player, cardIndex);
   }
 
 
@@ -194,29 +173,12 @@ public class GameView extends JFrame implements IGameView {
   }
 
 
-
-  /**
-   * Handles clicking on a grid cell.
-   */
-  private void handleGridClick(int row, int col) {
-    controller.handleGridClick(row, col);
-  }
-
   @Override
   public void updateGridCell(int row, int col, Card card) {
     JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
     cellPanel.removeAll();
     cellPanel.setLayout(new BorderLayout());
-
-    CardPanel cardPanel = new CardPanel(
-            card.getAttackValue(Direction.NORTH),
-            card.getAttackValue(Direction.SOUTH),
-            card.getAttackValue(Direction.EAST),
-            card.getAttackValue(Direction.WEST),
-            selectedPlayer.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
-    );
-
-    cellPanel.add(cardPanel, BorderLayout.CENTER);
+    createCardPanel(row, col, cellPanel, card);
     cellPanel.revalidate();
     cellPanel.repaint();
   }
@@ -272,7 +234,7 @@ public class GameView extends JFrame implements IGameView {
       cardPanel.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseClicked(MouseEvent e) {
-          handleCardClick(player, index);
+          controller.handleCardClick(player, index);
         }
       });
       handPanel.add(cardPanel);
@@ -290,14 +252,7 @@ public class GameView extends JFrame implements IGameView {
 
         Card card = model.getGrid().getCell(row, col).getCard();
         if (card != null) {
-          CardPanel cardPanel = new CardPanel(
-                  card.getAttackValue(Direction.NORTH),
-                  card.getAttackValue(Direction.SOUTH),
-                  card.getAttackValue(Direction.EAST),
-                  card.getAttackValue(Direction.WEST),
-                  model.getGrid().getCell(row, col).getOwner().equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
-          );
-          cellPanel.add(cardPanel, BorderLayout.CENTER);
+          createCardPanel(row, col, cellPanel, card);
         } else {
           cellPanel.setBackground(model.getGrid().getCell(row, col).isHole() ? Color.GRAY : Color.YELLOW);
         }
@@ -306,6 +261,17 @@ public class GameView extends JFrame implements IGameView {
         cellPanel.repaint();
       }
     }
+  }
+
+  private void createCardPanel(int row, int col, JPanel cellPanel, Card card) {
+    CardPanel cardPanel = new CardPanel(
+            card.getAttackValue(Direction.NORTH),
+            card.getAttackValue(Direction.SOUTH),
+            card.getAttackValue(Direction.EAST),
+            card.getAttackValue(Direction.WEST),
+            model.getGrid().getCell(row, col).getOwner().equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
+    );
+    cellPanel.add(cardPanel, BorderLayout.CENTER);
   }
 
   @Override

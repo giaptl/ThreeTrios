@@ -1,15 +1,13 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import javax.swing.*;
-
 import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
 import view.GameView;
-
+import controller.Controller;
 
 /**
  * Main class to run the game from.
@@ -37,10 +35,11 @@ public final class ThreeTrios {
       gameModel.startGameWithConfig(grid, cards, true);
       System.out.println("Game started successfully.");
 
-
       // Launch the GUI on the Swing event dispatch thread
       SwingUtilities.invokeLater(() -> {
         GameView gameView = new GameView(gameModel);
+        Controller controller = new Controller(gameModel, gameView);
+        gameView.setController(controller);
         gameView.setVisible(true);
       });
       System.out.print("GUI launched successfully.");

@@ -4,9 +4,9 @@ import model.Card;
 import model.Player;
 
 public interface IGameView {
-  void setSelectedCard(Card card, Player player);
-  Card getSelectedCard();
-  Player getSelectedPlayer();
+//  void setSelectedCard(Card card, Player player);
+//  Card getSelectedCard();
+//  Player getSelectedPlayer();
 
   void highlightSelectedCard(int cardIndex, Player player);
 
