@@ -1,30 +1,18 @@
 package view;
 
-import java.awt.*;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.Dimension;
 import java.util.List;
-
-import javax.swing.*;
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-
 import controller.Controller;
 import model.Card;
-import model.Direction;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
-/**
- * Main GameView class used to represent the GUI that will be displayed and played on by the user.
- * Contains two main parts: Grid and the Hand.
- * The grid represents the area that each card is played to. The hand represents the area where the
- * user contains the cards that they own.
- */
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
   private Controller controller;
@@ -32,122 +20,47 @@ public class GameView extends JFrame implements IGameView {
   private JPanel redHandPanel;
   private JPanel blueHandPanel;
   private JPanel previouslySelectedCardPanel = null;
+  private final GridPanelManager gridPanelManager;
+  private final HandPanelManager handPanelManager;
 
-  /**
-   * Constructor for the GameView class. Used in the main method to initialize the GUI.
-   */
   public GameView(ReadOnlyThreeTriosModel model) {
     this.model = model;
+    this.gridPanelManager = new GridPanelManager(model);
+    this.handPanelManager = new HandPanelManager(model);
     setTitle("ThreeTrios Game");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
 
-    // Create panels for hands and grid
-    redHandPanel = createHandPanel(model.getRedPlayer());
-    blueHandPanel = createHandPanel(model.getBluePlayer());
-    gridPanel = createGridPanel();
+    redHandPanel = handPanelManager.createHandPanel(model.getRedPlayer());
+    blueHandPanel = handPanelManager.createHandPanel(model.getBluePlayer());
+    gridPanel = gridPanelManager.getGridPanel();
 
-    // Add panels to frame
     add(redHandPanel, BorderLayout.WEST);
     add(blueHandPanel, BorderLayout.EAST);
     add(gridPanel, BorderLayout.CENTER);
 
-    pack(); // Adjusts window size based on component sizes
+    pack();
     setVisible(true);
   }
 
-  /**
-   * Method used to set the controller in the main method.
-   */
   public void setController(Controller controller) {
     this.controller = controller;
+    gridPanelManager.setController(controller);
+    handPanelManager.setController(controller);
   }
 
   @Override
   public void showError(String message) {
-    JOptionPane.showMessageDialog(this, message,
-            "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
   }
-
-
-  /**
-   * Method used to create the HandPanel, where the user can see the cards the own.
-   */
-  private JPanel createHandPanel(Player player) {
-    JPanel handPanel = new JPanel();
-    handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
-    Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
-
-    List<Card> hand = model.getPlayerHand(player);
-    for (int i = 0; i < hand.size(); i++) {
-      Card card = hand.get(i);
-
-      // Create a CardPanel for each card with its values
-      CardPanel cardPanel = new CardPanel(
-              card.getAttackValue(Direction.NORTH),
-              card.getAttackValue(Direction.SOUTH),
-              card.getAttackValue(Direction.EAST),
-              card.getAttackValue(Direction.WEST),
-              backgroundColor);
-
-      // Add mouse listener to handle clicks on cards
-      int index = i;
-      cardPanel.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          controller.handleCardClick(player, index);
-        }
-      });
-
-      handPanel.add(cardPanel);
-    }
-
-    return handPanel;
-  }
-
-  /**
-   * Creates a panel to display the game grid.
-   */
-  private JPanel createGridPanel() {
-    int rows = model.getGrid().getRows();
-    int cols = model.getGrid().getColumns();
-
-    JPanel panel = new JPanel(new GridLayout(rows, cols));
-
-    for (int row = 0; row < rows; row++) {
-      for (int col = 0; col < cols; col++) {
-        JPanel cellPanel = new JPanel();
-        cellPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        cellPanel.setBackground(model.getGrid()
-                .getCell(row, col).isHole() ? Color.GRAY : Color.YELLOW);
-
-        int finalRow = row;
-        int finalCol = col;
-
-        cellPanel.addMouseListener(new MouseAdapter() {
-          @Override
-          public void mouseClicked(MouseEvent e) {
-            controller.handleGridClick(finalRow, finalCol);
-          }
-        });
-
-        panel.add(cellPanel);
-      }
-    }
-
-    return panel;
-  }
-
 
   @Override
   public void updateCardSelection(Player player, Card card) {
-    // Reset previous selection
     if (previouslySelectedCardPanel != null) {
       previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       previouslySelectedCardPanel = null;
     }
 
-    // If there's a new selection, highlight it
     if (player != null && card != null) {
       JPanel cardPanel;
       int cardIndex = model.getPlayerHand(player).indexOf(card);
@@ -163,15 +76,9 @@ public class GameView extends JFrame implements IGameView {
     }
   }
 
-
   @Override
   public void updateGridCell(int row, int col, Card card) {
-    JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
-    cellPanel.removeAll();
-    cellPanel.setLayout(new BorderLayout());
-    createCardPanel(row, col, cellPanel, card);
-    cellPanel.revalidate();
-    cellPanel.repaint();
+    gridPanelManager.updateGridPanel();
   }
 
   @Override
@@ -191,94 +98,17 @@ public class GameView extends JFrame implements IGameView {
 
   @Override
   public void refreshView() {
-    // Remove old grid panel
     remove(gridPanel);
-
-    // Update the existing gridPanel
-    updateGridPanel();
-
-    // Update hand panels
-    updateHandPanel(redHandPanel, model.getRedPlayer());
-    updateHandPanel(blueHandPanel, model.getBluePlayer());
-
-    // Add grid panel back to frame
+    gridPanelManager.updateGridPanel();
+    handPanelManager.updateHandPanel(redHandPanel, model.getRedPlayer());
+    handPanelManager.updateHandPanel(blueHandPanel, model.getBluePlayer());
     add(gridPanel, BorderLayout.CENTER);
-
-    // Revalidate and repaint to update UI
     revalidate();
     repaint();
   }
 
-  /**
-   * Method used to update the hand panel after card is placed on the board.
-   */
-  private void updateHandPanel(JPanel handPanel, Player player) {
-    handPanel.removeAll();
-    List<Card> hand = model.getPlayerHand(player);
-    for (int i = 0; i < hand.size(); i++) {
-      Card card = hand.get(i);
-      CardPanel cardPanel = new CardPanel(
-              card.getAttackValue(Direction.NORTH),
-              card.getAttackValue(Direction.SOUTH),
-              card.getAttackValue(Direction.EAST),
-              card.getAttackValue(Direction.WEST),
-              player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
-      );
-      int index = i;
-      cardPanel.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-          controller.handleCardClick(player, index);
-        }
-      });
-      handPanel.add(cardPanel);
-    }
-    handPanel.revalidate();
-    handPanel.repaint();
-  }
-
-  /**
-   * Method used to update the grid after a card is placed on the grid.
-   */
-  private void updateGridPanel() {
-    for (int row = 0; row < model.getGrid().getRows(); row++) {
-      for (int col = 0; col < model.getGrid().getColumns(); col++) {
-        JPanel cellPanel = (JPanel) gridPanel.getComponent(
-                row * model.getGrid().getColumns() + col);
-        cellPanel.removeAll();
-        cellPanel.setLayout(new BorderLayout());
-
-        Card card = model.getGrid().getCell(row, col).getCard();
-        if (card != null) {
-          createCardPanel(row, col, cellPanel, card);
-        } else {
-          cellPanel.setBackground(model.getGrid().getCell(row, col)
-                  .isHole() ? Color.GRAY : Color.YELLOW);
-        }
-
-        cellPanel.revalidate();
-        cellPanel.repaint();
-      }
-    }
-  }
-
-  /**
-   * Method used to create each CardPanel
-   */
-  private void createCardPanel(int row, int col, JPanel cellPanel, Card card) {
-    CardPanel cardPanel = new CardPanel(
-            card.getAttackValue(Direction.NORTH),
-            card.getAttackValue(Direction.SOUTH),
-            card.getAttackValue(Direction.EAST),
-            card.getAttackValue(Direction.WEST),
-            model.getGrid().getCell(row, col).getOwner()
-                    .equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
-    );
-    cellPanel.add(cardPanel, BorderLayout.CENTER);
-  }
-
   @Override
   public Dimension getPreferredSize() {
-    return new Dimension(800, 600); // Default window size
+    return new Dimension(800, 600);
   }
 }

@@ -97,7 +97,7 @@ public class Grid {
    * grid so that the initial grid is not changed. Scoped because this is only used in the package
    * and not even in any of the subclasses. So this allows for the minimal method scope.
    */
-  Grid copyOfGrid() {
+  public Grid copyOfGrid() {
     Grid newGrid = new Grid(this.getRows(), this.getColumns());
     for (int row = 0; row < this.getRows(); row++) {
       for (int col = 0; col < this.getColumns(); col++) {

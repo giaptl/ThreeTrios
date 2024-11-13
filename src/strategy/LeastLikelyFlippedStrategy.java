@@ -3,6 +3,7 @@ package strategy;
 import java.util.List;
 
 import model.Card;
+import model.CardCell;
 import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
@@ -27,9 +28,7 @@ public class LeastLikelyFlippedStrategy implements Strategy {
       for (int row = 0; row < grid.getRows(); row++) {
         for (int col = 0; col < grid.getColumns(); col++) {
           if (grid.getCell(row, col).isEmpty()) {
-            // Calculate the flip risk for this card at this position
             int flipRisk = calculateFlipRisk(card, row, col, player, model);
-
             if (flipRisk < minFlipRisk || (flipRisk == minFlipRisk && isUpperLeft(row, col, bestMove))) {
               bestMove = new Move(card, row, col);
               minFlipRisk = flipRisk;
@@ -47,15 +46,16 @@ public class LeastLikelyFlippedStrategy implements Strategy {
     Player opponent = model.getOpponent(player);
     List<Card> opponentHand = model.getPlayerHand(opponent);
 
+    // Simulate placing the card
+    Grid simulatedGrid = model.getGrid().copyOfGrid();
+    simulatedGrid.setCell(row, col, new CardCell(card, player));
+
     for (Card opponentCard : opponentHand) {
-      // Simulate placing the opponent's card at each position and calculate flips
-      for (int oppRow = 0; oppRow < model.getGrid().getRows(); oppRow++) {
-        for (int oppCol = 0; oppCol < model.getGrid().getColumns(); oppCol++) {
-          if (model.getGrid().getCell(oppRow, oppCol).isEmpty()) {
+      for (int oppRow = 0; oppRow < simulatedGrid.getRows(); oppRow++) {
+        for (int oppCol = 0; oppCol < simulatedGrid.getColumns(); oppCol++) {
+          if (simulatedGrid.getCell(oppRow, oppCol).isEmpty()) {
             int flips = model.getNumCardsAbleToFlip(opponent, opponentCard, oppRow, oppCol);
-            if (flips > 0) {
-              flipRisk++;
-            }
+            flipRisk += flips;
           }
         }
       }

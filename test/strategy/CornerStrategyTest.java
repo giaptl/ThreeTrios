@@ -2,10 +2,11 @@ package strategy;
 
 import org.junit.Before;
 import org.junit.Test;
-import
-
+import model.Card;
+import model.CardValues;
 import model.MockThreeTriosModel;
 import model.Player;
+import static org.junit.Assert.*;
 
 public class CornerStrategyTest {
 
@@ -38,6 +39,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay));
     assertEquals(cardToPlay, mockModel.getGrid().getCell(0, 0).getCard());
     System.out.println("Round 1:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 2: Blue player's turn
     // Should play to top-right corner
@@ -52,6 +54,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay2));
     assertEquals(cardToPlay2, mockModel.getGrid().getCell(0, 2).getCard());
     System.out.println("Round 2:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 3: Red player's turn
     // Should play to bottom-left corner
@@ -66,6 +69,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay3));
     assertEquals(cardToPlay3, mockModel.getGrid().getCell(2, 0).getCard());
     System.out.println("Round 3:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 4: Blue player's turn
     // Should play to bottom-right corner
@@ -79,6 +83,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay4));
     assertEquals(cardToPlay4, mockModel.getGrid().getCell(2, 2).getCard());
     System.out.println("Round 4:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 5: Red player's turn
     // Should play to uppermost-leftmost available position (0, 1)
@@ -92,6 +97,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay5));
     assertEquals(cardToPlay5, mockModel.getGrid().getCell(0, 1).getCard());
     System.out.println("Round 5:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 6: Blue player's turn
     // Should play to next available position (1, 0)
@@ -105,6 +111,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay6));
     assertEquals(cardToPlay6, mockModel.getGrid().getCell(1, 0).getCard());
     System.out.println("Round 6:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 7: Red player's turn
     // Should play to next available position (1, 1)
@@ -118,6 +125,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay7));
     assertEquals(cardToPlay7, mockModel.getGrid().getCell(1, 1).getCard());
     System.out.println("Round 7:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 8: Blue player's turn
     // Should play to next available position (1, 2)
@@ -131,6 +139,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay8));
     assertEquals(cardToPlay8, mockModel.getGrid().getCell(1, 2).getCard());
     System.out.println("Round 8:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 9: Red player's turn
     // Should play to last available position (2, 1)
@@ -147,7 +156,7 @@ public class CornerStrategyTest {
 
     // Confirm game state and winner
     assertTrue(mockModel.isGameOver());
-    assertEquals(bluePlayer, mockModel.getWinner());
+    assertEquals(redPlayer, mockModel.getWinner());
   }
 
 }

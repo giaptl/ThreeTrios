@@ -9,8 +9,7 @@ import model.CardValues;
 import model.MockThreeTriosModel;
 import model.Player;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 
 /**
@@ -48,6 +47,7 @@ public class FlipMaximizerStrategyTest {
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay));
     assertEquals(cardToPlay, mockModel.getGrid().getCell(0, 0).getCard());
     System.out.println("Round 1:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 2: Blue player's turn
     // Should place at 0,1 since that maximizes flips and will be placed in the uppermost row
@@ -63,6 +63,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(cardToPlay2, mockModel.getGrid().getCell(0, 1).getCard());
     assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 0).getOwner());
     System.out.println("Round 2:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 3: Red player's turn
     // Should place at 0,2 since that maximizes flips. It places uppermost before leftmost grid tile
@@ -79,6 +80,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(redPlayer, mockModel.getGrid().getCell(0, 0).getOwner());
     assertEquals(redPlayer, mockModel.getGrid().getCell(0, 1).getOwner());
     System.out.println("Round 3:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 4: Blue player's turn
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
@@ -94,6 +96,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 1).getOwner());
     assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 2).getOwner());
     System.out.println("Round 4:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 5: Red player's turn
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
@@ -110,6 +113,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(redPlayer, mockModel.getGrid().getCell(0, 2).getOwner());
     assertEquals(redPlayer, mockModel.getGrid().getCell(1, 2).getOwner());
     System.out.println("Round 5:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 6: Blue player's turn
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
@@ -127,6 +131,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 1).getOwner());
     assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 2).getOwner());
     System.out.println("Round 6:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 7: Red player's turn
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
@@ -146,6 +151,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(redPlayer, mockModel.getGrid().getCell(1, 1).getOwner());
     assertEquals(redPlayer, mockModel.getGrid().getCell(1, 2).getOwner());
     System.out.println("Round 7:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 8: Blue player's turn
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
@@ -166,6 +172,7 @@ public class FlipMaximizerStrategyTest {
     assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 2).getOwner());
     assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 0).getOwner());
     System.out.println("Round 8:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
 
     // Round 9: Red player's turn
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
