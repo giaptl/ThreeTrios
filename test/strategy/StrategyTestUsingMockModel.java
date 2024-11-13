@@ -90,12 +90,12 @@ public class StrategyTestUsingMockModel {
     assertEquals(new Card("BlueCard2", 5, 5, 5,5), cardToPlay4);
     mockModel.playCard(bluePlayer, blueMove2.getCard(), blueMove2.getRow(), blueMove2.getCol());
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(blueMove2.getCard()));
-    //assertEquals(cardToPlay4, mockModel.getGrid().getCell(1, 2).getCard());
+    assertEquals(cardToPlay4, mockModel.getGrid().getCell(1, 0).getCard());
     System.out.print("Round 4:\n" + mockModel.getGrid());
 
     // Round 5: Red player's turn
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
-    redMove = combinedStrategy.selectMove(redPlayer, mockModel);
+    Move redMove3 = combinedStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove);
     //assertTrue(isCornerMove(redMove) || isFlipMaximizingMove(redMove));
   }
