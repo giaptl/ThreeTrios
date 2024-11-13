@@ -63,7 +63,7 @@ public class Controller {
    * Handles the event when a grid cell is clicked.
    * If a card is selected, it attempts to play the card at the specified grid cell.
    * If the move is valid, the grid cell is updated, the card is removed from the player's hand,
-   * and the view is refreshed. If the move is invalid, an error message is displayed.
+   * and the view refreshes. If the move is invalid, an error message displays.
    *
    * @param row the row index of the clicked grid cell
    * @param col the column index of the clicked grid cell

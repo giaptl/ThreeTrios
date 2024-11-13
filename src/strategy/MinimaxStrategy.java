@@ -45,7 +45,7 @@ public class MinimaxStrategy implements Strategy {
   private int simulateOpponentBestMove(Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
 
     // Place this player's card on the simulated grid
-//    model.playCard(player, card, row, col);
+    model.getNumCardsAbleToFlip(player, card, row, col);
 
     // Get opponent player
     Player opponent = model.getOpponent(player);

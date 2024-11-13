@@ -25,8 +25,6 @@ public class Grid {
     }
   }
 
-
-
   /**
    * Returns the number of rows in the grid.
    * @return the number of rows in the grid
@@ -94,7 +92,12 @@ public class Grid {
     return count;
   }
 
-  protected Grid copyOfGrid() {
+  /**
+   * Method that is used within the model to return a mutable copy of the
+   * grid so that the initial grid is not changed. Scoped because this is only used in the package
+   * and not even in any of the subclasses. So this allows for the minimal method scope.
+   */
+  Grid copyOfGrid() {
     Grid newGrid = new Grid(this.getRows(), this.getColumns());
     for (int row = 0; row < this.getRows(); row++) {
       for (int col = 0; col < this.getColumns(); col++) {
@@ -138,6 +141,4 @@ public class Grid {
     }
     return sb.toString();
   }
-
-
 }

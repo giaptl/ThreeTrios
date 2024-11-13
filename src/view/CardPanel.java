@@ -3,6 +3,9 @@ package view;
 import java.awt.*;
 import javax.swing.JPanel;
 
+/**
+ * Class that represents each card in a player's hand.
+ */
 public class CardPanel extends JPanel {
   private final String northValue;
   private final String southValue;
@@ -10,6 +13,9 @@ public class CardPanel extends JPanel {
   private final String westValue;
   private final Color backgroundColor;
 
+  /**
+   * Constructor that constructs a CardPanel for a card to be placed on in the hand.
+   */
   public CardPanel(String northValue, String southValue, String eastValue,
                    String westValue, Color backgroundColor) {
     this.northValue = northValue;

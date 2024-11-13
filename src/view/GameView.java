@@ -19,6 +19,12 @@ import model.Direction;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Main GameView class used to represent the GUI that will be displayed and played on by the user.
+ * Contains two main parts: Grid and the Hand.
+ * The grid represents the area that each card is played to. The hand represents the area where the
+ * user contains the cards that they own.
+ */
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
   private Controller controller;
@@ -27,7 +33,9 @@ public class GameView extends JFrame implements IGameView {
   private JPanel blueHandPanel;
   private JPanel previouslySelectedCardPanel = null;
 
-
+  /**
+   * Constructor for the GameView class. Used in the main method to initialize the GUI.
+   */
   public GameView(ReadOnlyThreeTriosModel model) {
     this.model = model;
     setTitle("ThreeTrios Game");
@@ -48,16 +56,23 @@ public class GameView extends JFrame implements IGameView {
     setVisible(true);
   }
 
+  /**
+   * Method used to set the controller in the main method.
+   */
   public void setController(Controller controller) {
     this.controller = controller;
   }
 
   @Override
   public void showError(String message) {
-    JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    JOptionPane.showMessageDialog(this, message,
+            "Error", JOptionPane.ERROR_MESSAGE);
   }
 
 
+  /**
+   * Method used to create the HandPanel, where the user can see the cards the own.
+   */
   private JPanel createHandPanel(Player player) {
     JPanel handPanel = new JPanel();
     handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
@@ -218,6 +233,9 @@ public class GameView extends JFrame implements IGameView {
     repaint();
   }
 
+  /**
+   * Method used to update the hand panel after card is placed on the board.
+   */
   private void updateHandPanel(JPanel handPanel, Player player) {
     handPanel.removeAll();
     List<Card> hand = model.getPlayerHand(player);
@@ -243,10 +261,14 @@ public class GameView extends JFrame implements IGameView {
     handPanel.repaint();
   }
 
+  /**
+   * Method used to update the grid after a card is placed on the grid.
+   */
   private void updateGridPanel() {
     for (int row = 0; row < model.getGrid().getRows(); row++) {
       for (int col = 0; col < model.getGrid().getColumns(); col++) {
-        JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
+        JPanel cellPanel = (JPanel) gridPanel.getComponent(
+                row * model.getGrid().getColumns() + col);
         cellPanel.removeAll();
         cellPanel.setLayout(new BorderLayout());
 
@@ -254,7 +276,8 @@ public class GameView extends JFrame implements IGameView {
         if (card != null) {
           createCardPanel(row, col, cellPanel, card);
         } else {
-          cellPanel.setBackground(model.getGrid().getCell(row, col).isHole() ? Color.GRAY : Color.YELLOW);
+          cellPanel.setBackground(model.getGrid().getCell(row, col)
+                  .isHole() ? Color.GRAY : Color.YELLOW);
         }
 
         cellPanel.revalidate();
@@ -263,13 +286,17 @@ public class GameView extends JFrame implements IGameView {
     }
   }
 
+  /**
+   * Method used to create each CardPanel
+   */
   private void createCardPanel(int row, int col, JPanel cellPanel, Card card) {
     CardPanel cardPanel = new CardPanel(
             card.getAttackValue(Direction.NORTH),
             card.getAttackValue(Direction.SOUTH),
             card.getAttackValue(Direction.EAST),
             card.getAttackValue(Direction.WEST),
-            model.getGrid().getCell(row, col).getOwner().equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
+            model.getGrid().getCell(row, col).getOwner()
+                    .equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN
     );
     cellPanel.add(cardPanel, BorderLayout.CENTER);
   }

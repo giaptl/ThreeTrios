@@ -17,12 +17,17 @@ public enum CardValues {
 
   private final int value;
 
+  /**
+   * Constructor of the enum class to assign values.
+   * Scoped since adding a constructor in an enum class is redundant
+   */
   CardValues(int value) {
     this.value = value;
   }
 
   /**
-   * Gets value of the card.
+   * Gets value of the card. Scoped since this is only used in testing.
+   * But may be needed in controller, so the scope of this method may change.
    */
   int getValue() {
     return value;

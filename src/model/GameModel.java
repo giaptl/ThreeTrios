@@ -22,7 +22,8 @@ public class GameModel implements ThreeTriosModel {
   private boolean isGameOver;
 
   /**
-   * Creates a new game model.
+   * Creates a new game model. Doesn't need to be passed in anything as this is basically a
+   * door to the "actual" instantiation of the model which happens in startGameWithConfig.
    */
   public GameModel() {
     this.isGameOver = false;
@@ -125,7 +126,9 @@ public class GameModel implements ThreeTriosModel {
     }
   }
 
-  // Helper method that counts the number of occupied cells for each player.
+  /**
+   * Helper method that counts the number of occupied cells for each player.
+   */
   private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
@@ -154,14 +157,14 @@ public class GameModel implements ThreeTriosModel {
 
     // Switch the current player
     currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
-
-    // Check if the game is over
     isGameOver = isGameOver();
-
   }
 
-  // Helper method to check the conditions for playing a card.
+  /**
+   * Helper method to check the conditions for playing a card.
+   */
   private void playCardConditions(Player player, int row, int col, Card cardToPlay) {
+    Cell cell = grid.getCell(row, col);
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
     }
@@ -169,8 +172,6 @@ public class GameModel implements ThreeTriosModel {
     if (!player.getHand().contains(cardToPlay)) {
       throw new IllegalArgumentException("Card is not in player's hand.");
     }
-
-    Cell cell = grid.getCell(row, col);
 
     if (!(isValidCell(row, col))) {
       throw new IllegalArgumentException("Invalid row or column.");
@@ -188,10 +189,8 @@ public class GameModel implements ThreeTriosModel {
     if (isGameOver) {
       throw new IllegalArgumentException("Game is over.");
     }
-
   }
 
-  // make sure the combo move is working here too
   @Override
   public void startBattlePhase(int row, int col) {
     Cell cell = grid.getCell(row, col);
@@ -221,11 +220,17 @@ public class GameModel implements ThreeTriosModel {
     return cardsFlipped;
   }
 
-  // this works for now want to try easier ways and stuff
+  /**
+   * Simulation of entire battle phase. Abstracted into its own method for code clarity.
+   */
   private int simulateEntireBattlePhase(Player player, int startRow, int startCol) {
     return processBattlePhase(player, startRow, startCol);
   }
 
+  /**
+   * Helper method which abstracts out much of the battle phase
+   * code from both the simulation and the actual battle phase.
+   */
   private int processBattlePhase(Player player, int startRow, int startCol) {
     int cardsFlipped = 0;
     Queue<int[]> toProcess = new LinkedList<>();
@@ -242,11 +247,16 @@ public class GameModel implements ThreeTriosModel {
         continue;
       }
 
-      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, visited, toProcess);
+      cardsFlipped += processAdjacentCells(player, currentCell.getCard(),
+              row, col, visited, toProcess);
     }
     return cardsFlipped;
   }
 
+  /**
+   * Checks to see which cells are being flipped and also flipping cards
+   * that have already been flipped.
+   */
   private int processAdjacentCells(Player player, Card currentCard, int row, int col,
                                    Set<String> visited, Queue<int[]> toProcess) {
     int flipped = 0;
@@ -257,7 +267,8 @@ public class GameModel implements ThreeTriosModel {
 
       if (isValidCell(newRow, newCol) && !visited.contains(cellKey)) {
         visited.add(cellKey);
-        int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
+        int flippedInDirection = cardAttackDirections(direction, newRow,
+                newCol, player, currentCard);
         flipped += flippedInDirection;
         if (flippedInDirection > 0) {
           toProcess.offer(new int[]{newRow, newCol});
@@ -267,14 +278,20 @@ public class GameModel implements ThreeTriosModel {
     return flipped;
   }
 
-
+  /**
+   * Helper method that abstracted out redundant code to check if a CELL is valid.
+   */
   private boolean isValidCell(int row, int col) {
     return row >= 0 && row < grid.getRows() && col >= 0
             && col < grid.getColumns();
   }
 
-
-  private int cardAttackDirections(Direction direction, int newRow, int newCol, Player owner, Card card) {
+  /**
+   * This method allows us to flip cards in the 4 directions and keep track of how many cards
+   * are flipped from each turn.
+   */
+  private int cardAttackDirections(Direction direction, int newRow, int newCol,
+                                   Player owner, Card card) {
     int cardsFlipped = 0;
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
@@ -298,11 +315,12 @@ public class GameModel implements ThreeTriosModel {
     return cardsFlipped;
   }
 
-
+  /**
+   * Finds the attack value. Method helps us deal with the A representing the value 10 as an int.
+   */
   private int parseAttackValue(String value) {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
   }
-
 
   @Override
   public int getPlayerScore(Player player) {

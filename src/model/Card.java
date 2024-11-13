@@ -31,6 +31,19 @@ public class Card {
    */
   public Card(String name, int north, int south, int east, int west) {
 
+    checkIfValidCard(name, north, south, east, west);
+    this.name = name;
+    this.attackValues = new HashMap<>();
+    this.attackValues.put(Direction.NORTH, north);
+    this.attackValues.put(Direction.SOUTH, south);
+    this.attackValues.put(Direction.EAST, east);
+    this.attackValues.put(Direction.WEST, west);
+  }
+
+  /**
+   * Helper method that checks if a card is valid.
+   */
+  private static void checkIfValidCard(String name, int north, int south, int east, int west) {
     if (name == null) {
       throw new IllegalArgumentException("Name cannot be null.");
     }
@@ -42,13 +55,6 @@ public class Card {
     if (north > 10 || south > 10 || east > 10 || west > 10) {
       throw new IllegalArgumentException("Attack values cannot be greater than 10.");
     }
-
-    this.name = name;
-    this.attackValues = new HashMap<>();
-    this.attackValues.put(Direction.NORTH, north);
-    this.attackValues.put(Direction.SOUTH, south);
-    this.attackValues.put(Direction.EAST, east);
-    this.attackValues.put(Direction.WEST, west);
   }
 
   /**

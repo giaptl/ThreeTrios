@@ -50,10 +50,6 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    */
   void playCard(Player player, Card card, int row, int col);
 
-
-
-
-
   /**
    * Starts the battle phase at the specified position on the grid. The battle phase occurs between
    * 2 cards that are adjacent to each other. The card at the specified position must be the card

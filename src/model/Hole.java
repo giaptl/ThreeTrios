@@ -8,7 +8,8 @@ import java.util.Objects;
 public class Hole implements Cell {
 
   /**
-  * Creates a new hole.
+  * Creates a new hole. Empty constructor since nothing needs to be initialized.
+  * Will remove if deemed redundant.
   */
   public Hole() {
     //Empty constructor

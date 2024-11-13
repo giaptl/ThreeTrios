@@ -3,17 +3,62 @@ package view;
 import model.Card;
 import model.Player;
 
+/**
+ * Interface representing the view component of the ThreeTrios game.
+ * The IGameView interface defines methods for updating and managing the visual
+ * representation of the game, including displaying the player's hands, grid cells,
+ * and handling user interactions.
+ */
 public interface IGameView {
-//  void setSelectedCard(Card card, Player player);
-//  Card getSelectedCard();
-//  Player getSelectedPlayer();
 
+  /**
+   * Highlights the selected card in the specified player's hand by changing its border color.
+   * This method is used to visually indicate the card that the player has selected.
+   *
+   * @param cardIndex the index of the selected card in the player's hand
+   * @param player the player who selected the card (either red or blue player)
+   */
   void highlightSelectedCard(int cardIndex, Player player);
 
+  /**
+   * Updates the display of a specific cell in the grid with the provided card.
+   * This is called when a card is placed on the grid, updating the cell to display the card's values.
+   *
+   * @param row the row index of the grid cell to update
+   * @param col the column index of the grid cell to update
+   * @param card the card to display in the specified grid cell
+   */
   void updateGridCell(int row, int col, Card card);
+
+  /**
+   * Removes a specific card from the player's hand panel.
+   * This is typically called after the player places the card on the grid.
+   *
+   * @param player the player whose hand panel will be updated (either red or blue player)
+   * @param card the card to remove from the player's hand panel
+   */
   void removeCardFromHandPanel(Player player, Card card);
+
+  /**
+   * Refreshes the view to reflect the latest state of the game model.
+   * This includes updating the grid and hand panels to display the current cards and layout.
+   */
   void refreshView();
+
+  /**
+   * Displays an error message in a dialog box, typically when an invalid move is attempted or
+   * when the game encounters an error.
+   *
+   * @param message the error message to display
+   */
   void showError(String message);
 
+  /**
+   * Updates the visual indication of a selected card in the player's hand.
+   * This highlights the selected card and removes any previous highlights.
+   *
+   * @param player the player who owns the selected card (either red or blue player)
+   * @param card the card that is selected
+   */
   void updateCardSelection(Player player, Card card);
 }

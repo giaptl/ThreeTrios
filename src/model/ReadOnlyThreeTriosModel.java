@@ -66,9 +66,23 @@ public interface ReadOnlyThreeTriosModel {
    */
   int getPlayerScore(Player player);
 
-
-
+  /**
+   * Returns the number of cards that able to be flipped by placing a certain card from a player's
+   * hand to a spot on the board. This method is especially helpful for determining the best move
+   * that can be played for a player.
+   *
+   * @param player represents the player whose card will be played onto the board.
+   * @param card represents the card that will be played to the board.
+   * @param row represents the row of the board that the card will be played to.
+   * @param col represents the column of the board that the card will be played to.
+   */
   int getNumCardsAbleToFlip(Player player, Card card, int row, int col);
 
+  /**
+   * Returns the opponent of the player who is currently playing.
+   * Used primarily in the AI strategies that were implemented.
+   *
+   * @param player represents which player's turn it is right now and who the opponent is.
+   */
   Player getOpponent(Player player);
 }

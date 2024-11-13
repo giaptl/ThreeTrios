@@ -14,7 +14,8 @@ import model.Grid;
 import model.Hole;
 
 /**
- * Reads configuration files for the grid and card data.
+ * Reads configuration files for the grid and card data. Very important for reading the starting
+ * files to start the game.
  */
 public class ConfigurationReader {
 

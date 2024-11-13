@@ -4,27 +4,23 @@ import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
 public class CombinedStrategy implements Strategy {
-  private final Strategy firstStrategy;
-  private final Strategy fallbackStrategy;
+  private final Strategy cornerStrategy;
+  private final Strategy mainStrategy;
+  private int moveCount;
 
-  public CombinedStrategy(Strategy firstStrategy, Strategy fallbackStrategy) {
-    this.firstStrategy = firstStrategy;
-    this.fallbackStrategy = fallbackStrategy;
+  public CombinedStrategy(Strategy mainStrategy) {
+    this.cornerStrategy = new CornerStrategy();
+    this.mainStrategy = mainStrategy;
+    this.moveCount = 0;
   }
 
   @Override
   public Move selectMove(Player player, ReadOnlyThreeTriosModel model) {
-    Move firstAttempt = firstStrategy.selectMove(player, model);
-
-    if (firstAttempt != null && isGoodEnough(firstAttempt)) {
-      return firstAttempt;
+    moveCount++;
+    if (moveCount <= 4) {
+      return cornerStrategy.selectMove(player, model);
     } else {
-      return fallbackStrategy.selectMove(player, model);
+      return mainStrategy.selectMove(player, model);
     }
-  }
-
-  private boolean isGoodEnough(Move move) {
-    // Define logic to determine if first attempt is good enough.
-    return true;
   }
 }

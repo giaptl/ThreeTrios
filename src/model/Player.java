@@ -37,10 +37,20 @@ public class Player {
     return new ArrayList<>(this.hand);
   }
 
+  /**
+   * Public method which removes the card from a players hand.
+   *
+   * @param card represents the card that will be removed.
+   */
   public void removeCard(Card card) {
     this.hand.remove(card);
   }
 
+  /**
+   * Public method which adds the card from a players hand.
+   *
+   * @param card represents the card that will be added.
+   */
   public void addCard(Card card) {
     this.hand.add(card);
   }

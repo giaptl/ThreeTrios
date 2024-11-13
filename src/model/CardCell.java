@@ -10,10 +10,17 @@ public class CardCell implements Cell {
   private Card card;
   private Player owner;
 
+  /**
+   * Creates a new instance of the class with a null card.
+   */
   public CardCell() {
     this.card = null;
   }
 
+  /**
+   * Create an instance of CardCell with a card and owner assigned to it.
+   * Happens when a card is placed on the board.
+   */
   public CardCell(Card card, Player owner) {
     this.card = card;
     this.owner = owner;
@@ -37,7 +44,6 @@ public class CardCell implements Cell {
   public boolean isOccupied() {
     return card != null;
   }
-
 
   @Override
   public Card getCard() {

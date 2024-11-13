@@ -9,6 +9,9 @@ public enum Direction {
 
   /**
    * Gets the row offset for the current direction.
+   * The method is package scoped since we wanted to lower the visibility of our methods
+   * as much as possible. And since these methods are essentially being used only in the model,
+   * we can get away with only making this method package-private
    *
    * @return -1 if the direction is NORTH, 1 if the direction is SOUTH,
    *         and 0 for all other directions.
@@ -26,6 +29,7 @@ public enum Direction {
 
   /**
    * Gets the column offset for the current direction.
+   * The method is packaged scoped for the same reason as getRowOffset().
    *
    * @return 1 if the direction is EAST, -1 if the direction is WEST,
    *         and 0 for all other directions.
