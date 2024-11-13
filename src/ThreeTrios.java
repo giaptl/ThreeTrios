@@ -20,7 +20,7 @@ public final class ThreeTrios {
   public static void main(String[] args) {
     try {
       // Read the grid configuration
-      String gridConfigPath = "configFiles" + File.separator + "board.config";
+      String gridConfigPath = "configFiles" + File.separator + "board1WithNoHoles.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
@@ -32,7 +32,7 @@ public final class ThreeTrios {
 
       // Create a new GameModel instance and start the game
       GameModel gameModel = new GameModel();
-      gameModel.startGameWithConfig(grid, cards, true);
+      gameModel.startGameWithConfig(grid, cards, false);
       System.out.println("Game started successfully.");
 
       // Launch the GUI on the Swing event dispatch thread

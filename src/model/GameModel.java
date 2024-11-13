@@ -227,28 +227,49 @@ public class GameModel implements ThreeTriosModel {
     return processBattlePhase(player, startRow, startCol);
   }
 
+  @Override
+  public int getPlayerScore(Player player) {
+    int redCardCount = pRed.getHand().size();
+    int blueCardCount = pBlue.getHand().size();
+
+    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
+    redCardCount = counts[0];
+    blueCardCount = counts[1];
+
+    if (player == pRed) {
+      return redCardCount;
+    } else if (player == pBlue) {
+      return blueCardCount;
+    }
+    return -1;
+  }
+
   /**
    * Helper method which abstracts out much of the battle phase
    * code from both the simulation and the actual battle phase.
    */
-  private int processBattlePhase(Player player, int startRow, int startCol) {
+  protected int processBattlePhase(Player player, int startRow, int startCol) {
     int cardsFlipped = 0;
     Queue<int[]> toProcess = new LinkedList<>();
     Set<String> visited = new HashSet<>();
     toProcess.offer(new int[]{startRow, startCol});
-    visited.add(startRow + "," + startCol);
 
     while (!toProcess.isEmpty()) {
       int[] current = toProcess.poll();
       int row = current[0], col = current[1];
-      CardCell currentCell = (CardCell) grid.getCell(row, col);
+      String cellKey = row + "," + col;
 
+      if (visited.contains(cellKey)) {
+        continue;
+      }
+      visited.add(cellKey);
+
+      CardCell currentCell = (CardCell) grid.getCell(row, col);
       if (currentCell == null || currentCell.getCard() == null) {
         continue;
       }
 
-      cardsFlipped += processAdjacentCells(player, currentCell.getCard(),
-              row, col, visited, toProcess);
+      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, visited, toProcess);
     }
     return cardsFlipped;
   }
@@ -257,18 +278,16 @@ public class GameModel implements ThreeTriosModel {
    * Checks to see which cells are being flipped and also flipping cards
    * that have already been flipped.
    */
-  private int processAdjacentCells(Player player, Card currentCard, int row, int col,
-                                   Set<String> visited, Queue<int[]> toProcess) {
+  protected int processAdjacentCells(Player player, Card currentCard, int row, int col,
+                                     Set<String> visited, Queue<int[]> toProcess) {
     int flipped = 0;
     for (Direction direction : Direction.values()) {
       int newRow = row + direction.getRowOffset();
       int newCol = col + direction.getColOffset();
       String cellKey = newRow + "," + newCol;
 
-      if (isValidCell(newRow, newCol) && !visited.contains(cellKey)) {
-        visited.add(cellKey);
-        int flippedInDirection = cardAttackDirections(direction, newRow,
-                newCol, player, currentCard);
+      if (isValidCell(newRow, newCol)) {
+        int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
         flipped += flippedInDirection;
         if (flippedInDirection > 0) {
           toProcess.offer(new int[]{newRow, newCol});
@@ -281,17 +300,16 @@ public class GameModel implements ThreeTriosModel {
   /**
    * Helper method that abstracted out redundant code to check if a CELL is valid.
    */
-  private boolean isValidCell(int row, int col) {
-    return row >= 0 && row < grid.getRows() && col >= 0
-            && col < grid.getColumns();
+  protected boolean isValidCell(int row, int col) {
+    return row >= 0 && row < grid.getRows() && col >= 0 && col < grid.getColumns();
   }
 
   /**
    * This method allows us to flip cards in the 4 directions and keep track of how many cards
    * are flipped from each turn.
    */
-  private int cardAttackDirections(Direction direction, int newRow, int newCol,
-                                   Player owner, Card card) {
+  protected int cardAttackDirections(Direction direction, int newRow, int newCol,
+                                     Player owner, Card card) {
     int cardsFlipped = 0;
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
@@ -318,24 +336,8 @@ public class GameModel implements ThreeTriosModel {
   /**
    * Finds the attack value. Method helps us deal with the A representing the value 10 as an int.
    */
-  private int parseAttackValue(String value) {
+  protected int parseAttackValue(String value) {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
   }
 
-  @Override
-  public int getPlayerScore(Player player) {
-    int redCardCount = pRed.getHand().size();
-    int blueCardCount = pBlue.getHand().size();
-
-    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
-    redCardCount = counts[0];
-    blueCardCount = counts[1];
-
-    if (player == pRed) {
-      return redCardCount;
-    } else if (player == pBlue) {
-      return blueCardCount;
-    }
-    return -1;
-  }
 }

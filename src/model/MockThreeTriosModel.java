@@ -1,9 +1,11 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 import static model.CardValues.A;
 
@@ -38,10 +40,12 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   @Override
   public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle) {
     // will not be used since we already assigned players cards in constructor
+    isGameOver = false;
   }
 
   public void startGameWithConfig(Grid grid) {
     this.grid = grid;
+    isGameOver = false;
   }
 
   @Override
@@ -58,13 +62,25 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
     grid.setCell(row, col, new CardCell(card, player));
     player.removeCard(card);
-    currentPlayer = (currentPlayer == redPlayer) ? bluePlayer : redPlayer;
+    startBattlePhase(row, col);
+    currentPlayer = currentPlayer.equals(redPlayer) ? bluePlayer : redPlayer;
+    isGameOver = isGameOver();
   }
 
   @Override
   public void startBattlePhase(int row, int col) {
-    // Implement if needed for testing
+    Cell cell = grid.getCell(row, col);
+    if (cell.isHole()) {
+      throw new IllegalArgumentException("No card at the specified cell or cell is a hole.");
+    }
+    CardCell cardCell = (CardCell) cell;
+    Player owner = cardCell.getOwner();
+
+    processBattlePhase(owner, row, col);
   }
+
+
+
 
   @Override
   public Grid getGrid() {
@@ -88,19 +104,81 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   @Override
   public int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
-    // Simplified implementation for testing
-    return 1;
+    // Save the current state of the grid
+    Grid originalGrid = grid.copyOfGrid();
+
+    // Temporarily place the card on the grid
+    CardCell tempCardCell = new CardCell(card, player);
+    grid.setCell(row, col, tempCardCell);
+
+    // Simulate the battle phase and count the number of cards flipped
+    int cardsFlipped = simulateEntireBattlePhase(player, row, col);
+
+    // Revert the grid to its original state
+    grid.setGrid(originalGrid);
+    return cardsFlipped;
+  }
+
+  /**
+   * Simulation of entire battle phase. Abstracted into its own method for code clarity.
+   */
+  private int simulateEntireBattlePhase(Player player, int startRow, int startCol) {
+    return processBattlePhase(player, startRow, startCol);
   }
 
   @Override
   public boolean isGameOver() {
-    return this.isGameOver;
+    for (int row = 0; row < grid.getRows(); row++) {
+      for (int col = 0; col < grid.getColumns(); col++) {
+        Cell cell =  grid.getCell(row, col);
+        if (!cell.isHole() && cell.isEmpty()) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   @Override
   public Player getWinner() {
-    // Simplified implementation for testing
-    return isGameOver ? redPlayer : null;
+
+    int redCardCount = redPlayer.getHand().size();
+    int blueCardCount = bluePlayer.getHand().size();
+
+    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
+    redCardCount = counts[0];
+    blueCardCount = counts[1];
+
+    if (redCardCount > blueCardCount) {
+      // Red Player wins
+      return redPlayer;
+    } else if (blueCardCount > redCardCount) {
+      // Blue player wins
+      return bluePlayer;
+    } else {
+      // Tie
+      return null;
+    }
+  }
+
+  /**
+   * Helper method that counts the number of occupied cells for each player.
+   */
+  private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
+    for (int row = 0; row < grid.getRows(); row++) {
+      for (int col = 0; col < grid.getColumns(); col++) {
+        CardCell cell = (CardCell) grid.getCell(row, col);
+        if (cell.isOccupied()) {
+          Player owner = cell.getOwner();
+          if (owner.equals(redPlayer)) {
+            redCardCount++;
+          } else if (owner.equals(bluePlayer)) {
+            blueCardCount++;
+          }
+        }
+      }
+    }
+    return new int[]{redCardCount, blueCardCount};
   }
 
   @Override
@@ -130,4 +208,106 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   public void setCell(int row, int col, Cell cell) {
     this.grid.setCell(row, col, cell);
   }
+
+
+  /**
+   * Helper method which abstracts out much of the battle phase
+   * code from both the simulation and the actual battle phase.
+   */
+  protected int processBattlePhase(Player player, int startRow, int startCol) {
+    int cardsFlipped = 0;
+    Queue<int[]> toProcess = new LinkedList<>();
+    Set<String> visited = new HashSet<>();
+    toProcess.offer(new int[]{startRow, startCol});
+
+    while (!toProcess.isEmpty()) {
+      int[] current = toProcess.poll();
+      int row = current[0], col = current[1];
+      String cellKey = row + "," + col;
+
+      if (visited.contains(cellKey)) {
+        continue;
+      }
+      visited.add(cellKey);
+
+      CardCell currentCell = (CardCell) grid.getCell(row, col);
+      if (currentCell == null || currentCell.getCard() == null) {
+        continue;
+      }
+
+      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, visited, toProcess);
+    }
+    return cardsFlipped;
+  }
+
+  /**
+   * Checks to see which cells are being flipped and also flipping cards
+   * that have already been flipped.
+   */
+  protected int processAdjacentCells(Player player, Card currentCard, int row, int col,
+                                     Set<String> visited, Queue<int[]> toProcess) {
+    int flipped = 0;
+    for (Direction direction : Direction.values()) {
+      int newRow = row + direction.getRowOffset();
+      int newCol = col + direction.getColOffset();
+      String cellKey = newRow + "," + newCol;
+
+      if (isValidCell(newRow, newCol)) {
+        int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
+        flipped += flippedInDirection;
+        if (flippedInDirection > 0) {
+          toProcess.offer(new int[]{newRow, newCol});
+        }
+      }
+    }
+    return flipped;
+  }
+
+  /**
+   * Helper method that abstracted out redundant code to check if a CELL is valid.
+   */
+  protected boolean isValidCell(int row, int col) {
+    return row >= 0 && row < grid.getRows() && col >= 0 && col < grid.getColumns();
+  }
+
+  /**
+   * This method allows us to flip cards in the 4 directions and keep track of how many cards
+   * are flipped from each turn.
+   */
+  protected int cardAttackDirections(Direction direction, int newRow, int newCol,
+                                     Player owner, Card card) {
+    int cardsFlipped = 0;
+    if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
+      Cell adjacentCell = grid.getCell(newRow, newCol);
+
+      if (!(adjacentCell.isHole())) {
+        CardCell adjacentCardCell = (CardCell) adjacentCell;
+        Card adjacentCard = adjacentCardCell.getCard();
+        Player adjacentOwner = adjacentCardCell.getOwner();
+
+        if (adjacentCard != null && !owner.equals(adjacentOwner)) {
+          int attackValue = parseAttackValue(card.getAttackValue(direction));
+          int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
+
+          if (attackValue > defenseValue) {
+            adjacentCardCell.setOwner(owner);
+            cardsFlipped++;
+          }
+        }
+      }
+    }
+    return cardsFlipped;
+  }
+
+  /**
+   * Finds the attack value. Method helps us deal with the A representing the value 10 as an int.
+   */
+  protected int parseAttackValue(String value) {
+    return "A".equals(value) ? 10 : Integer.parseInt(value);
+  }
+
+
+
+
+
 }

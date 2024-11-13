@@ -172,6 +172,21 @@ public class GameModelInnerTests {
     assertEquals(2, numFlips);
   }
 
+  @Test
+  public void testGetNumCardsAbleToFlipAllThreeCards() {
+    Card centerCard = new Card("1,2", 9, 9, 9, 9);
+    Card one = new Card("0,0", 1, 1, 1, 1);
+    Card two = new Card("0,1", 2, 2, 2, 2);
+    Card three = new Card("0,2", 3, 3, 3, 3);
+
+    grid.setCell(0, 0, new CardCell(one, gameModel.getBluePlayer()));
+    grid.setCell(0, 1, new CardCell(two, gameModel.getBluePlayer()));
+    grid.setCell(0, 2, new CardCell(three, gameModel.getBluePlayer()));
+
+    int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), centerCard, 1, 2);
+    assertEquals(3, numFlips);
+  }
+
   // -------------------------------------------------------------------------------
 
   @Test
@@ -188,6 +203,7 @@ public class GameModelInnerTests {
     int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), edgeCard, 0, 1);
     assertEquals(3, numFlips);
   }
+
 
   @Test
   public void testStartBattlePhase() {

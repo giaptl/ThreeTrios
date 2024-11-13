@@ -25,22 +25,36 @@ public class FlipMaximizerStrategy implements Strategy {
           if (grid.getCell(row, col).isEmpty()) {
             // Simulate placing this card at this position
             int flips = model.getNumCardsAbleToFlip(player, card, row, col);
+            Move currentMove = new Move(card, row, col);
 
             // If this move flips more cards than previous best, choose it
-            if (flips > maxFlips || (flips == maxFlips && isUpperLeft(row, col, Objects.requireNonNull(bestMove)))) {
+            if (flips > maxFlips) {
               bestMove = new Move(card, row, col);
               maxFlips = flips;
+            } else if (flips == maxFlips) {
+              bestMove = findUpperLeft(row, col, Objects.requireNonNull(bestMove), Objects.requireNonNull(currentMove));
             }
           }
         }
       }
     }
 
-    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
+    if (bestMove != null) {
+      return bestMove;
+    } else {
+      return Move.findFallbackMove(hand, grid, model, player);
+    }
   }
 
-  private boolean isUpperLeft(int row, int col, Move currentBest) {
+  private Move findUpperLeft(int row, int col, Move currentBest, Move currentMove) {
     // Break ties by choosing upper-leftmost coordinate
-    return row < currentBest.getRow() || (row == currentBest.getRow() && col < currentBest.getCol());
+    // Compare the two moves and return the one that is at the uppermost-leftmost position
+//    System.out.println("CurrentBest: " + currentBest.getRow() + " " + currentBest.getCol());
+//    System.out.println("NewMove: " + currentMove.getRow() + " " + currentMove.getCol());
+    if (currentMove.getRow() < currentBest.getRow() ||
+            (currentMove.getRow() == currentBest.getRow() && currentMove.getCol() < currentBest.getCol())) {
+      return currentMove;
+    }
+    return currentBest;
   }
 }

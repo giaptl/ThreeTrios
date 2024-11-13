@@ -64,4 +64,5 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    */
   void startBattlePhase(int row, int col);
 
+
 }

@@ -19,7 +19,6 @@ public enum CardValues {
 
   /**
    * Constructor of the enum class to assign values.
-   * Scoped since adding a constructor in an enum class is redundant
    */
   CardValues(int value) {
     this.value = value;
@@ -27,9 +26,8 @@ public enum CardValues {
 
   /**
    * Gets value of the card. Scoped since this is only used in testing.
-   * But may be needed in controller, so the scope of this method may change.
    */
-  int getValue() {
+  public int getValue() {
     return value;
   }
 }
