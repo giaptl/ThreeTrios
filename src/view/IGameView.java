@@ -12,15 +12,6 @@ import model.Player;
 public interface IGameView {
 
   /**
-   * Highlights the selected card in the specified player's hand by changing its border color.
-   * This method is used to visually indicate the card that the player has selected.
-   *
-   * @param cardIndex the index of the selected card in the player's hand
-   * @param player the player who selected the card (either red or blue player)
-   */
-  void highlightSelectedCard(int cardIndex, Player player);
-
-  /**
    * Updates the display of a specific cell in the grid with the provided card.
    * This is called when a card is placed on the grid, updating the cell to display the card's values.
    *

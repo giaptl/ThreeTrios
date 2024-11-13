@@ -77,3 +77,26 @@ a player and returns that player's score. We originally had a method called getW
 basically the same code as getPlayerScore() but returned the player object instead of the score. So,
 to be more specific according to the requirements of the functionality, we added the method which
 utilizes the same helper method as getWinner().
+
+Initially we had our observer methods in the ThreeTriosModel interface, but those were abstracted to
+our ReadOnlyThreeTriosModel. With the methods that changed and what not being stated in the paragraph
+above.
+
+We also added a barebones controller, where it has the methods to play cards to the board and we can
+see how the card owner changes based on the chain rule that the game requires. This implementation
+of the controller is not complete and still requires us to implement a lot of the intricacies of the
+game that we will complete in our next assignment.
+
+We created a MockModel which implements a very stub implementation of the main model so that we can
+test out the strategies and also write a couple tests for the controller. Which we will more
+comprehensively test in our next assignment.
+
+Our view package contains all the code and info. for the GUI that is being displayed. This is how
+the user will be able to see our game and eventually play it at its full functionality. The main
+code for it is in GameView, while the CardPanel class represents each card on the board.
+
+We also created a new test package within the test folder called strategy to hold the tests for our
+strategy interface. We also did the same with the controller to hold the tests that we are using
+for the controller.
+
+The screenshots needed for the assignment are located in a folder called "ViewScreenShots"

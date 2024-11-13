@@ -165,30 +165,6 @@ public class GameView extends JFrame implements IGameView {
 
 
   @Override
-  public void highlightSelectedCard(int cardIndex, Player player) {
-    JPanel handPanel;
-    // Get the correct hand panel
-    if (player.equals(model.getRedPlayer())) {
-      handPanel = (JPanel) redHandPanel.getComponent(cardIndex);
-    } else {
-      handPanel = (JPanel) blueHandPanel.getComponent(cardIndex);
-    }
-
-    // Reset border of the previously selected card panel
-    if (previouslySelectedCardPanel != null) {
-      previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    }
-
-    // Highlight the current card panel by changing its border
-    handPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
-    previouslySelectedCardPanel = handPanel;
-
-    handPanel.revalidate();
-    handPanel.repaint();
-  }
-
-
-  @Override
   public void updateGridCell(int row, int col, Card card) {
     JPanel cellPanel = (JPanel) gridPanel.getComponent(row * model.getGrid().getColumns() + col);
     cellPanel.removeAll();
