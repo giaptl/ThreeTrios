@@ -20,13 +20,17 @@ public final class ThreeTrios {
   public static void main(String[] args) {
     try {
       // Read the grid configuration
-      String gridConfigPath = "configFiles" + File.separator + "board1WithNoHoles.config";
+      String gridConfigPath = "src" + File.separator + "configuration"
+              + File.separator + "configFiles"
+              + File.separator + "board1WithNoHoles.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
 
       // Read the card data
-      String cardDataPath = "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
+      String cardDataPath = "src" + File.separator + "configuration"
+              + File.separator + "configFiles"
+              + File.separator + "cardsEnoughForAllBoards.config";
       List<Card> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 

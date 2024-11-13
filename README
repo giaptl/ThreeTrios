@@ -86,6 +86,10 @@ We also added a barebones controller, where it has the methods to play cards to 
 see how the card owner changes based on the chain rule that the game requires. This implementation
 of the controller is not complete and still requires us to implement a lot of the intricacies of the
 game that we will complete in our next assignment.
+ - This controller is also the part of our app which manages which card is currently being selected.
+    This is important because the user needs to know which card is currently selected so that they
+    can play it to the board. This happens by calling updateCardSelection() in the controller. That
+    method is in the view and is called when a card is clicked on.
 
 We created a MockModel which implements a very stub implementation of the main model so that we can
 test out the strategies and also write a couple tests for the controller. Which we will more

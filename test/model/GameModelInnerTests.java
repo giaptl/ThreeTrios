@@ -29,7 +29,8 @@ public class GameModelInnerTests {
     gameModel = new GameModel();
     // Load grid file
     try {
-      String gridConfigPath = "configFiles" + File.separator + "board1WithNoHoles.config";
+      String gridConfigPath = "src" + File.separator + "configuration"
+              + File.separator + "configFiles" + File.separator + "board1WithNoHoles.config";
       grid = ConfigurationReader.readGridConfig(gridConfigPath);
     } catch (IOException e) {
       throw new RuntimeException("Error reading grid configuration.", e);
@@ -37,7 +38,8 @@ public class GameModelInnerTests {
 
     // Load deck file
     try {
-      String deckConfigPath = "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
+      String deckConfigPath = "src" + File.separator + "configuration"
+              + File.separator + "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
       deck = ConfigurationReader.readCardData(deckConfigPath);
     } catch (IOException e) {
       throw new RuntimeException("Error reading deck configuration.", e);

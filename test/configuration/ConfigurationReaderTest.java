@@ -26,7 +26,8 @@ public class ConfigurationReaderTest {
   // Load data from board.config
   @Test
   public void testReadBoardConfig() throws IOException {
-    String gridConfigPath = "configFiles" + File.separator + "board.config";
+    String gridConfigPath = "src" + File.separator + "configuration"
+            + File.separator + "configFiles" + File.separator + "board.config";
     Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
     assertNotNull(grid);
     assertEquals(5, grid.getRows());
@@ -40,7 +41,8 @@ public class ConfigurationReaderTest {
   // Load data from board1WithNoHoles.config
   @Test
   public void testReadGridConfig() throws IOException {
-    String gridConfigPath = "configFiles" + File.separator + "board1WithNoHoles.config";
+    String gridConfigPath = "src" + File.separator + "configuration"
+            + File.separator + "configFiles" + File.separator + "board1WithNoHoles.config";
     Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
     assertNotNull(grid);
     assertEquals(3, grid.getRows());
@@ -54,7 +56,8 @@ public class ConfigurationReaderTest {
   // Load data from board2WithReachableCells.config
   @Test
   public void testReadGridConfig2() throws IOException {
-    String gridConfigPath = "configFiles" + File.separator + "board2WithReachableCells.config";
+    String gridConfigPath = "src" + File.separator + "configuration"
+            + File.separator + "configFiles" + File.separator + "board2WithReachableCells.config";
     Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
     assertNotNull(grid);
     assertEquals(3, grid.getRows());
@@ -68,7 +71,8 @@ public class ConfigurationReaderTest {
   // Load data from board3WithSeparateGroupsOfCells.config
   @Test
   public void testReadGridConfig3() throws IOException {
-    String gridConfigPath = "configFiles" + File.separator
+    String gridConfigPath = "src" + File.separator + "configuration"
+            + File.separator + "configFiles" + File.separator
             + "board3WithSeparateGroupsOfCells.config";
     Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
     assertNotNull(grid);
@@ -83,7 +87,8 @@ public class ConfigurationReaderTest {
   // Load data from cardsEnoughForAllBoards.config
   @Test
   public void testReadCardData() throws IOException {
-    String cardDataPath = "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
+    String cardDataPath = "src" + File.separator + "configuration"
+            + File.separator + "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
     List<Card> deck = ConfigurationReader.readCardData(cardDataPath);
 
     assertEquals(36, deck.size());

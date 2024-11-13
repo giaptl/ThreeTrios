@@ -7,6 +7,12 @@ import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Strategy that selects the move that is least likely to be flipped by the opponent.
+ * This is done by calculating the flip risk for each possible move and selecting the one with the
+ * least flip risk. We consider "hardest to flip" to be the move in which the opponent can flip
+ * the least number of the current player's cards in the following move.
+ */
 public class LeastLikelyFlippedStrategy implements Strategy {
 
   @Override

@@ -36,7 +36,8 @@ public class TextViewTest {
 
   @Test
   public void testRenderGridForExampleBoardN() throws IOException {
-    Grid grid = ConfigurationReader.readGridConfig("configFiles" + File.separator + "board.config");
+    Grid grid = ConfigurationReader.readGridConfig("src" + File.separator + "configuration"
+            + File.separator + "configFiles" + File.separator + "board.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "__    _\n"
@@ -46,14 +47,17 @@ public class TextViewTest {
             + "_    __\n";
     String actualOutput = outContent.toString();
     // Normalize line separators
-    expectedOutput = expectedOutput.replace("\r\n", "\n").replace("\r", "\n");
-    actualOutput = actualOutput.replace("\r\n", "\n").replace("\r", "\n");
+    expectedOutput = expectedOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
+    actualOutput = actualOutput.replace("\r\n", "\n")
+            .replace("\r", "\n");
     assertEquals(expectedOutput, actualOutput);
   }
 
   @Test
   public void testRenderGridForBoard1() throws IOException {
-    Grid grid = ConfigurationReader.readGridConfig("configFiles/board1WithNoHoles.config");
+    Grid grid = ConfigurationReader.readGridConfig(
+            "src/configuration/configFiles/board1WithNoHoles.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "___\n"
@@ -71,7 +75,7 @@ public class TextViewTest {
   @Test
   public void testRenderGridForBoard2() throws IOException {
     Grid grid = ConfigurationReader.readGridConfig(
-            "configFiles/board2WithReachableCells.config");
+            "src/configuration/configFiles/board2WithReachableCells.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "____\n"
@@ -89,7 +93,7 @@ public class TextViewTest {
   @Test
   public void testRenderGridForBoard3() throws IOException {
     Grid grid = ConfigurationReader.readGridConfig(
-            "configFiles/board3WithSeparateGroupsOfCells.config");
+            "src/configuration/configFiles/board3WithSeparateGroupsOfCells.config");
     TextView view = new TextView();
     view.renderGrid(grid);
     String expectedOutput = "____    \n"

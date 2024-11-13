@@ -12,6 +12,7 @@ import java.util.Set;
  * Represents the initial game model created for ThreeTrios.
  * This class manages the state and logic of the game, including the grid, players, and game rules.
  * It provides methods to start the game, play cards, and determine the game's status and winner.
+ * Model declares ownership of cards and hands them out to players.
  */
 public class GameModel implements ThreeTriosModel {
 
@@ -91,45 +92,12 @@ public class GameModel implements ThreeTriosModel {
     return player.getHand();
   }
 
-  @Override
-  public boolean isGameOver() {
-    for (int row = 0; row < grid.getRows(); row++) {
-      for (int col = 0; col < grid.getColumns(); col++) {
-        Cell cell =  grid.getCell(row, col);
-        if (!cell.isHole() && cell.isEmpty()) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  @Override
-  public Player getWinner() {
-
-    int redCardCount = pRed.getHand().size();
-    int blueCardCount = pBlue.getHand().size();
-
-    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
-    redCardCount = counts[0];
-    blueCardCount = counts[1];
-
-    if (redCardCount > blueCardCount) {
-      // Red Player wins
-      return pRed;
-    } else if (blueCardCount > redCardCount) {
-      // Blue player wins
-      return pBlue;
-    } else {
-      // Tie
-      return null;
-    }
-  }
-
   /**
    * Helper method that counts the number of occupied cells for each player.
    */
-  private int[] countOccupiedCells(int redCardCount, int blueCardCount) {
+  private int[] countOccupiedCells() {
+    int redCardCount = 0;
+    int blueCardCount = 0;
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
         CardCell cell = (CardCell) grid.getCell(row, col);
@@ -229,12 +197,9 @@ public class GameModel implements ThreeTriosModel {
 
   @Override
   public int getPlayerScore(Player player) {
-    int redCardCount = pRed.getHand().size();
-    int blueCardCount = pBlue.getHand().size();
-
-    int[] counts = countOccupiedCells(redCardCount, blueCardCount);
-    redCardCount = counts[0];
-    blueCardCount = counts[1];
+    int[] counts = countOccupiedCells();
+    int redCardCount = counts[0];
+    int blueCardCount = counts[1];
 
     if (player == pRed) {
       return redCardCount;
@@ -251,25 +216,18 @@ public class GameModel implements ThreeTriosModel {
   protected int processBattlePhase(Player player, int startRow, int startCol) {
     int cardsFlipped = 0;
     Queue<int[]> toProcess = new LinkedList<>();
-    Set<String> visited = new HashSet<>();
     toProcess.offer(new int[]{startRow, startCol});
 
     while (!toProcess.isEmpty()) {
       int[] current = toProcess.poll();
       int row = current[0], col = current[1];
-      String cellKey = row + "," + col;
-
-      if (visited.contains(cellKey)) {
-        continue;
-      }
-      visited.add(cellKey);
 
       CardCell currentCell = (CardCell) grid.getCell(row, col);
       if (currentCell == null || currentCell.getCard() == null) {
         continue;
       }
 
-      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, visited, toProcess);
+      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, toProcess);
     }
     return cardsFlipped;
   }
@@ -279,12 +237,11 @@ public class GameModel implements ThreeTriosModel {
    * that have already been flipped.
    */
   protected int processAdjacentCells(Player player, Card currentCard, int row, int col,
-                                     Set<String> visited, Queue<int[]> toProcess) {
+                                     Queue<int[]> toProcess) {
     int flipped = 0;
     for (Direction direction : Direction.values()) {
       int newRow = row + direction.getRowOffset();
       int newCol = col + direction.getColOffset();
-      String cellKey = newRow + "," + newCol;
 
       if (isValidCell(newRow, newCol)) {
         int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
@@ -298,7 +255,8 @@ public class GameModel implements ThreeTriosModel {
   }
 
   /**
-   * Helper method that abstracted out redundant code to check if a CELL is valid.
+   * Helper method that abstracted out redundant code to check if a CELL is valid. A cell is
+   * considered valid if it is within the grid boundaries and is not a hole.
    */
   protected boolean isValidCell(int row, int col) {
     return row >= 0 && row < grid.getRows() && col >= 0 && col < grid.getColumns();
@@ -340,4 +298,34 @@ public class GameModel implements ThreeTriosModel {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
   }
 
+  @Override
+  public boolean isGameOver() {
+    for (int row = 0; row < grid.getRows(); row++) {
+      for (int col = 0; col < grid.getColumns(); col++) {
+        Cell cell =  grid.getCell(row, col);
+        if (!cell.isHole() && cell.isEmpty()) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public Player getWinner() {
+    int[] counts = countOccupiedCells();
+    int redCardCount = counts[0];
+    int blueCardCount = counts[1];
+
+    if (redCardCount > blueCardCount) {
+      // Red Player wins
+      return pRed;
+    } else if (blueCardCount > redCardCount) {
+      // Blue player wins
+      return pBlue;
+    } else {
+      // Tie
+      return null;
+    }
+  }
 }

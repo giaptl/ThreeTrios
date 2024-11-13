@@ -3,6 +3,9 @@ package strategy;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Strategy interface for selecting a move in the Three Trios game.
+ */
 public interface Strategy {
   /**
    * Selects the best move (card + position) based on the current state of the game.

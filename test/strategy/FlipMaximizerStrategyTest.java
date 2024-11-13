@@ -3,28 +3,25 @@ package strategy;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
 
 import model.Card;
 import model.CardValues;
 import model.MockThreeTriosModel;
 import model.Player;
 
-import static model.CardValues.A;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 /**
  * Test file for the Strategies. Using a MockModel to simplify code actions.
  */
-public class StrategyTestUsingMockModel {
+public class FlipMaximizerStrategyTest {
+
   private MockThreeTriosModel mockModel;
   private Player redPlayer;
   private Player bluePlayer;
   private Strategy flipMaximizerStrategy;
-  private Strategy minimaxStrategy;
-  private Strategy leastLikelyFlippedStrategy;
-  private Strategy cornerStrategy;
-  private Strategy combinedStrategy;
 
   @Before
   public void setUp() {
@@ -32,10 +29,6 @@ public class StrategyTestUsingMockModel {
     redPlayer = mockModel.getRedPlayer();
     bluePlayer = mockModel.getBluePlayer();
     flipMaximizerStrategy = new FlipMaximizerStrategy();
-    minimaxStrategy = new MinimaxStrategy();
-    leastLikelyFlippedStrategy = new LeastLikelyFlippedStrategy();
-    cornerStrategy = new CornerStrategy();
-    combinedStrategy = new CombinedStrategy(flipMaximizerStrategy);
     mockModel.startGameWithConfig(mockModel.getGrid());
   }
 
@@ -43,6 +36,7 @@ public class StrategyTestUsingMockModel {
   public void testFlipMaximizerStrategyProgression() {
     // Round 1: Red player's turn
     // Since no cards are played yet, should play to top left corner
+    // TESTS TOPLEFT CORNER PLACEMENT ON FIRST MOVE
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove);
@@ -56,6 +50,7 @@ public class StrategyTestUsingMockModel {
     System.out.println("Round 1:\n" + mockModel.getGrid());
 
     // Round 2: Blue player's turn
+    // Should place at 0,1 since that maximizes flips and will be placed in the uppermost row
     assertEquals(bluePlayer.getName(), mockModel.getCurrentPlayer().getName());
     Move blueMove = flipMaximizerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove);
@@ -70,6 +65,7 @@ public class StrategyTestUsingMockModel {
     System.out.println("Round 2:\n" + mockModel.getGrid());
 
     // Round 3: Red player's turn
+    // Should place at 0,2 since that maximizes flips. It places uppermost before leftmost grid tile
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove2 = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove2);
@@ -138,7 +134,8 @@ public class StrategyTestUsingMockModel {
     assertNotNull(redMove4);
     Card cardToPlay7 = redMove4.getCard();
     assertTrue(redPlayer.getHand().contains(cardToPlay7));
-    assertEquals(new Card("RedCard5", CardValues.A.getValue(), CardValues.A.getValue(), 1, 1), cardToPlay7);
+    assertEquals(new Card("RedCard5", CardValues.A.getValue(),
+            CardValues.A.getValue(), 1, 1), cardToPlay7);
     mockModel.playCard(redPlayer, cardToPlay7, redMove4.getRow(), redMove4.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay7));
     assertEquals(cardToPlay7, mockModel.getGrid().getCell(2, 0).getCard());
@@ -197,93 +194,5 @@ public class StrategyTestUsingMockModel {
     // Confirm game state and winner
     assertTrue(mockModel.isGameOver());
     assertEquals(bluePlayer, mockModel.getWinner());
-
-//  @Test
-//  public void testMinimaxStrategyProgression() {
-//    for (int i = 0; i < 5; i++) {
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//      Move redMove = minimaxStrategy.selectMove(redPlayer, mockModel);
-//      assertNotNull(redMove);
-//      // Add assertion for minimax strategy behavior
-//      mockModel.playCard(redPlayer, redMove.getCard(), redMove.getRow(), redMove.getCol());
-//      // assertFalse(mockModel.getPlayerHand(redPlayer).contains(redMove.getCard()));
-//      assertEquals(bluePlayer, mockModel.getCurrentPlayer());
-//
-//      // Simulate blue player's move
-//      Card blueCard = mockModel.getPlayerHand(bluePlayer).get(0);
-//      mockModel.playCard(bluePlayer, blueCard, 1, 1);
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//    }
-//  }
-//
-//  @Test
-//  public void testLeastLikelyFlippedStrategyProgression() {
-//    for (int i = 0; i < 5; i++) {
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//      Move redMove = leastLikelyFlippedStrategy.selectMove(redPlayer, mockModel);
-//      assertNotNull(redMove);
-//      // Add assertion for least likely flipped strategy behavior
-//      mockModel.playCard(redPlayer, redMove.getCard(), redMove.getRow(), redMove.getCol());
-//      assertFalse(mockModel.getPlayerHand(redPlayer).contains(redMove.getCard()));
-//      assertEquals(bluePlayer, mockModel.getCurrentPlayer());
-//
-//      // Simulate blue player's move
-//      Card blueCard = mockModel.getPlayerHand(bluePlayer).get(0);
-//      mockModel.playCard(bluePlayer, blueCard, 1, 1);
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//    }
-//  }
-//
-//  @Test
-//  public void testCornerStrategyProgression() {
-//    for (int i = 0; i < 5; i++) {
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//      Move redMove = cornerStrategy.selectMove(redPlayer, mockModel);
-//      assertNotNull(redMove);
-//      assertTrue(isCornerMove(redMove));
-//      mockModel.playCard(redPlayer, redMove.getCard(), redMove.getRow(), redMove.getCol());
-//      assertFalse(mockModel.getPlayerHand(redPlayer).contains(redMove.getCard()));
-//      assertEquals(bluePlayer, mockModel.getCurrentPlayer());
-//
-//      // Simulate blue player's move
-//      Card blueCard = mockModel.getPlayerHand(bluePlayer).get(0);
-//      mockModel.playCard(bluePlayer, blueCard, 1, 1);
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//    }
-//  }
-//
-//  @Test
-//  public void testCombinedStrategyProgression() {
-//    for (int i = 0; i < 5; i++) {
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//      Move redMove = combinedStrategy.selectMove(redPlayer, mockModel);
-//      assertNotNull(redMove);
-//      if (i < 4) {
-//        assertTrue(isCornerMove(redMove));
-//      } else {
-//        assertTrue(isFlipMaximizingMove(redMove));
-//      }
-//      mockModel.playCard(redPlayer, redMove.getCard(), redMove.getRow(), redMove.getCol());
-//      assertFalse(mockModel.getPlayerHand(redPlayer).contains(redMove.getCard()));
-//      assertEquals(bluePlayer, mockModel.getCurrentPlayer());
-//
-//      // Simulate blue player's move
-//      Card blueCard = mockModel.getPlayerHand(bluePlayer).get(0);
-//      mockModel.playCard(bluePlayer, blueCard, 1, 1);
-//      assertEquals(redPlayer, mockModel.getCurrentPlayer());
-//    }
-//  }
-//
-//  private boolean isCornerMove(Move move) {
-//    int rows = mockModel.getGrid().getRows();
-//    int cols = mockModel.getGrid().getColumns();
-//    return (move.getRow() == 0 || move.getRow() == rows - 1) &&
-//            (move.getCol() == 0 || move.getCol() == cols - 1);
-//  }
-//
-//  private boolean isFlipMaximizingMove(Move move) {
-//    int flips = mockModel.getNumCardsAbleToFlip(redPlayer, move.getCard(), move.getRow(), move.getCol());
-//    // Assume flip maximizing if it flips at least one card
-//    return flips > 0;
-//  }
-  }}
+  }
+}

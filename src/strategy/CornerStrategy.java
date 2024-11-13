@@ -7,6 +7,11 @@ import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Strategy that selects the move which places the card in a corner position if available. If no
+ * corners are available, the default move is to select the uppermost-leftmost position on the grid
+ * with the card index closest to 0 from the player's hand.
+ */
 public class CornerStrategy implements Strategy {
 
   @Override

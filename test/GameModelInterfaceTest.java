@@ -1,3 +1,4 @@
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
@@ -6,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import configuration.ConfigurationReader;
 import model.Card;
+import model.Direction;
 import model.GameModel;
 import model.Grid;
 import model.Player;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -35,7 +38,8 @@ public class GameModelInterfaceTest {
     gameModel = new GameModel();
     // Load grid file
     try {
-      String gridConfigPath = "configFiles" + File.separator + "board1WithNoHoles.config";
+      String gridConfigPath = "src" + File.separator + "configuration"
+              + File.separator + "configFiles" + File.separator + "board1WithNoHoles.config";
       grid = ConfigurationReader.readGridConfig(gridConfigPath);
     } catch (IOException e) {
       throw new RuntimeException("Error reading grid configuration.", e);
@@ -43,7 +47,8 @@ public class GameModelInterfaceTest {
 
     // Load deck file
     try {
-      String deckConfigPath = "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
+      String deckConfigPath = "src" + File.separator + "configuration"
+              + File.separator + "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
       deck = ConfigurationReader.readCardData(deckConfigPath);
     } catch (IOException e) {
       throw new RuntimeException("Error reading deck configuration.", e);
@@ -337,6 +342,34 @@ public class GameModelInterfaceTest {
         -> gameModel.playCard(wrongPlayer, card, 0, 0));
   }
 
+  /**
+   * Test player CANNOT flip their own cards
+   */
+  @Test
+  public void testPlayerCannotFlipOwnCards() {
+    gameModel.startGameWithConfig(grid, deck, false);
+    Player redPlayer = gameModel.getRedPlayer();
+    Player bluePlayer = gameModel.getBluePlayer();
+
+    // Red player plays a card
+    Card redCard1 = redPlayer.getHand().get(0);
+    gameModel.playCard(redPlayer, redCard1, 0, 0);
+
+    Card blueCard1 = bluePlayer.getHand().get(0);
+    gameModel.playCard(bluePlayer, blueCard1, 2, 2);
+
+    // Red player plays another card adjacent to the first card
+    Card redCard2 = redPlayer.getHand().get(1);
+    gameModel.playCard(redPlayer, redCard2, 0, 1);
+
+    // Start battle phase
+    gameModel.startBattlePhase(0, 1);
+
+    // Ensure that the red player did not flip their own card
+    assertEquals(redPlayer, grid.getCell(0, 0).getOwner());
+    assertEquals(redPlayer, grid.getCell(0, 1).getOwner());
+  }
+
   // GetGrid tests
 
   /**
@@ -361,8 +394,60 @@ public class GameModelInterfaceTest {
     Grid initialGrid = gameModel.getGrid();
     // Perform some operations that should not change the grid
     Player currentPlayer = gameModel.getCurrentPlayer();
-    Card card = currentPlayer.getHand().get(0);
     Grid retrievedGrid = gameModel.getGrid();
     assertEquals(initialGrid.toString(), retrievedGrid.toString());
+  }
+
+  // Testing of getPlayerScore
+  @Test
+  public void testGetPlayerScoreInitial() {
+    gameModel.startGameWithConfig(grid, deck, false);
+    Player redPlayer = gameModel.getRedPlayer();
+    Player bluePlayer = gameModel.getBluePlayer();
+
+    assertEquals(0, gameModel.getPlayerScore(redPlayer));
+    assertEquals(0, gameModel.getPlayerScore(bluePlayer));
+  }
+
+  @Test
+  public void testGetPlayerScoreAfterPlayingCards() {
+    gameModel.startGameWithConfig(grid, deck, false);
+    Player redPlayer = gameModel.getRedPlayer();
+    Player bluePlayer = gameModel.getBluePlayer();
+
+    // Red player plays a card
+    Card redCard = redPlayer.getHand().get(0);
+    gameModel.playCard(redPlayer, redCard, 0, 0);
+
+    // Blue player plays a card
+    Card blueCard = bluePlayer.getHand().get(0);
+    gameModel.playCard(bluePlayer, blueCard, 1, 1);
+
+    assertEquals(1, gameModel.getPlayerScore(redPlayer));
+    assertEquals(1, gameModel.getPlayerScore(bluePlayer));
+  }
+
+  @Test
+  public void testGetPlayerScoreAfterCardFlipBattle() {
+    gameModel.startGameWithConfig(grid, deck, false);
+    Player redPlayer = gameModel.getRedPlayer();
+    Player bluePlayer = gameModel.getBluePlayer();
+
+    // Red player plays a card
+    Card redCard = redPlayer.getHand().get(3);
+    System.out.println(redCard.getAttackValue(Direction.EAST));
+    gameModel.playCard(redPlayer, redCard, 0, 0);
+
+    // Blue player plays a card
+    Card blueCard = bluePlayer.getHand().get(0);
+    System.out.println(blueCard.getAttackValue(Direction.WEST));
+    gameModel.playCard(bluePlayer, blueCard, 0, 1);
+
+    // Start battle phase
+    gameModel.startBattlePhase(0, 1);
+
+    // Assuming red player wins the battle
+    assertEquals(0, gameModel.getPlayerScore(redPlayer));
+    assertEquals(2, gameModel.getPlayerScore(bluePlayer));
   }
 }

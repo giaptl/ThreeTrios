@@ -8,6 +8,13 @@ import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Strategy that selects the move which maximizes the number of opponents' cards flipped. If there
+ * are 2 moves that have the same number of maximum cards flipped, choose the move that places the
+ * card in the upper-leftmost position on the grid. Similarly, if there are 2 cards that have the
+ * same number of maximum cards flipped, choose the card that is closest to index 0 in the player's
+ * hand.
+ */
 public class FlipMaximizerStrategy implements Strategy {
 
   @Override
