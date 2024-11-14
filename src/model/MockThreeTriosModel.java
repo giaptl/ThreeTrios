@@ -9,6 +9,10 @@ import java.util.Set;
 
 import static model.CardValues.A;
 
+/**
+ * Represents the initial game model created for ThreeTrios.
+ * This class manages the state and logic of the game, including the grid, players, and game rules.
+ */
 public class MockThreeTriosModel implements ThreeTriosModel {
   private Grid grid;
   private Player currentPlayer;
@@ -16,6 +20,9 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   private Player bluePlayer;
   private boolean isGameOver;
 
+  /**
+   * Constructs a new MockGameModel with a 3x3 grid and two players with cards.
+   */
   public MockThreeTriosModel() {
     this.grid = new Grid(3, 3);
 
@@ -43,6 +50,9 @@ public class MockThreeTriosModel implements ThreeTriosModel {
     isGameOver = false;
   }
 
+  /**
+   * Not used really but needed for implementation in testing.
+   */
   public void startGameWithConfig(Grid grid) {
     this.grid = grid;
     isGameOver = false;
@@ -78,9 +88,6 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
     processBattlePhase(owner, row, col);
   }
-
-
-
 
   @Override
   public Grid getGrid() {
@@ -196,19 +203,19 @@ public class MockThreeTriosModel implements ThreeTriosModel {
     return getPlayerHand(player).size();
   }
 
-  // Additional methods for testing
+  /**
+   * Additional methods for testing. Used to setGameOver.
+   */
   public void setGameOver(boolean isOver) {
     this.isGameOver = isOver;
   }
 
+  /**
+   * Used to set the current player to whoever is passed in.
+   */
   public void setCurrentPlayer(Player player) {
     this.currentPlayer = player;
   }
-
-  public void setCell(int row, int col, Cell cell) {
-    this.grid.setCell(row, col, cell);
-  }
-
 
   /**
    * Helper method which abstracts out much of the battle phase
@@ -222,7 +229,8 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
     while (!toProcess.isEmpty()) {
       int[] current = toProcess.poll();
-      int row = current[0], col = current[1];
+      int row = current[0];
+      int col = current[1];
       String cellKey = row + "," + col;
 
       if (visited.contains(cellKey)) {
@@ -235,7 +243,8 @@ public class MockThreeTriosModel implements ThreeTriosModel {
         continue;
       }
 
-      cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, visited, toProcess);
+      cardsFlipped += processAdjacentCells(
+              player, currentCell.getCard(), row, col, visited, toProcess);
     }
     return cardsFlipped;
   }
@@ -253,7 +262,8 @@ public class MockThreeTriosModel implements ThreeTriosModel {
       String cellKey = newRow + "," + newCol;
 
       if (isValidCell(newRow, newCol)) {
-        int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
+        int flippedInDirection = cardAttackDirections(
+                direction, newRow, newCol, player, currentCard);
         flipped += flippedInDirection;
         if (flippedInDirection > 0) {
           toProcess.offer(new int[]{newRow, newCol});

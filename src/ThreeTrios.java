@@ -1,7 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.Card;
 import model.GameModel;
 import model.Grid;

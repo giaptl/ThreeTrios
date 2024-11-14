@@ -39,7 +39,8 @@ public class FlipMaximizerStrategy implements Strategy {
               bestMove = new Move(card, row, col);
               maxFlips = flips;
             } else if (flips == maxFlips) {
-              bestMove = findUpperLeft(row, col, Objects.requireNonNull(bestMove), Objects.requireNonNull(currentMove));
+              bestMove = findUpperLeft(row, col,
+                      Objects.requireNonNull(bestMove), Objects.requireNonNull(currentMove));
             }
           }
         }
@@ -56,10 +57,9 @@ public class FlipMaximizerStrategy implements Strategy {
   private Move findUpperLeft(int row, int col, Move currentBest, Move currentMove) {
     // Break ties by choosing upper-leftmost coordinate
     // Compare the two moves and return the one that is at the uppermost-leftmost position
-//    System.out.println("CurrentBest: " + currentBest.getRow() + " " + currentBest.getCol());
-//    System.out.println("NewMove: " + currentMove.getRow() + " " + currentMove.getCol());
-    if (currentMove.getRow() < currentBest.getRow() ||
-            (currentMove.getRow() == currentBest.getRow() && currentMove.getCol() < currentBest.getCol())) {
+    if (currentMove.getRow() < currentBest.getRow()
+            || (currentMove.getRow() == currentBest.getRow()
+                    && currentMove.getCol() < currentBest.getCol())) {
       return currentMove;
     }
     return currentBest;

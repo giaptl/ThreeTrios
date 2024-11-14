@@ -7,8 +7,15 @@ import model.CardValues;
 import model.MockThreeTriosModel;
 import model.CardCell;
 import model.Player;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for the LeastLikelyFlippedStrategy class.
+ */
 public class LeastLikelyFlippedStrategyTest {
 
   private MockThreeTriosModel mockModel;
@@ -177,7 +184,8 @@ public class LeastLikelyFlippedStrategyTest {
     // Set up a full board
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
-        mockModel.getGrid().setCell(row, col, new CardCell(new Card("Card" + row + col, 1, 1, 1, 1), redPlayer));
+        mockModel.getGrid().setCell(row, col, new CardCell(
+                new Card("Card" + row + col, 1, 1, 1, 1), redPlayer));
       }
     }
 
@@ -202,7 +210,8 @@ public class LeastLikelyFlippedStrategyTest {
     assertTrue(redPlayer.getHand().contains(cardToPlay));
     mockModel.playCard(redPlayer, cardToPlay, redMove.getRow(), redMove.getCol());
     assertFalse(redPlayer.getHand().contains(cardToPlay));
-    assertEquals(cardToPlay, mockModel.getGrid().getCell(redMove.getRow(), redMove.getCol()).getCard());
+    assertEquals(cardToPlay, mockModel.getGrid().getCell(
+            redMove.getRow(), redMove.getCol()).getCard());
     System.out.println("Empty Board:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
   }
@@ -236,7 +245,8 @@ public class LeastLikelyFlippedStrategyTest {
     assertTrue(redPlayer.getHand().contains(cardToPlay));
     mockModel.playCard(redPlayer, cardToPlay, redMove.getRow(), redMove.getCol());
     assertFalse(redPlayer.getHand().contains(cardToPlay));
-    assertEquals(cardToPlay, mockModel.getGrid().getCell(redMove.getRow(), redMove.getCol()).getCard());
+    assertEquals(cardToPlay, mockModel.getGrid().getCell(
+            redMove.getRow(), redMove.getCol()).getCard());
     System.out.println("Multiple Equal Flips:\n" + mockModel.getGrid());
   }
 }

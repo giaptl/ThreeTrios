@@ -20,8 +20,8 @@ public class CornerStrategy implements Strategy {
     Grid grid = model.getGrid();
 
     // Define corner positions: top-left, top-right, bottom-left, bottom-right
-    int[][] corners = {{0, 0}, {0, grid.getColumns() - 1},
-            {grid.getRows() - 1, 0}, {grid.getRows() - 1, grid.getColumns() - 1}};
+    int[][] corners = {{0, 0}, {0, grid.getColumns() - 1}, {grid.getRows() - 1, 0},
+        {grid.getRows() - 1, grid.getColumns() - 1}};
 
     Move bestMove = null;
     int minOpponentFlips = Integer.MAX_VALUE;
@@ -48,8 +48,8 @@ public class CornerStrategy implements Strategy {
         );
 
         // Choose the move that minimizes the opponent's potential flips
-        if (opponentMaxFlips < minOpponentFlips ||
-                (opponentMaxFlips == minOpponentFlips && isUpperLeft(row, col, bestMove))) {
+        if (opponentMaxFlips < minOpponentFlips
+                || (opponentMaxFlips == minOpponentFlips && isUpperLeft(row, col, bestMove))) {
           bestMove = new Move(card, row, col);
           minOpponentFlips = opponentMaxFlips;
         }
@@ -60,9 +60,10 @@ public class CornerStrategy implements Strategy {
   }
 
 
-  private int simulateOpponentBestMove(Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
+  private int simulateOpponentBestMove(
+          Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
     // Place this player's card on the simulated grid
-//    model.playCard(player, card, row, col);
+    // model.playCard(player, card, row, col);
 
     // Get opponent player
     Player opponent = model.getOpponent(player);
@@ -98,7 +99,10 @@ public class CornerStrategy implements Strategy {
   }
 
   private boolean isUpperLeft(int row, int col, Move currentBest) {
-    if (currentBest == null) return true;
-    return row < currentBest.getRow() || (row == currentBest.getRow() && col < currentBest.getCol());
+    if (currentBest == null) {
+      return true;
+    }
+    return row < currentBest.getRow()
+            || (row == currentBest.getRow() && col < currentBest.getCol());
   }
 }

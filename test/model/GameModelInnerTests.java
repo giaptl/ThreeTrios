@@ -166,7 +166,6 @@ public class GameModelInnerTests {
     Card adjacentCard1 = new Card("Adjacent1", 2, 2, 2, 2);
     Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
 
-//    grid.setCell(0, 0, new CardCell(cornerCard, gameModel.getRedPlayer()));
     grid.setCell(0, 1, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
     grid.setCell(0, 2, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
 

@@ -13,7 +13,8 @@ public interface IGameView {
 
   /**
    * Updates the display of a specific cell in the grid with the provided card.
-   * This is called when a card is placed on the grid, updating the cell to display the card's values.
+   * This is called when a card is placed on the grid,
+   * updating the cell to display the card's values.
    *
    * @param row the row index of the grid cell to update
    * @param col the column index of the grid cell to update

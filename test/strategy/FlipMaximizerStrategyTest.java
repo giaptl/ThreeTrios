@@ -7,11 +7,14 @@ import org.junit.Test;
 import model.Card;
 import model.CardCell;
 import model.CardValues;
-import model.Cell;
 import model.MockThreeTriosModel;
 import model.Player;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -102,7 +105,7 @@ public class FlipMaximizerStrategyTest {
     System.out.println("Round 4:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
-  /*
+    /*
     Round 5: Red player's turn
     <p>
     Should place at (1,1) since it maximizes flips and this is closer to the top left corner than
@@ -327,7 +330,8 @@ public class FlipMaximizerStrategyTest {
     assertTrue(redPlayer.getHand().contains(cardToPlay));
     mockModel.playCard(redPlayer, cardToPlay, redMove.getRow(), redMove.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay));
-    assertEquals(cardToPlay, mockModel.getGrid().getCell(redMove.getRow(), redMove.getCol()).getCard());
+    assertEquals(cardToPlay, mockModel.getGrid().getCell(
+            redMove.getRow(), redMove.getCol()).getCard());
     System.out.println("Multiple Equal Flips:\n" + mockModel.getGrid());
   }
 

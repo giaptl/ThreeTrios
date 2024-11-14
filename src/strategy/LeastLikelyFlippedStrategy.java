@@ -29,7 +29,8 @@ public class LeastLikelyFlippedStrategy implements Strategy {
         for (int col = 0; col < grid.getColumns(); col++) {
           if (grid.getCell(row, col).isEmpty()) {
             int flipRisk = calculateFlipRisk(card, row, col, player, model);
-            if (flipRisk < minFlipRisk || (flipRisk == minFlipRisk && isUpperLeft(row, col, bestMove))) {
+            if (flipRisk < minFlipRisk
+                    || (flipRisk == minFlipRisk && isUpperLeft(row, col, bestMove))) {
               bestMove = new Move(card, row, col);
               minFlipRisk = flipRisk;
             }
@@ -41,7 +42,8 @@ public class LeastLikelyFlippedStrategy implements Strategy {
     return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
   }
 
-  private int calculateFlipRisk(Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
+  private int calculateFlipRisk(Card card, int row, int col,
+                                Player player, ReadOnlyThreeTriosModel model) {
     int flipRisk = 0;
     Player opponent = model.getOpponent(player);
     List<Card> opponentHand = model.getPlayerHand(opponent);
@@ -65,8 +67,11 @@ public class LeastLikelyFlippedStrategy implements Strategy {
   }
 
   private boolean isUpperLeft(int row, int col, Move currentBest) {
-    if (currentBest == null) return true;
-    return row < currentBest.getRow() || (row == currentBest.getRow() && col < currentBest.getCol());
+    if (currentBest == null) {
+      return true;
+    }
+    return row < currentBest.getRow()
+            || (row == currentBest.getRow() && col < currentBest.getCol());
   }
 
 }

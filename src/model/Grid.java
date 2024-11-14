@@ -65,6 +65,9 @@ public class Grid {
     cells[row][col] = cellToSet;
   }
 
+  /**
+   * Sets the grid to a new grid. Used primarily for testing purposes.
+   */
   public void setGrid(Grid newGrid) {
     if (newGrid.getRows() != getRows() || newGrid.getColumns() != getColumns()) {
       throw new IllegalArgumentException("New grid dimensions must match current grid dimensions");
@@ -106,7 +109,8 @@ public class Grid {
           newGrid.setCell(row, col, new Hole());
         } else {
           CardCell originalCardCell = (CardCell) originalCell;
-          newGrid.setCell(row, col, new CardCell(originalCardCell.getCard(), originalCardCell.getOwner()));
+          newGrid.setCell(row, col, new CardCell(
+                  originalCardCell.getCard(), originalCardCell.getOwner()));
         }
       }
     }

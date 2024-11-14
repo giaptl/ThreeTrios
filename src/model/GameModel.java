@@ -2,11 +2,9 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 
 /**
  * Represents the initial game model created for ThreeTrios.
@@ -220,7 +218,8 @@ public class GameModel implements ThreeTriosModel {
 
     while (!toProcess.isEmpty()) {
       int[] current = toProcess.poll();
-      int row = current[0], col = current[1];
+      int row = current[0];
+      int col = current[1];
 
       CardCell currentCell = (CardCell) grid.getCell(row, col);
       if (currentCell == null || currentCell.getCard() == null) {
@@ -244,7 +243,8 @@ public class GameModel implements ThreeTriosModel {
       int newCol = col + direction.getColOffset();
 
       if (isValidCell(newRow, newCol)) {
-        int flippedInDirection = cardAttackDirections(direction, newRow, newCol, player, currentCard);
+        int flippedInDirection = cardAttackDirections(
+                direction, newRow, newCol, player, currentCard);
         flipped += flippedInDirection;
         if (flippedInDirection > 0) {
           toProcess.offer(new int[]{newRow, newCol});

@@ -13,9 +13,29 @@ import model.Card;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Represents the main game view for the ThreeTrios game, including the grid and player hands.
+ * This class is responsible for initializing and managing the main components of the game view,
+ * such as the grid panel and the hand panels for both players. It also handles user interactions
+ * and updates the view based on the game state.
+ *
+ * <p>The GameView class extends JFrame and implements the IGameView interface, providing methods
+ * to set the controller, show error messages, update card selection, update grid cells, remove
+ * cards from hand panels, and refresh the entire view.</p>
+ *
+ * <p>The main components of the GameView include:</p>
+ * <ul>
+ *   <li>GridPanelManager: Manages the creation and updating of the grid panel.</li>
+ *   <li>JPanel gridPanel: The panel representing the game grid.</li>
+ *   <li>JPanel redHandPanel: The panel representing the red player's hand.</li>
+ *   <li>JPanel blueHandPanel: The panel representing the blue player's hand.</li>
+ * </ul>
+ *
+ * <p>The GameView class also maintains a reference to the previously selected card panel to
+ * highlight the currently selected card.</p>
+ */
 public class GameView extends JFrame implements IGameView {
   private final ReadOnlyThreeTriosModel model;
-  private Controller controller;
   private JPanel gridPanel;
   private JPanel redHandPanel;
   private JPanel blueHandPanel;
@@ -23,6 +43,11 @@ public class GameView extends JFrame implements IGameView {
   private final GridPanelManager gridPanelManager;
   private final HandPanelManager handPanelManager;
 
+  /**
+   * Constructs a GameView with the specified model.
+   *
+   * @param model the read-only model of the game
+   */
   public GameView(ReadOnlyThreeTriosModel model) {
     this.model = model;
     this.gridPanelManager = new GridPanelManager(model);
@@ -43,8 +68,10 @@ public class GameView extends JFrame implements IGameView {
     setVisible(true);
   }
 
+  /**
+   * Sets the controller for the manager classes.
+   */
   public void setController(Controller controller) {
-    this.controller = controller;
     gridPanelManager.setController(controller);
     handPanelManager.setController(controller);
   }

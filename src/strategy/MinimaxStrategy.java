@@ -10,7 +10,8 @@ import model.ReadOnlyThreeTriosModel;
 /**
  * Strategy that selects the move which minimizes the maximum gain the opponent can achieve in
  * their next move. This approach is known as the minimax strategy.
- * The minimax strategy calculates the "best" move an opponent can make by simulating the opponent's moves
+ * The minimax strategy calculates the "best"
+ * move an opponent can make by simulating the opponent's moves
  * using various strategies and choosing the move that leaves the opponent with the least advantage.
  */
 public class MinimaxStrategy implements Strategy {
@@ -31,8 +32,9 @@ public class MinimaxStrategy implements Strategy {
             int opponentBestMoveGain = simulateOpponentBestMove(card, row, col, player, model);
 
             // Choose the move that minimizes the opponent's best possible gain
-            if (opponentBestMoveGain < minOpponentGain ||
-                    (opponentBestMoveGain == minOpponentGain && isUpperLeft(row, col, bestMove))) {
+            if (opponentBestMoveGain < minOpponentGain
+                    || (opponentBestMoveGain == minOpponentGain
+                    && isUpperLeft(row, col, bestMove))) {
               bestMove = new Move(card, row, col);
               minOpponentGain = opponentBestMoveGain;
             }
@@ -41,14 +43,15 @@ public class MinimaxStrategy implements Strategy {
       }
     }
 
-    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player); // Fallback if no valid move found
+    return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
   }
 
   /**
    * Simulates placing a card at a given position and calculates how much advantage
    * the opponent can gain in their next move.
    */
-  private int simulateOpponentBestMove(Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
+  private int simulateOpponentBestMove(Card card, int row, int col,
+                                       Player player, ReadOnlyThreeTriosModel model) {
 
     // Place this player's card on the simulated grid
     model.getNumCardsAbleToFlip(player, card, row, col);
@@ -93,8 +96,11 @@ public class MinimaxStrategy implements Strategy {
    * Break ties by choosing upper-leftmost coordinate.
    */
   private boolean isUpperLeft(int row, int col, Move currentBest) {
-    if (currentBest == null) return true;
-    return row < currentBest.getRow() || (row == currentBest.getRow() && col < currentBest.getCol());
+    if (currentBest == null) {
+      return true;
+    }
+    return row < currentBest.getRow()
+            || (row == currentBest.getRow() && col < currentBest.getCol());
   }
 
 }

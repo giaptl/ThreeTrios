@@ -15,8 +15,9 @@ public class TextView {
 
 
   /**
-   * Renders the game grid in a text format. Holes are represented by spaces, empty cells by underscores,
-   * and cells occupied by players' cards are represented by 'R' for Red player and 'B' for Blue player.
+   * Renders the game grid in a text format. Holes are represented by spaces, empty cells by
+   * underscores, and cells occupied by players' cards are represented by 'R' for Red player
+   * and 'B' for Blue player.
    *
    * @param grid the game grid to be rendered
    */
@@ -42,8 +43,8 @@ public class TextView {
   }
 
   /**
-   * Renders the player's hand in a text format. Each card is displayed with its name and attack values
-   * in the four directions (north, south, east, and west).
+   * Renders the player's hand in a text format. Each card is displayed with its name and
+   * attack values in the four directions (north, south, east, and west).
    *
    * @param player the player whose hand is to be rendered
    * @param hand the list of cards in the player's hand

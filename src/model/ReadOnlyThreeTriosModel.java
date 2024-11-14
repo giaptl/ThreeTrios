@@ -2,6 +2,11 @@ package model;
 
 import java.util.List;
 
+/**
+ * Represents a read-only view of the ThreeTrios game model. All these methods are immutable and
+ * cannot change the state of the game. Only observe the game state. Needed for view since we do not
+ * want the view to be able to change the game state.
+ */
 public interface ReadOnlyThreeTriosModel {
 
   /**
@@ -34,7 +39,7 @@ public interface ReadOnlyThreeTriosModel {
   Player getRedPlayer();
 
   /**
-   * Gets the blue player
+   * Gets the blue player.
    *
    * @return the blue player
    */

@@ -343,7 +343,7 @@ public class GameModelInterfaceTest {
   }
 
   /**
-   * Test player CANNOT flip their own cards
+   * Test player CANNOT flip their own cards.
    */
   @Test
   public void testPlayerCannotFlipOwnCards() {

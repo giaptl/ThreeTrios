@@ -6,8 +6,14 @@ import model.Card;
 import model.CardValues;
 import model.MockThreeTriosModel;
 import model.Player;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+/**
+ * Test class for MinimaxStrategy class.
+ */
 public class MinimaxStrategyTest {
 
   private MockThreeTriosModel mockModel;
@@ -110,7 +116,8 @@ public class MinimaxStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 6: Blue player's turn
-    // Expected: The strategy should choose another side cell, likely (1,0) or (1,2), to minimize Red's potential gain.
+    // Expected: The strategy should choose another side cell, likely (1,0) or (1,2),
+    // to minimize Red's potential gain.
     // The card (7,7,7,7) should be played as it's the next strongest in Blue's hand.
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove3 = minimaxStrategy.selectMove(bluePlayer, mockModel);
@@ -125,7 +132,8 @@ public class MinimaxStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 7: Red player's turn
-    // Expected: The strategy should choose the remaining side cell to minimize Blue's potential gain.
+    // Expected: The strategy should choose the remaining
+    // side cell to minimize Blue's potential gain.
     // The card (6,6,6,6) should be played as it's the next strongest in Red's hand.
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove4 = minimaxStrategy.selectMove(redPlayer, mockModel);
@@ -162,14 +170,16 @@ public class MinimaxStrategyTest {
     assertNotNull(redMove5);
     Card cardToPlay9 = redMove5.getCard();
     assertTrue(redPlayer.getHand().contains(cardToPlay9));
-    assertEquals(new Card("RedCard5", CardValues.A.getValue(), CardValues.A.getValue(), 1, 1), cardToPlay9);
+    assertEquals(new Card("RedCard5", CardValues.A.getValue(),
+            CardValues.A.getValue(), 1, 1), cardToPlay9);
     mockModel.playCard(redPlayer, cardToPlay9, redMove5.getRow(), redMove5.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay9));
     //assertEquals(cardToPlay9, mockModel.getGrid().getCell(2, 1).getCard());
     System.out.println("Round 9:\n" + mockModel.getGrid());
 
     // Confirm game state and winner
-    // Expected: The game should be over, and the winner should be determined based on the final board state.
+    // Expected: The game should be over,
+    // and the winner should be determined based on the final board state.
     assertTrue(mockModel.isGameOver());
     Player winner = mockModel.getWinner();
     assertNotNull(winner);
