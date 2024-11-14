@@ -42,7 +42,8 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 2: Blue player's turn
-    // Should play to top-right corner
+    // Should play to top-right corner (since a corner needs to be played, but we will choose the
+    // uppermost available corner)
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove = cornerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove);
@@ -57,7 +58,8 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 3: Red player's turn
-    // Should play to bottom-left corner
+    // Should play to bottom-left corner (since we only have the bottom 2 corners, we will choose
+    // the leftmost corner)
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove2 = cornerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove2);
@@ -72,7 +74,7 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 4: Blue player's turn
-    // Should play to bottom-right corner
+    // Should play to bottom-right corner (since that is the only corner left)
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove2 = cornerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove2);
@@ -86,12 +88,15 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 5: Red player's turn
-    // Should play to uppermost-leftmost available position (0, 1)
+    // Should play to uppermost-leftmost available position (0, 1) (since there are no corners left,
+    // we will play to next available uppermost-leftmost position using the card index of 0 from
+    // hand)
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove3 = cornerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove3);
     Card cardToPlay5 = redMove3.getCard();
     assertTrue(redPlayer.getHand().contains(cardToPlay5));
+    assertEquals(cardToPlay5, redPlayer.getHand().get(0));
     assertEquals(new Card("RedCard3", 4, 4, 4, 4), cardToPlay5);
     mockModel.playCard(redPlayer, cardToPlay5, redMove3.getRow(), redMove3.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay5));
@@ -100,12 +105,14 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 6: Blue player's turn
-    // Should play to next available position (1, 0)
+    // Should play to next available position (1, 0) (since there are no corners left, we will play
+    // to next available uppermost-leftmost position using the card index of 0 from hand)
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove3 = cornerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove3);
     Card cardToPlay6 = blueMove3.getCard();
     assertTrue(bluePlayer.getHand().contains(cardToPlay6));
+    assertEquals(cardToPlay6, bluePlayer.getHand().get(0));
     assertEquals(new Card("BlueCard3", 7, 7, 7, 7), cardToPlay6);
     mockModel.playCard(bluePlayer, cardToPlay6, blueMove3.getRow(), blueMove3.getCol());
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay6));
@@ -114,12 +121,14 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 7: Red player's turn
-    // Should play to next available position (1, 1)
+    // Should play to next available position (1, 1) (since there are no corners left, we will play
+    // to next available uppermost-leftmost position using the card index of 0 from hand)
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove4 = cornerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove4);
     Card cardToPlay7 = redMove4.getCard();
     assertTrue(redPlayer.getHand().contains(cardToPlay7));
+    assertEquals(cardToPlay7, redPlayer.getHand().get(0));
     assertEquals(new Card("RedCard4", 6, 6, 6, 6), cardToPlay7);
     mockModel.playCard(redPlayer, cardToPlay7, redMove4.getRow(), redMove4.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay7));
@@ -128,12 +137,14 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 8: Blue player's turn
-    // Should play to next available position (1, 2)
+    // Should play to next available position (1, 2) (since there are no corners left, we will play
+    // to next available uppermost-leftmost position using the card index of 0 from hand)
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove4 = cornerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove4);
     Card cardToPlay8 = blueMove4.getCard();
     assertTrue(bluePlayer.getHand().contains(cardToPlay8));
+    assertEquals(cardToPlay8, bluePlayer.getHand().get(0));
     assertEquals(new Card("BlueCard4", 9, 9, 9, 9), cardToPlay8);
     mockModel.playCard(bluePlayer, cardToPlay8, blueMove4.getRow(), blueMove4.getCol());
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay8));
@@ -142,13 +153,16 @@ public class CornerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 9: Red player's turn
-    // Should play to last available position (2, 1)
+    // Should play to last available position (2, 1) (since there are no corners left, we will play
+    // to next available uppermost-leftmost position using the card index of 0 from hand)
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove5 = cornerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove5);
     Card cardToPlay9 = redMove5.getCard();
     assertTrue(redPlayer.getHand().contains(cardToPlay9));
-    assertEquals(new Card("RedCard5", CardValues.A.getValue(), CardValues.A.getValue(), 1, 1), cardToPlay9);
+    assertEquals(cardToPlay9, redPlayer.getHand().get(0));
+    assertEquals(new Card("RedCard5", CardValues.A.getValue(),
+            CardValues.A.getValue(), 1, 1), cardToPlay9);
     mockModel.playCard(redPlayer, cardToPlay9, redMove5.getRow(), redMove5.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay9));
     assertEquals(cardToPlay9, mockModel.getGrid().getCell(2, 1).getCard());

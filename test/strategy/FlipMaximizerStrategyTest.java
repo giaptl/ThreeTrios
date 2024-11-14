@@ -5,7 +5,9 @@ import org.junit.Test;
 
 
 import model.Card;
+import model.CardCell;
 import model.CardValues;
+import model.Cell;
 import model.MockThreeTriosModel;
 import model.Player;
 
@@ -31,11 +33,12 @@ public class FlipMaximizerStrategyTest {
     mockModel.startGameWithConfig(mockModel.getGrid());
   }
 
+  // This test is thoroughly explained in the strategy-transcript.txt file.
   @Test
   public void testFlipMaximizerStrategyProgression() {
     // Round 1: Red player's turn
     // Since no cards are played yet, should play to top left corner
-    // TESTS TOPLEFT CORNER PLACEMENT ON FIRST MOVE
+    // TESTS TOP-LEFT CORNER PLACEMENT ON FIRST MOVE
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove);
@@ -83,6 +86,7 @@ public class FlipMaximizerStrategyTest {
     assertFalse(mockModel.isGameOver());
 
     // Round 4: Blue player's turn
+    // Should place at 1,2 since it maximizes flips.
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove2 = flipMaximizerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove2);
@@ -98,7 +102,15 @@ public class FlipMaximizerStrategyTest {
     System.out.println("Round 4:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
-    // Round 5: Red player's turn
+  /*
+    Round 5: Red player's turn
+    <p>
+    Should place at (1,1) since it maximizes flips and this is closer to the top left corner than
+    the other option, which was placing it at (2,2).
+    <p>
+    This part of the test is testing the tie and making sure that the card is placed at the tile
+    that is closer to the top left corner. Proving our tiebreaker is working to spec.
+   */
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove3 = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove3);
@@ -115,7 +127,10 @@ public class FlipMaximizerStrategyTest {
     System.out.println("Round 5:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
-    // Round 6: Blue player's turn
+    /*
+     Round 6: Blue player's turn
+     Maximizes flips by placing at 1,0. Which will flip the most cards.
+    */
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove3 = flipMaximizerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove3);
@@ -133,7 +148,10 @@ public class FlipMaximizerStrategyTest {
     System.out.println("Round 6:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
-    // Round 7: Red player's turn
+    /*
+     Round 7: Red player's turn
+     Should place at 2,0 since it maximizes flips using the strongest card (A = 10).
+    */
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove4 = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove4);
@@ -153,7 +171,10 @@ public class FlipMaximizerStrategyTest {
     System.out.println("Round 7:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
-    // Round 8: Blue player's turn
+    /*
+     Round 8: Blue player's turn
+     Should place at 2,1 since it maximizes flips by placing next to multiple red cards.
+    */
     assertEquals(bluePlayer, mockModel.getCurrentPlayer());
     Move blueMove4 = flipMaximizerStrategy.selectMove(bluePlayer, mockModel);
     assertNotNull(blueMove4);
@@ -174,7 +195,10 @@ public class FlipMaximizerStrategyTest {
     System.out.println("Round 8:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
-    // Round 9: Red player's turn
+    /*
+     Round 9: Red player's turn
+     Should place at 2,2 since it is the last available space on the grid.
+    */
     assertEquals(redPlayer, mockModel.getCurrentPlayer());
     Move redMove5 = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
     assertNotNull(redMove5);
@@ -202,4 +226,109 @@ public class FlipMaximizerStrategyTest {
     assertTrue(mockModel.isGameOver());
     assertEquals(bluePlayer, mockModel.getWinner());
   }
+
+  @Test
+  public void testSingleMoveLeft() {
+    // Set up the board with only one move left
+    mockModel.getGrid().setCell(0, 0, new CardCell(new Card(
+            "RedCard1", 1, 1, 1, 1), redPlayer));
+    mockModel.getGrid().setCell(0, 1, new CardCell(new Card(
+            "BlueCard1", 2, 2, 2, 2), bluePlayer));
+    mockModel.getGrid().setCell(0, 2, new CardCell(new Card(
+            "RedCard2", 3, 3, 3, 3), redPlayer));
+    mockModel.getGrid().setCell(1, 0, new CardCell(new Card(
+            "BlueCard2", 5, 5, 5, 5), bluePlayer));
+    mockModel.getGrid().setCell(1, 1, new CardCell(new Card(
+            "RedCard3", 4, 4, 4, 4), redPlayer));
+    mockModel.getGrid().setCell(1, 2, new CardCell(new Card(
+            "BlueCard3", 7, 7, 7, 7), bluePlayer));
+    mockModel.getGrid().setCell(2, 0, new CardCell(new Card(
+            "RedCard4", 6, 6, 6, 6), redPlayer));
+    mockModel.getGrid().setCell(2, 1, new CardCell(new Card(
+            "BlueCard4", 9, 9, 9, 9), bluePlayer));
+    // Only one move left at (2, 2)
+
+    // Red player's turn
+    assertEquals(redPlayer, mockModel.getCurrentPlayer());
+    Move redMove = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
+    assertNotNull(redMove);
+    Card cardToPlay = redMove.getCard();
+    assertTrue(redPlayer.getHand().contains(cardToPlay));
+    mockModel.playCard(redPlayer, cardToPlay, redMove.getRow(), redMove.getCol());
+    assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay));
+    assertEquals(cardToPlay, mockModel.getGrid().getCell(2, 2).getCard());
+    System.out.println("Single Move Left:\n" + mockModel.getGrid());
+    assertTrue(mockModel.isGameOver());
+  }
+
+  @Test
+  public void testEmptyBoard() {
+    // Set up an empty board
+    mockModel.startGameWithConfig(mockModel.getGrid());
+
+    // Red player's turn
+    assertEquals(redPlayer, mockModel.getCurrentPlayer());
+    Move redMove = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
+    assertNotNull(redMove);
+    Card cardToPlay = redMove.getCard();
+    assertTrue(redPlayer.getHand().contains(cardToPlay));
+    mockModel.playCard(redPlayer, cardToPlay, redMove.getRow(), redMove.getCol());
+    assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay));
+    assertEquals(cardToPlay, mockModel.getGrid()
+            .getCell(redMove.getRow(), redMove.getCol()).getCard());
+    System.out.println("Empty Board:\n" + mockModel.getGrid());
+    assertFalse(mockModel.isGameOver());
+  }
+
+  @Test
+  public void testFullBoard() {
+    // Set up a full board
+    for (int row = 0; row < 3; row++) {
+      for (int col = 0; col < 3; col++) {
+        mockModel.getGrid().setCell(row, col, new CardCell(
+                new Card("Card" + row + col, 1, 1, 1, 1), redPlayer));
+      }
+    }
+
+    // Red player's turn
+    assertEquals(redPlayer, mockModel.getCurrentPlayer());
+    Move redMove = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
+    assertNull(redMove); // No moves should be possible
+    System.out.println("Full Board:\n" + mockModel.getGrid());
+    assertTrue(mockModel.isGameOver());
+  }
+
+  @Test
+  public void testMultipleEqualFlips() {
+    // Set up the board with multiple equal flips possible
+    mockModel.getGrid().setCell(0, 0, new CardCell(new Card(
+            "RedCard1", 1, 1, 1, 1), redPlayer));
+    mockModel.getGrid().setCell(0, 1, new CardCell(new Card(
+            "BlueCard1", 2, 2, 2, 2), bluePlayer));
+    mockModel.getGrid().setCell(0, 2, new CardCell(new Card(
+            "RedCard2", 3, 3, 3, 3), redPlayer));
+    mockModel.getGrid().setCell(1, 0, new CardCell(new Card(
+            "BlueCard2", 4, 4, 4, 4), bluePlayer));
+    mockModel.getGrid().setCell(1, 1, new CardCell(new Card(
+            "RedCard3", 5, 5, 5, 5), redPlayer));
+    mockModel.getGrid().setCell(1, 2, new CardCell(new Card(
+            "BlueCard3", 6, 6, 6, 6), bluePlayer));
+    mockModel.getGrid().setCell(2, 0, new CardCell(new Card(
+            "RedCard4", 7, 7, 7, 7), redPlayer));
+    mockModel.getGrid().setCell(2, 1, new CardCell(new Card(
+            "BlueCard4", 8, 8, 8, 8), bluePlayer));
+    // Two moves left at (2, 2) and (2, 1) with equal flips
+
+    // Red player's turn
+    assertEquals(redPlayer, mockModel.getCurrentPlayer());
+    Move redMove = flipMaximizerStrategy.selectMove(redPlayer, mockModel);
+    assertNotNull(redMove);
+    Card cardToPlay = redMove.getCard();
+    assertTrue(redPlayer.getHand().contains(cardToPlay));
+    mockModel.playCard(redPlayer, cardToPlay, redMove.getRow(), redMove.getCol());
+    assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay));
+    assertEquals(cardToPlay, mockModel.getGrid().getCell(redMove.getRow(), redMove.getCol()).getCard());
+    System.out.println("Multiple Equal Flips:\n" + mockModel.getGrid());
+  }
+
 }

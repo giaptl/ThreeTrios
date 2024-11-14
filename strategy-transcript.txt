@@ -1,0 +1,130 @@
+SETUP:
+1. Let our simplest strategy be FlipMaximizerStrategy
+2. Initialize the mock model, players, and strategy.
+3. Start the game with an empty 3x3 grid with no holes.
+4. "-" represents an empty cell on the grid.
+
+INITIAL BOARD CONFIGURATION:
+- | - | -
+- | - | -
+- | - | -
+
+RED'S HAND:
+- RedCard1 (1, 1, 1, 1)
+- RedCard2 (3, 3, 3, 3)
+- RedCard3 (4, 4, 4, 4)
+- RedCard4 (6, 6, 6, 6)
+- RedCard5 (A, A, 1, 1)
+
+BLUE'S HAND:
+- BlueCard1 (2, 2, 2, 2)
+- BlueCard2 (5, 5, 5, 5)
+- BlueCard3 (7, 7, 7, 7)
+- BlueCard4 (9, 9, 9, 9)
+
+-------------------------------------------------------------------------------------------------
+WALKTHROUGH OF A GAME ON A 3x3 GRID:
+
+ROUND 1:
+Turn: Red
+Expected Move: Top-left corner (0, 0)
+Card Played: RedCard1 (1, 1, 1, 1)
+Rationale: First move always targets the top-left corner.
+
+Strategy Execution for Round 1:
+1. Scanning board from top-left to bottom-right
+2. Found first empty cell at (0, 0)
+3. Selecting first card in hand: RedCard1 (1, 1, 1, 1)
+
+Selected Move for Round 1:
+Card: RedCard1 (1, 1, 1, 1)
+Position: (0, 0)
+
+R | - | -
+- | - | -
+- | - | -
+
+ROUND 2:
+Turn: Blue
+Expected Move: Top-middle (0, 1)
+Card Played: BlueCard1 (2, 2, 2, 2)
+Rationale: Maximizes flips by placing next to the red card.
+B | B | -
+- | - | -
+- | - | -
+
+ROUND 3:
+Turn: Red
+Expected Move: Top-right (0, 2)
+Card Played: RedCard2 (3, 3, 3, 3)
+Rationale: Maximizes flips by placing in the uppermost available position.
+R | R | R
+- | - | -
+- | - | -
+
+ROUND 4:
+Turn: Blue
+Expected Move: Middle-right (1, 2)
+Card Played: BlueCard2 (5, 5, 5, 5)
+Rationale: Maximizes flips by placing next to the red cards.
+B | B | B
+- | - | B
+- | - | -
+
+ROUND 5:
+Turn: Red
+Expected Move: Middle-middle (1, 1)
+Card Played: RedCard4 (6, 6, 6, 6)
+Rationale: Maximizes flips by placing in the center.
+R | R | R
+- | R | R
+- | - | -
+*Note that the second option that maximizes flips is the bottom-right corner (2, 2). However, we
+choose the center to maintain uppermost-leftmost integrity.
+
+ROUND 6:
+Turn: Blue
+Expected Move: Middle-left (1, 0)
+Card Played: BlueCard3 (7, 7, 7, 7)
+Rationale: Maximizes flips by placing next to multiple red cards.
+# of Cards Flipped:
+B | B | B
+B | B | B
+- | - | -
+
+ROUND 7:
+Turn: Red
+Expected Move: Bottom-left (2, 0)
+Card Played: RedCard5 (A, A, 1, 1)
+Rationale: Maximizes flips using the strongest card (A = 10).
+R | R | R
+R | R | R
+R | - | -
+
+ROUND 8:
+Turn: Blue
+Expected Move: Bottom-middle (2, 1)
+Card Played: BlueCard4 (9, 9, 9, 9)
+Rationale: Maximizes flips by placing next to multiple red cards.
+B | B | B
+B | B | B
+B | B | -
+
+ROUND 9:
+Turn: Red
+Expected Move: Bottom-right (2, 2)
+Card Played: RedCard3 (4, 4, 4, 4)
+Rationale: Last available space on the grid.
+B | B | B
+B | B | B
+B | B | R
+
+-------------------------------------------------------------------------------------------------
+CONCLUSION:
+- Board filled completely? Yes
+- Game Over: True
+- Final Score: Blue: 8, Red: 1
+- Winner: Blue Player
+
+KEY OBSERVATIONS:
+-

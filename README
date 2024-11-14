@@ -104,3 +104,40 @@ strategy interface. We also did the same with the controller to hold the tests t
 for the controller.
 
 The screenshots needed for the assignment are located in a folder called "ViewScreenShots"
+
+EXTRA CREDIT STRATEGIES:
+
+For extra credit, we implemented the following strategies:
+
+1. LeastLikelyFlippedStrategy:
+   - This strategy selects the move which minimizes the risk of being flipped by the opponent.
+   - Implementation can be found in the `LeastLikelyFlippedStrategy` class.
+   - Tests for this strategy can be found in the `test/strategy/LeastLikelyFlippedStrategyTest.java`
+     file.
+
+2. MinimaxStrategy:
+   - This strategy selects the move which minimizes the maximum gain the opponent can achieve in
+     their next move.
+   - Implementation can be found in the `MinimaxStrategy` class.
+   - Tests for this strategy can be found in the `test/strategy/MinimaxStrategyTest.java` file.
+
+3. CombinedStrategy:
+   - This strategy allows combining multiple strategies to form more sophisticated strategies.
+   - Implementation can be found in the `CombinedStrategy` class.
+   - Tests for this strategy can be found in the `test/strategy/CombinedStrategyTest.java` file.
+
+These strategies can be recombined in various ways to create more complex strategies. The
+`CombinedStrategy` class facilitates this by allowing multiple strategies to be chained together.
+In case of ties, the move with the uppermost-leftmost coordinate is chosen.
+
+To demonstrate the functionality of these strategies, we have written tests that show each strategy
+working solo and in combination with others. These tests ensure that the strategies are flexible
+and can be used to create more sophisticated decision-making processes in the game.
+
+You can find the implementations and tests for these strategies in the following locations:
+- `src/strategy/LeastLikelyFlippedStrategy.java`
+- `src/strategy/MinimaxStrategy.java`
+- `src/strategy/CombinedStrategy.java`
+- `test/strategy/LeastLikelyFlippedStrategyTest.java`
+- `test/strategy/MinimaxStrategyTest.java`
+- `test/strategy/CombinedStrategyTest.java`

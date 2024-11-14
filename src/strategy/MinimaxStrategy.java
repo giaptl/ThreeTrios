@@ -7,6 +7,12 @@ import model.Grid;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
 
+/**
+ * Strategy that selects the move which minimizes the maximum gain the opponent can achieve in
+ * their next move. This approach is known as the minimax strategy.
+ * The minimax strategy calculates the "best" move an opponent can make by simulating the opponent's moves
+ * using various strategies and choosing the move that leaves the opponent with the least advantage.
+ */
 public class MinimaxStrategy implements Strategy {
   @Override
   public Move selectMove(Player player, ReadOnlyThreeTriosModel model) {
