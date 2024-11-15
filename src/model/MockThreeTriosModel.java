@@ -316,8 +316,4 @@ public class MockThreeTriosModel implements ThreeTriosModel {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
   }
 
-
-
-
-
 }

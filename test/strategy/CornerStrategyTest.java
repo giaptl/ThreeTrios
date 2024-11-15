@@ -107,6 +107,7 @@ public class CornerStrategyTest {
     mockModel.playCard(redPlayer, cardToPlay5, redMove3.getRow(), redMove3.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay5));
     assertEquals(cardToPlay5, mockModel.getGrid().getCell(0, 1).getCard());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 2).getOwner());
     System.out.println("Round 5:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
@@ -123,6 +124,10 @@ public class CornerStrategyTest {
     mockModel.playCard(bluePlayer, cardToPlay6, blueMove3.getRow(), blueMove3.getCol());
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay6));
     assertEquals(cardToPlay6, mockModel.getGrid().getCell(1, 0).getCard());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 0).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 1).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 2).getOwner());
     System.out.println("Round 6:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
@@ -139,6 +144,12 @@ public class CornerStrategyTest {
     mockModel.playCard(redPlayer, cardToPlay7, redMove4.getRow(), redMove4.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay7));
     assertEquals(cardToPlay7, mockModel.getGrid().getCell(1, 1).getCard());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 0).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 1).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 2).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 2).getOwner());
     System.out.println("Round 7:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
@@ -155,6 +166,13 @@ public class CornerStrategyTest {
     mockModel.playCard(bluePlayer, cardToPlay8, blueMove4.getRow(), blueMove4.getCol());
     assertFalse(mockModel.getPlayerHand(bluePlayer).contains(cardToPlay8));
     assertEquals(cardToPlay8, mockModel.getGrid().getCell(1, 2).getCard());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 1).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(0, 2).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 1).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 2).getOwner());
     System.out.println("Round 8:\n" + mockModel.getGrid());
     assertFalse(mockModel.isGameOver());
 
@@ -172,6 +190,14 @@ public class CornerStrategyTest {
     mockModel.playCard(redPlayer, cardToPlay9, redMove5.getRow(), redMove5.getCol());
     assertFalse(mockModel.getPlayerHand(redPlayer).contains(cardToPlay9));
     assertEquals(cardToPlay9, mockModel.getGrid().getCell(2, 1).getCard());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 0).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 1).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(0, 2).getOwner());
+    assertEquals(redPlayer, mockModel.getGrid().getCell(1, 1).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 0).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(1, 2).getOwner());
+    assertEquals(bluePlayer, mockModel.getGrid().getCell(2, 2).getOwner());
     System.out.println("Round 9:\n" + mockModel.getGrid());
 
     // Confirm game state and winner
