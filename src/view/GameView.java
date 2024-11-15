@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import controller.Controller;
+import controller.ControllerFeatures;
 import model.Card;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
@@ -42,6 +43,7 @@ public class GameView extends JFrame implements IGameView {
   private JPanel previouslySelectedCardPanel = null;
   private final GridPanelManager gridPanelManager;
   private final HandPanelManager handPanelManager;
+  private ControllerFeatures features;
 
   /**
    * Constructs a GameView with the specified model.

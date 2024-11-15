@@ -131,3 +131,6 @@ You can find the implementations and tests for these strategies in the following
 - `src/strategy/MinimaxStrategy.java`
 - `test/strategy/LeastLikelyFlippedStrategyTest.java`
 - `test/strategy/MinimaxStrategyTest.java`
+
+----------------------------------------------------------------------------------------------------
+Changes for part 3:

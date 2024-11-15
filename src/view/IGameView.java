@@ -53,4 +53,5 @@ public interface IGameView {
    * @param card the card that is selected
    */
   void updateCardSelection(Player player, Card card);
+
 }
