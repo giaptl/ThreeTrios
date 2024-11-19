@@ -26,7 +26,7 @@ public class Hole implements Cell {
   }
 
   @Override
-  public Player getOwner() {
+  public IPlayer getOwner() {
     return null;
   }
 

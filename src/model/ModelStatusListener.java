@@ -7,6 +7,6 @@ public interface ModelStatusListener {
    *
    * @param currentPlayer the player whose turn it is
    */
-  void onPlayerTurn(Player currentPlayer);
-  void gameOver(Player winner);
+  void onPlayerTurn(IPlayer currentPlayer);
+  void gameOver(IPlayer winner);
 }

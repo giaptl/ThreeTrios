@@ -73,7 +73,7 @@ public class GameModelInnerTests {
   @Test
   public void playCardPlacesCardOnGridAndSwitchesPlayer() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
     assertEquals(card, (grid.getCell(0, 0)).getCard());
@@ -85,11 +85,11 @@ public class GameModelInnerTests {
   @Test(expected = IllegalArgumentException.class)
   public void playCardThrowsExceptionWhenCellNotEmpty() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
     // next player plays card to the same place
-    Player newPlayer = gameModel.getCurrentPlayer();
+    IPlayer newPlayer = gameModel.getCurrentPlayer();
     Card card2 = currentPlayer.getHand().get(0);
     gameModel.playCard(newPlayer, card2, 0, 0);
   }

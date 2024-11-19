@@ -2,8 +2,7 @@ package view;
 
 import controller.PlayerActionListener;
 import model.Card;
-import model.Player;
-
+import model.IPlayer;
 /**
  * Interface representing the view component of the ThreeTrios game.
  * The IGameView interface defines methods for updating and managing the visual
@@ -30,7 +29,7 @@ public interface IGameView {
    * @param player the player whose hand panel will be updated (either red or blue player)
    * @param card the card to remove from the player's hand panel
    */
-  void removeCardFromHandPanel(Player player, Card card);
+  void removeCardFromHandPanel(IPlayer player, Card card);
 
   /**
    * Refreshes the view to reflect the latest state of the game model.
@@ -53,7 +52,7 @@ public interface IGameView {
    * @param player the player who owns the selected card (either red or blue player)
    * @param card the card that is selected
    */
-  void updateCardSelection(Player player, Card card);
+  void updateCardSelection(IPlayer player, Card card);
 
 
 

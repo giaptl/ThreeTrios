@@ -1,6 +1,6 @@
 package strategy;
 
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -14,5 +14,5 @@ public interface Strategy {
    * @param model The current state of the game.
    * @return A Move object representing the selected card and position.
    */
-  Move selectMove(Player player, ReadOnlyThreeTriosModel model);
+  Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model);
 }

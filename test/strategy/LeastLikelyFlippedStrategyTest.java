@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import model.Card;
 import model.CardValues;
+import model.IPlayer;
 import model.MockThreeTriosModel;
 import model.CardCell;
-import model.Player;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -19,8 +19,8 @@ import static org.junit.Assert.assertTrue;
 public class LeastLikelyFlippedStrategyTest {
 
   private MockThreeTriosModel mockModel;
-  private Player redPlayer;
-  private Player bluePlayer;
+  private IPlayer redPlayer;
+  private IPlayer bluePlayer;
   private Strategy leastLikelyFlippedStrategy;
 
   @Before

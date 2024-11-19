@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import controller.Controller;
 import controller.PlayerActionListener;
 import model.Card;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -54,8 +54,8 @@ public class GameView extends JFrame implements IGameView {
    */
   public GameView(ReadOnlyThreeTriosModel model) {
     this.model = model;
-    this.gridPanelManager = new GridPanelManager(model);
-    this.handPanelManager = new HandPanelManager(model);
+    this.gridPanelManager = new GridPanelManager(model, playerActionListeners);
+    this.handPanelManager = new HandPanelManager(model, playerActionListeners);
     setTitle("ThreeTrios Game");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setLayout(new BorderLayout());
@@ -76,8 +76,7 @@ public class GameView extends JFrame implements IGameView {
    * Sets the controller for the manager classes.
    */
   public void setController(Controller controller) {
-    gridPanelManager.setController(controller);
-    handPanelManager.setController(controller);
+    addPlayerActionListener(controller);
   }
 
   @Override
@@ -86,7 +85,7 @@ public class GameView extends JFrame implements IGameView {
   }
 
   @Override
-  public void updateCardSelection(Player player, Card card) {
+  public void updateCardSelection(IPlayer player, Card card) {
     if (previouslySelectedCardPanel != null) {
       previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       previouslySelectedCardPanel = null;
@@ -123,7 +122,7 @@ public class GameView extends JFrame implements IGameView {
   }
 
   @Override
-  public void removeCardFromHandPanel(Player player, Card card) {
+  public void removeCardFromHandPanel(IPlayer player, Card card) {
     JPanel handPanel = player.equals(model.getRedPlayer()) ? redHandPanel : blueHandPanel;
     List<Card> hand = model.getPlayerHand(player);
 

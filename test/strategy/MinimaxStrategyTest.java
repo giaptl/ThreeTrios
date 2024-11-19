@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import model.Card;
 import model.CardValues;
+import model.IPlayer;
 import model.MockThreeTriosModel;
-import model.Player;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -17,8 +17,8 @@ import static org.junit.Assert.assertTrue;
 public class MinimaxStrategyTest {
 
   private MockThreeTriosModel mockModel;
-  private Player redPlayer;
-  private Player bluePlayer;
+  private IPlayer redPlayer;
+  private IPlayer bluePlayer;
   private Strategy minimaxStrategy;
 
   @Before
@@ -181,7 +181,7 @@ public class MinimaxStrategyTest {
     // Expected: The game should be over,
     // and the winner should be determined based on the final board state.
     assertTrue(mockModel.isGameOver());
-    Player winner = mockModel.getWinner();
+    IPlayer winner = mockModel.getWinner();
     assertNotNull(winner);
     System.out.println("Winner: " + winner.getName());
   }

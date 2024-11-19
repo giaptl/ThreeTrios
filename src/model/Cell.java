@@ -26,7 +26,7 @@ public interface Cell {
    *
    * @return the player who owns the cell, or null if the cell is not owned by any player.
    */
-  Player getOwner();
+  IPlayer getOwner();
 
   /**
    * Checks if the cell is empty.

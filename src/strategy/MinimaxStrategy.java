@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.Card;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -19,7 +19,7 @@ public class MinimaxStrategy implements Strategy {
   private static final int MAX_DEPTH = 3; // Adjust this value to control the depth of the search
 
   @Override
-  public Move selectMove(Player player, ReadOnlyThreeTriosModel model) {
+  public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
     List<Card> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
@@ -43,13 +43,13 @@ public class MinimaxStrategy implements Strategy {
     return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
   }
 
-  private int minimax(Card card, int row, int col, Player player,
+  private int minimax(Card card, int row, int col, IPlayer player,
                       ReadOnlyThreeTriosModel model, int depth, boolean isMaximizingPlayer) {
     if (depth == 0 || model.isGameOver()) {
       return evaluateBoard(player, model);
     }
 
-    Player opponent = model.getOpponent(player);
+    IPlayer opponent = model.getOpponent(player);
 
     if (isMaximizingPlayer) {
       int maxEval = Integer.MIN_VALUE;
@@ -85,7 +85,7 @@ public class MinimaxStrategy implements Strategy {
     }
   }
 
-  private int evaluateBoard(Player player, ReadOnlyThreeTriosModel model) {
+  private int evaluateBoard(IPlayer player, ReadOnlyThreeTriosModel model) {
     return model.getPlayerScore(player) - model.getPlayerScore(model.getOpponent(player));
   }
 

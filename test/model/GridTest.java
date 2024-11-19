@@ -57,12 +57,12 @@ public class GridTest {
     Grid originalGrid = new Grid(3, 3);
     originalGrid.setCell(0, 0, new CardCell(
             new Card("Card1", 1, 2, 3, 4),
-            new Player("Player1",
+            new HumanPlayer("Player1",
                     List.of(new Card("Card1", 1, 2, 3, 4)))));
     originalGrid.setCell(1, 1, new Hole());
     originalGrid.setCell(2, 2, new CardCell(
             new Card("Card2", 5, 6, 7, 8),
-            new Player("Player2",
+            new HumanPlayer("Player2",
                     List.of(new Card("Card2", 5, 6, 7, 8)))));
 
     Grid copiedGrid = originalGrid.copyOfGrid();
@@ -79,12 +79,12 @@ public class GridTest {
     Grid originalGrid = new Grid(3, 3);
     originalGrid.setCell(0, 0, new CardCell(
             new Card("Card1", 1, 2, 3, 4),
-            new Player("Player1",
+            new HumanPlayer("Player1",
                     List.of(new Card("Card1", 1, 2, 3, 4)))));
     originalGrid.setCell(1, 1, new Hole());
     originalGrid.setCell(2, 2, new CardCell(
             new Card("Card2", 5, 6, 7, 8),
-            new Player("Player2",
+            new HumanPlayer("Player2",
                     List.of(new Card("Card2", 5, 6, 7, 8)))));
 
     Grid copiedGrid = originalGrid.copyOfGrid();
@@ -102,12 +102,12 @@ public class GridTest {
     Grid originalGrid = new Grid(3, 3);
     originalGrid.setCell(0, 0, new CardCell(
             new Card("Card1", 1, 2, 3, 4),
-            new Player("Player1",
+            new HumanPlayer("Player1",
                     List.of(new Card("Card1", 1, 2, 3, 4)))));
     originalGrid.setCell(1, 1, new Hole());
     originalGrid.setCell(2, 2, new CardCell(
             new Card("Card2", 5, 6, 7, 8),
-            new Player("Player2",
+            new HumanPlayer("Player2",
                     List.of(new Card("Card2", 5, 6, 7, 8)))));
 
     Grid copiedGrid = originalGrid.copyOfGrid();

@@ -48,7 +48,7 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    * @throws IllegalArgumentException if the card is not placed in a valid position
    * @throws IllegalArgumentException if the game is over
    */
-  void playCard(Player player, Card card, int row, int col);
+  void playCard(IPlayer player, Card card, int row, int col);
 
   /**
    * Starts the battle phase at the specified position on the grid. The battle phase occurs between

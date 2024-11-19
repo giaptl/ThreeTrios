@@ -15,9 +15,9 @@ import java.util.Queue;
 public class GameModel implements ThreeTriosModel {
 
   private Grid grid;
-  private Player currentPlayer;
-  private Player pRed;
-  private Player pBlue;
+  private IPlayer currentPlayer;
+  private IPlayer pRed;
+  private IPlayer pBlue;
   private boolean isGameOver;
   private final List<ModelStatusListener> modelStatusListeners = new ArrayList<>();
 
@@ -31,12 +31,12 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public Player getRedPlayer() {
+  public IPlayer getRedPlayer() {
     return pRed;
   }
 
   @Override
-  public Player getBluePlayer() {
+  public IPlayer getBluePlayer() {
     return pBlue;
   }
 
@@ -65,8 +65,8 @@ public class GameModel implements ThreeTriosModel {
     List<Card> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
     List<Card> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
 
-    pRed = new Player("Red", redHand);
-    pBlue = new Player("Blue", blueHand);
+    pRed = new HumanPlayer("Red", redHand);
+    pBlue = new HumanPlayer("Blue", blueHand);
 
     currentPlayer = pRed;
     isGameOver = false;
@@ -74,12 +74,12 @@ public class GameModel implements ThreeTriosModel {
 
 
   @Override
-  public Player getCurrentPlayer() {
+  public IPlayer getCurrentPlayer() {
     return currentPlayer;
   }
 
   @Override
-  public Player getOpponent(Player player) {
+  public IPlayer getOpponent(IPlayer player) {
     if (player.equals(pRed)) {
       return pBlue;
     }
@@ -92,7 +92,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public List<Card> getPlayerHand(Player player) {
+  public List<Card> getPlayerHand(IPlayer player) {
     return player.getHand();
   }
 
@@ -106,7 +106,7 @@ public class GameModel implements ThreeTriosModel {
       for (int col = 0; col < grid.getColumns(); col++) {
         CardCell cell = (CardCell) grid.getCell(row, col);
         if (cell.isOccupied()) {
-          Player owner = cell.getOwner();
+          IPlayer owner = cell.getOwner();
           if (owner.equals(pRed)) {
             redCardCount++;
           } else if (owner.equals(pBlue)) {
@@ -119,7 +119,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public void playCard(Player player, Card card, int row, int col) {
+  public void playCard(IPlayer player, Card card, int row, int col) {
     playCardConditions(player, row, col, card);
 
     CardCell cardCell = new CardCell(card, player);
@@ -138,7 +138,7 @@ public class GameModel implements ThreeTriosModel {
   /**
    * Helper method to check the conditions for playing a card.
    */
-  private void playCardConditions(Player player, int row, int col, Card cardToPlay) {
+  private void playCardConditions(IPlayer player, int row, int col, Card cardToPlay) {
     Cell cell = grid.getCell(row, col);
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
@@ -173,7 +173,7 @@ public class GameModel implements ThreeTriosModel {
       throw new IllegalArgumentException("No card at the specified cell or cell is a hole.");
     }
     CardCell cardCell = (CardCell) cell;
-    Player owner = cardCell.getOwner();
+    IPlayer owner = cardCell.getOwner();
 
     processBattlePhase(owner, row, col);
   }
@@ -189,7 +189,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public int getNumCardsAbleToFlip(Player player, Card card, int row, int col) {
+  public int getNumCardsAbleToFlip(IPlayer player, Card card, int row, int col) {
     // Save the current state of the grid
     Grid originalGrid = grid.copyOfGrid();
 
@@ -208,12 +208,12 @@ public class GameModel implements ThreeTriosModel {
   /**
    * Simulation of entire battle phase. Abstracted into its own method for code clarity.
    */
-  private int simulateEntireBattlePhase(Player player, int startRow, int startCol) {
+  private int simulateEntireBattlePhase(IPlayer player, int startRow, int startCol) {
     return processBattlePhase(player, startRow, startCol);
   }
 
   @Override
-  public int getPlayerScore(Player player) {
+  public int getPlayerScore(IPlayer player) {
     int[] counts = countOccupiedCells();
     int redCardCount = counts[0];
     int blueCardCount = counts[1];
@@ -230,7 +230,7 @@ public class GameModel implements ThreeTriosModel {
    * Helper method which abstracts out much of the battle phase
    * code from both the simulation and the actual battle phase.
    */
-  protected int processBattlePhase(Player player, int startRow, int startCol) {
+  protected int processBattlePhase(IPlayer player, int startRow, int startCol) {
     int cardsFlipped = 0;
     Queue<int[]> toProcess = new LinkedList<>();
     toProcess.offer(new int[]{startRow, startCol});
@@ -254,7 +254,7 @@ public class GameModel implements ThreeTriosModel {
    * Checks to see which cells are being flipped and also flipping cards
    * that have already been flipped.
    */
-  protected int processAdjacentCells(Player player, Card currentCard, int row, int col,
+  protected int processAdjacentCells(IPlayer player, Card currentCard, int row, int col,
                                      Queue<int[]> toProcess) {
     int flipped = 0;
     for (Direction direction : Direction.values()) {
@@ -286,7 +286,7 @@ public class GameModel implements ThreeTriosModel {
    * are flipped from each turn.
    */
   protected int cardAttackDirections(Direction direction, int newRow, int newCol,
-                                     Player owner, Card card) {
+                                     IPlayer owner, Card card) {
     int cardsFlipped = 0;
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
@@ -294,7 +294,7 @@ public class GameModel implements ThreeTriosModel {
       if (!(adjacentCell.isHole())) {
         CardCell adjacentCardCell = (CardCell) adjacentCell;
         Card adjacentCard = adjacentCardCell.getCard();
-        Player adjacentOwner = adjacentCardCell.getOwner();
+        IPlayer adjacentOwner = adjacentCardCell.getOwner();
 
         if (adjacentCard != null && !owner.equals(adjacentOwner)) {
           int attackValue = parseAttackValue(card.getAttackValue(direction));
@@ -331,7 +331,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public Player getWinner() {
+  public IPlayer getWinner() {
     int[] counts = countOccupiedCells();
     int redCardCount = counts[0];
     int blueCardCount = counts[1];

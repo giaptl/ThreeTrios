@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import model.Card;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -18,7 +18,7 @@ import model.ReadOnlyThreeTriosModel;
 public class FlipMaximizerStrategy implements Strategy {
 
   @Override
-  public Move selectMove(Player player, ReadOnlyThreeTriosModel model) {
+  public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
     List<Card> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 

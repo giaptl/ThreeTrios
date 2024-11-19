@@ -1,8 +1,8 @@
 package controller;
 
 import model.Card;
+import model.IPlayer;
 import model.ModelStatusListener;
-import model.Player;
 import model.ThreeTriosModel;
 import view.IGameView;
 
@@ -25,7 +25,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   private final ThreeTriosModel model;
   private final IGameView view;
   private Card selectedCard = null;
-  private Player selectedPlayer = null;
+  private IPlayer selectedPlayer = null;
 
   public Controller(ThreeTriosModel model, IGameView view) {
     this.model = model;
@@ -42,7 +42,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
    * @param cardIndex the index of the clicked card in the player's hand
    */
   @Override
-  public void onCardSelected(Player player, int cardIndex) {
+  public void onCardSelected(IPlayer player, int cardIndex) {
     Card clickedCard = model.getPlayerHand(player).get(cardIndex);
 
     if (selectedPlayer == player && clickedCard.equals(selectedCard)) {
@@ -90,12 +90,12 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
 
   @Override
-  public void onPlayerTurn(Player player) {
+  public void onPlayerTurn(IPlayer player) {
 
   }
 
   @Override
-  public void gameOver(Player winner) {
+  public void gameOver(IPlayer winner) {
 
   }
 }

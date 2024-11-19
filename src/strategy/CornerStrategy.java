@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.Card;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -15,7 +15,7 @@ import model.ReadOnlyThreeTriosModel;
 public class CornerStrategy implements Strategy {
 
   @Override
-  public Move selectMove(Player player, ReadOnlyThreeTriosModel model) {
+  public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
     List<Card> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
@@ -61,18 +61,18 @@ public class CornerStrategy implements Strategy {
 
 
   private int simulateOpponentBestMove(
-          Card card, int row, int col, Player player, ReadOnlyThreeTriosModel model) {
+          Card card, int row, int col, IPlayer player, ReadOnlyThreeTriosModel model) {
     // Place this player's card on the simulated grid
     // model.playCard(player, card, row, col);
 
     // Get opponent player
-    Player opponent = model.getOpponent(player);
+    IPlayer opponent = model.getOpponent(player);
 
     // Now simulate all possible moves for the opponent and find their best move
     return findMaxFlipsForOpponent(opponent, model);
   }
 
-  private int findMaxFlipsForOpponent(Player opponent, ReadOnlyThreeTriosModel model) {
+  private int findMaxFlipsForOpponent(IPlayer opponent, ReadOnlyThreeTriosModel model) {
     List<Card> hand = model.getPlayerHand(opponent);
     Grid grid = model.getGrid();
 

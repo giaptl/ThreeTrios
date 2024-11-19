@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.Card;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -52,7 +52,7 @@ public class Move {
    * @return a Move representing the fallback move, or null if no valid move is found
    */
   public static Move findFallbackMove(List<Card> hand, Grid grid,
-                                      ReadOnlyThreeTriosModel model, Player player) {
+                                      ReadOnlyThreeTriosModel model, IPlayer player) {
     int minDistance = Integer.MAX_VALUE;
     int bestRow = -1;
     int bestCol = -1;

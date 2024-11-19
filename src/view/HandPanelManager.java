@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
 import javax.swing.JPanel;
-import controller.Controller;
+import controller.PlayerActionListener;
 import model.Card;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -14,24 +14,17 @@ import model.ReadOnlyThreeTriosModel;
  */
 public class HandPanelManager {
   private final ReadOnlyThreeTriosModel model;
-  private Controller controller;
+  private final List<PlayerActionListener> playerActionListeners;
 
   /**
-   * Constructs a HandPanelManager with the specified model.
+   * Constructs a HandPanelManager with the specified model and listeners.
    *
    * @param model the read-only model of the game
+   * @param playerActionListeners the list of player action listeners
    */
-  public HandPanelManager(ReadOnlyThreeTriosModel model) {
+  public HandPanelManager(ReadOnlyThreeTriosModel model, List<PlayerActionListener> playerActionListeners) {
     this.model = model;
-  }
-
-  /**
-   * Sets the controller for handling user interactions with the hand panels.
-   *
-   * @param controller the controller to be set
-   */
-  public void setController(Controller controller) {
-    this.controller = controller;
+    this.playerActionListeners = playerActionListeners;
   }
 
   /**
@@ -40,7 +33,7 @@ public class HandPanelManager {
    * @param player the player whose hand panel is to be created
    * @return the created hand panel
    */
-  public JPanel createHandPanel(Player player) {
+  public JPanel createHandPanel(IPlayer player) {
     JPanel handPanel = new JPanel();
     handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
     Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
@@ -54,7 +47,9 @@ public class HandPanelManager {
       cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
-          controller.onCardSelected(player, index);
+          for (PlayerActionListener listener : playerActionListeners) {
+            listener.onCardSelected(player, index);
+          }
         }
       });
 
@@ -70,7 +65,7 @@ public class HandPanelManager {
    * @param handPanel the hand panel to be updated
    * @param player the player whose hand panel is to be updated
    */
-  public void updateHandPanel(JPanel handPanel, Player player) {
+  public void updateHandPanel(JPanel handPanel, IPlayer player) {
     handPanel.removeAll();
     List<Card> hand = model.getPlayerHand(player);
     for (int i = 0; i < hand.size(); i++) {
@@ -83,7 +78,9 @@ public class HandPanelManager {
       cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
-          controller.onCardSelected(player, index);
+          for (PlayerActionListener listener : playerActionListeners) {
+            listener.onCardSelected(player, index);
+          }
         }
       });
       handPanel.add(cardPanel);

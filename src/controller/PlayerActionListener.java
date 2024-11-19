@@ -1,6 +1,7 @@
 package controller;
 
-import model.Player;
+
+import model.IPlayer;
 
 public interface PlayerActionListener {
 
@@ -10,7 +11,7 @@ public interface PlayerActionListener {
    * @param player the player who selected the card
    * @param cardIndex the index of the selected card in the player's hand
    */
-  void onCardSelected(Player player, int cardIndex);
+  void onCardSelected(IPlayer player, int cardIndex);
 
   /**
    * Called when a player selects a grid cell to place a card.

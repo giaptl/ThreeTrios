@@ -6,7 +6,7 @@ import model.Card;
 import model.Cell;
 import model.Direction;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 
 /**
  * A text based view for the game. Default view but will be changed to a GUI in the future.
@@ -30,7 +30,7 @@ public class TextView {
         } else if (cell.isEmpty()) {
           System.out.print("_");
         } else {
-          Player owner = cell.getOwner();
+          IPlayer owner = cell.getOwner();
           if (owner.getName().equals("Red")) {
             System.out.print("R");
           } else if (owner.getName().equals("Blue")) {
@@ -49,7 +49,7 @@ public class TextView {
    * @param player the player whose hand is to be rendered
    * @param hand the list of cards in the player's hand
    */
-  protected void renderPlayerHand(Player player, List<Card> hand) {
+  protected void renderPlayerHand(IPlayer player, List<Card> hand) {
     System.out.println("Player: " + player.getName().toUpperCase());
     System.out.println("Hand:");
     for (Card card : hand) {

@@ -8,7 +8,7 @@ import java.util.Objects;
 public class CardCell implements Cell {
 
   private Card card;
-  private Player owner;
+  private IPlayer owner;
 
   /**
    * Creates a new instance of the class with a null card.
@@ -21,7 +21,7 @@ public class CardCell implements Cell {
    * Create an instance of CardCell with a card and owner assigned to it.
    * Happens when a card is placed on the board.
    */
-  public CardCell(Card card, Player owner) {
+  public CardCell(Card card, IPlayer owner) {
     this.card = card;
     this.owner = owner;
   }
@@ -51,7 +51,7 @@ public class CardCell implements Cell {
   }
 
   @Override
-  public Player getOwner() {
+  public IPlayer getOwner() {
     return owner;
   }
 
@@ -60,7 +60,7 @@ public class CardCell implements Cell {
    *
    * @param owner the owner to set for the CardCell
    */
-  void setOwner(Player owner) {
+  void setOwner(IPlayer owner) {
     this.owner = owner;
   }
 

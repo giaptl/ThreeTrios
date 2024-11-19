@@ -10,7 +10,7 @@ import model.Card;
 import model.Direction;
 import model.GameModel;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -110,7 +110,7 @@ public class GameModelInterfaceTest {
   @Test
   public void testPlayCard() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
     assertEquals(card, (grid.getCell(0, 0)).getCard());
@@ -125,10 +125,10 @@ public class GameModelInterfaceTest {
   @Test
   public void testPlayCardThrowsExceptionWhenCellNotEmpty() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
-    Player newPlayer = gameModel.getCurrentPlayer();
+    IPlayer newPlayer = gameModel.getCurrentPlayer();
     Card card2 = newPlayer.getHand().get(0);
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
       gameModel.playCard(newPlayer, card2, 0, 0);
@@ -143,7 +143,7 @@ public class GameModelInterfaceTest {
   @Test
   public void testStartBattlePhase() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
     gameModel.startBattlePhase(0, 0);
@@ -164,7 +164,7 @@ public class GameModelInterfaceTest {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
         if (grid.getCell(row, col).isEmpty()) {
-          Player currentPlayer = gameModel.getCurrentPlayer();
+          IPlayer currentPlayer = gameModel.getCurrentPlayer();
           Card card = currentPlayer.getHand().get(0);
           gameModel.playCard(currentPlayer, card, row, col);
         }
@@ -188,7 +188,7 @@ public class GameModelInterfaceTest {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
         if (grid.getCell(row, col).isEmpty()) {
-          Player currentPlayer = gameModel.getCurrentPlayer();
+          IPlayer currentPlayer = gameModel.getCurrentPlayer();
           Card card = currentPlayer.getHand().get(0);
           gameModel.playCard(currentPlayer, card, row, col);
 
@@ -210,7 +210,7 @@ public class GameModelInterfaceTest {
   @Test
   public void testPlayCardWithEmptyHand() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     int row = 0;
     int col = 0;
 
@@ -229,7 +229,7 @@ public class GameModelInterfaceTest {
         }
       }
     }
-    Player finalCurrentPlayer = currentPlayer;
+    IPlayer finalCurrentPlayer = currentPlayer;
 
     // Should throw since the game is over
     assertThrows(IllegalArgumentException.class, () ->
@@ -247,7 +247,7 @@ public class GameModelInterfaceTest {
     int playCount = 0;
 
     while (!gameModel.isGameOver()) {
-      Player currentPlayer = gameModel.getCurrentPlayer();
+      IPlayer currentPlayer = gameModel.getCurrentPlayer();
       if (currentPlayer.getHand().isEmpty()) {
         break;
       }
@@ -284,7 +284,7 @@ public class GameModelInterfaceTest {
   @Test
   public void testPlayCardOutOfBounds() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Card card = currentPlayer.getHand().get(0);
     assertThrows(IllegalArgumentException.class, () ->
             gameModel.playCard(currentPlayer, card, -1, 0));
@@ -307,14 +307,14 @@ public class GameModelInterfaceTest {
     for (int i = 0; i < grid.getRows(); i++) {
       for (int j = 0; j < grid.getColumns(); j++) {
         if (grid.getCell(i, j).isEmpty()) {
-          Player currentPlayer = gameModel.getCurrentPlayer();
+          IPlayer currentPlayer = gameModel.getCurrentPlayer();
           Card card = currentPlayer.getHand().get(0);
           gameModel.playCard(currentPlayer, card, i, j);
         }
       }
     }
     assertTrue(gameModel.isGameOver());
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     if (!currentPlayer.getHand().isEmpty()) {
       Card card = currentPlayer.getHand().get(0);
       assertThrows(IllegalArgumentException.class, () -> {
@@ -330,8 +330,8 @@ public class GameModelInterfaceTest {
   @Test
   public void testPlayCardWithWrongPlayer() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player currentPlayer = gameModel.getCurrentPlayer();
-    Player wrongPlayer;
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer wrongPlayer;
     if (currentPlayer == gameModel.getRedPlayer()) {
       wrongPlayer = gameModel.getBluePlayer();
     } else {
@@ -348,8 +348,8 @@ public class GameModelInterfaceTest {
   @Test
   public void testPlayerCannotFlipOwnCards() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player redPlayer = gameModel.getRedPlayer();
-    Player bluePlayer = gameModel.getBluePlayer();
+    IPlayer redPlayer = gameModel.getRedPlayer();
+    IPlayer bluePlayer = gameModel.getBluePlayer();
 
     // Red player plays a card
     Card redCard1 = redPlayer.getHand().get(0);
@@ -393,7 +393,7 @@ public class GameModelInterfaceTest {
     gameModel.startGameWithConfig(grid, deck, false);
     Grid initialGrid = gameModel.getGrid();
     // Perform some operations that should not change the grid
-    Player currentPlayer = gameModel.getCurrentPlayer();
+    IPlayer currentPlayer = gameModel.getCurrentPlayer();
     Grid retrievedGrid = gameModel.getGrid();
     assertEquals(initialGrid.toString(), retrievedGrid.toString());
   }
@@ -402,8 +402,8 @@ public class GameModelInterfaceTest {
   @Test
   public void testGetPlayerScoreInitial() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player redPlayer = gameModel.getRedPlayer();
-    Player bluePlayer = gameModel.getBluePlayer();
+    IPlayer redPlayer = gameModel.getRedPlayer();
+    IPlayer bluePlayer = gameModel.getBluePlayer();
 
     assertEquals(0, gameModel.getPlayerScore(redPlayer));
     assertEquals(0, gameModel.getPlayerScore(bluePlayer));
@@ -412,8 +412,8 @@ public class GameModelInterfaceTest {
   @Test
   public void testGetPlayerScoreAfterPlayingCards() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player redPlayer = gameModel.getRedPlayer();
-    Player bluePlayer = gameModel.getBluePlayer();
+    IPlayer redPlayer = gameModel.getRedPlayer();
+    IPlayer bluePlayer = gameModel.getBluePlayer();
 
     // Red player plays a card
     Card redCard = redPlayer.getHand().get(0);
@@ -430,8 +430,8 @@ public class GameModelInterfaceTest {
   @Test
   public void testGetPlayerScoreAfterCardFlipBattle() {
     gameModel.startGameWithConfig(grid, deck, false);
-    Player redPlayer = gameModel.getRedPlayer();
-    Player bluePlayer = gameModel.getBluePlayer();
+    IPlayer redPlayer = gameModel.getRedPlayer();
+    IPlayer bluePlayer = gameModel.getBluePlayer();
 
     // Red player plays a card
     Card redCard = redPlayer.getHand().get(3);

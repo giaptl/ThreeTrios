@@ -20,7 +20,7 @@ public class PlayerTest {
             new Card("Card1", 1, 2, 3, 4),
             new Card("Card2", 5, 6, 7, 8)
     );
-    Player player = new Player("TestPlayer", hand);
+    IPlayer player = new HumanPlayer("TestPlayer", hand);
     assertNotNull(player);
     assertEquals("TestPlayer", player.getName());
     assertEquals(hand, player.getHand());
@@ -28,7 +28,7 @@ public class PlayerTest {
 
   @Test
   public void testGetName() {
-    Player player = new Player("TestPlayer", List.of());
+    IPlayer player = new HumanPlayer("TestPlayer", List.of());
     assertEquals("TestPlayer", player.getName());
   }
 
@@ -38,15 +38,15 @@ public class PlayerTest {
             new Card("Card1", 1, 2, 3, 4),
             new Card("Card2", 5, 6, 7, 8)
     );
-    Player player = new Player("TestPlayer", hand);
+    IPlayer player = new HumanPlayer("TestPlayer", hand);
     assertEquals(hand, player.getHand());
   }
 
   @Test
   public void testEqualsEqualObjects() {
     List<Card> hand = List.of(new Card("MysticEagle", 5, 10, 4, 2));
-    Player player1 = new Player("Player1", hand);
-    Player player2 = new Player("Player1", hand);
+    IPlayer player1 = new HumanPlayer("Player1", hand);
+    IPlayer player2 = new HumanPlayer("Player1", hand);
     assertEquals(player1, player2);
   }
 
@@ -54,22 +54,22 @@ public class PlayerTest {
   public void testEqualsDifferentObjects() {
     List<Card> hand1 = List.of(new Card("MysticEagle", 5, 10, 4, 2));
     List<Card> hand2 = List.of(new Card("DragonWarrior", 5, 10, 4, 2));
-    Player player1 = new Player("Player1", hand1);
-    Player player2 = new Player("Player2", hand2);
+    IPlayer player1 = new HumanPlayer("Player1", hand1);
+    IPlayer player2 = new HumanPlayer("Player2", hand2);
     assertNotEquals(player1, player2);
   }
 
   @Test
   public void testEqualsNull() {
-    Player player = new Player("Player1", List.of(new Card("MysticEagle", 5, 10, 4, 2)));
+    IPlayer player = new HumanPlayer("Player1", List.of(new Card("MysticEagle", 5, 10, 4, 2)));
     assertNotEquals(player, null);
   }
 
   @Test
   public void testHashCodeEqualObjects() {
     List<Card> hand = List.of(new Card("MysticEagle", 5, 10, 4, 2));
-    Player player1 = new Player("Player1", hand);
-    Player player2 = new Player("Player1", hand);
+    IPlayer player1 = new HumanPlayer("Player1", hand);
+    IPlayer player2 = new HumanPlayer("Player1", hand);
     assertEquals(player1.hashCode(), player2.hashCode());
   }
 
@@ -77,8 +77,8 @@ public class PlayerTest {
   public void testHashCodeDifferentObjects() {
     List<Card> hand1 = List.of(new Card("MysticEagle", 5, 10, 4, 2));
     List<Card> hand2 = List.of(new Card("DragonWarrior", 5, 10, 4, 2));
-    Player player1 = new Player("Player1", hand1);
-    Player player2 = new Player("Player2", hand2);
+    IPlayer player1 = new HumanPlayer("Player1", hand1);
+    IPlayer player2 = new HumanPlayer("Player2", hand2);
     assertNotEquals(player1.hashCode(), player2.hashCode());
   }
 }

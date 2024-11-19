@@ -5,7 +5,7 @@ import java.util.List;
 import model.Card;
 import model.CardCell;
 import model.Grid;
-import model.Player;
+import model.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -17,7 +17,7 @@ import model.ReadOnlyThreeTriosModel;
 public class LeastLikelyFlippedStrategy implements Strategy {
 
   @Override
-  public Move selectMove(Player player, ReadOnlyThreeTriosModel model) {
+  public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
     List<Card> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
@@ -43,9 +43,9 @@ public class LeastLikelyFlippedStrategy implements Strategy {
   }
 
   private int calculateFlipRisk(Card card, int row, int col,
-                                Player player, ReadOnlyThreeTriosModel model) {
+                                IPlayer player, ReadOnlyThreeTriosModel model) {
     int flipRisk = 0;
-    Player opponent = model.getOpponent(player);
+    IPlayer opponent = model.getOpponent(player);
     List<Card> opponentHand = model.getPlayerHand(opponent);
 
     // Simulate placing the card

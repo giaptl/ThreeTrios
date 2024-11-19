@@ -14,7 +14,7 @@ public interface ReadOnlyThreeTriosModel {
    *
    * @return the current player
    */
-  Player getCurrentPlayer();
+  IPlayer getCurrentPlayer();
 
   /**
    * Gets the grid on which the game is being played.
@@ -29,21 +29,21 @@ public interface ReadOnlyThreeTriosModel {
    * @param player the player whose hand is to be retrieved
    * @return the list of cards in the player's hand
    */
-  List<Card> getPlayerHand(Player player);
+  List<Card> getPlayerHand(IPlayer player);
 
   /**
    * Gets the red player.
    *
    * @return the red player
    */
-  Player getRedPlayer();
+  IPlayer getRedPlayer();
 
   /**
    * Gets the blue player.
    *
    * @return the blue player
    */
-  Player getBluePlayer();
+  IPlayer getBluePlayer();
 
   /**
    * Checks if the game is over. Game is over when all empty card cells are filled.
@@ -60,7 +60,7 @@ public interface ReadOnlyThreeTriosModel {
    *
    * @return the player who won the game, or null if the game is a tie or not yet finished
    */
-  Player getWinner();
+  IPlayer getWinner();
 
   /**
    * Gets the score of the specified player. The score of a player is the number of cards they have
@@ -69,7 +69,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param player the player whose score is to be retrieved (red or blue)
    * @return the score of the player
    */
-  int getPlayerScore(Player player);
+  int getPlayerScore(IPlayer player);
 
   /**
    * Returns the number of cards that able to be flipped by placing a certain card from a player's
@@ -81,7 +81,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param row represents the row of the board that the card will be played to.
    * @param col represents the column of the board that the card will be played to.
    */
-  int getNumCardsAbleToFlip(Player player, Card card, int row, int col);
+  int getNumCardsAbleToFlip(IPlayer player, Card card, int row, int col);
 
   /**
    * Returns the opponent of the player who is currently playing.
@@ -89,5 +89,5 @@ public interface ReadOnlyThreeTriosModel {
    *
    * @param player represents which player's turn it is right now and who the opponent is.
    */
-  Player getOpponent(Player player);
+  IPlayer getOpponent(IPlayer player);
 }

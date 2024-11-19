@@ -13,7 +13,8 @@ import java.util.List;
 import configuration.ConfigurationReader;
 import model.Card;
 import model.Grid;
-import model.Player;
+import model.HumanPlayer;
+import model.IPlayer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -111,7 +112,7 @@ public class TextViewTest {
 
   @Test
   public void testRenderPlayerHand() {
-    Player player = new Player("TestPlayer", List.of());
+    IPlayer player = new HumanPlayer("TestPlayer", List.of());
     List<Card> hand = Arrays.asList(
             new Card("Card1", 1, 2, 3, 4),
             new Card("Card2", 5, 6, 7, 8)

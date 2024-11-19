@@ -3,9 +3,10 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import controller.Controller;
+import controller.PlayerActionListener;
 import model.Card;
 import model.ReadOnlyThreeTriosModel;
 
@@ -14,28 +15,26 @@ import model.ReadOnlyThreeTriosModel;
  */
 public class GridPanelManager {
   private final ReadOnlyThreeTriosModel model;
-  private Controller controller;
+  private final List<PlayerActionListener> playerActionListeners;
   private final JPanel gridPanel;
 
   /**
-   * Constructs a GridPanelManager with the specified model.
+   * Constructs a GridPanelManager with the specified model and listeners.
    *
    * @param model the read-only model of the game
+   * @param playerActionListeners the list of player action listeners
    */
-  public GridPanelManager(ReadOnlyThreeTriosModel model) {
+  public GridPanelManager(ReadOnlyThreeTriosModel model, List<PlayerActionListener> playerActionListeners) {
     this.model = model;
+    this.playerActionListeners = playerActionListeners;
     this.gridPanel = createGridPanel();
   }
 
   /**
-   * Sets the controller for handling user interactions with the grid.
+   * Gets the grid panel managed by this class.
    *
-   * @param controller the controller to be set
+   * @return the grid panel
    */
-  public void setController(Controller controller) {
-    this.controller = controller;
-  }
-
   public JPanel getGridPanel() {
     return gridPanel;
   }
@@ -63,7 +62,9 @@ public class GridPanelManager {
         cellPanel.addMouseListener(new java.awt.event.MouseAdapter() {
           @Override
           public void mouseClicked(java.awt.event.MouseEvent e) {
-            controller.onGridCellSelected(finalRow, finalCol);
+            for (PlayerActionListener listener : playerActionListeners) {
+              listener.onGridCellSelected(finalRow, finalCol);
+            }
           }
         });
 
