@@ -96,7 +96,22 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onMoveSelected(Move move) {
+    try {
+      // Apply the move to the model
+      model.applyMove(move);
 
+      // MAY WORK
+      model.playCard(model.getCurrentPlayer(), move.getCard(), move.getRow(), move.getCol());
+
+
+      // Update the view to reflect the changes
+      view.updateGridCell(move.getRow(), move.getCol(), move.getCard());
+      view.removeCardFromHandPanel(model.getCurrentPlayer(), move.getCard());
+      view.refreshView();
+    } catch (IllegalArgumentException e) {
+      // Handle invalid move
+      view.showError("Invalid move: " + e.getMessage());
+    }
   }
 
 

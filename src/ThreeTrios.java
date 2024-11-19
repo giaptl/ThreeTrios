@@ -42,7 +42,7 @@ public final class ThreeTrios {
       // Launch the GUI on the Swing event dispatch thread
       SwingUtilities.invokeLater(() -> {
         GameView gameView = new GameView(gameModel);
-        Controller controller = new Controller(gameModel, gameView);
+        Controller controller = new Controller(gameModel, gameModel.getCurrentPlayer(), gameView);
         gameView.setController(controller);
         gameView.setVisible(true);
       });
