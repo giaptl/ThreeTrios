@@ -2,6 +2,7 @@ package controller;
 
 
 import model.IPlayer;
+import strategy.Move;
 
 public interface PlayerActionListener {
 
@@ -20,4 +21,11 @@ public interface PlayerActionListener {
    * @param col the column index of the selected grid cell
    */
   void onGridCellSelected(int row, int col);
+
+  /**
+   * Invoked when a move is selected by the player.
+   *
+   * @param move the selected move
+   */
+  void onMoveSelected(Move move);
 }

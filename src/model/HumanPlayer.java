@@ -63,7 +63,7 @@ public class HumanPlayer implements IPlayer {
 
   @Override
   public void takeTurn(ThreeTriosModel model) {
-    // Implementation for taking a turn
+    // DO NOTHING SINCE HUMAN PLAYERS ACT THROUGH THE VIEW!
   }
 
   @Override

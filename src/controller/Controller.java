@@ -4,6 +4,7 @@ import model.Card;
 import model.IPlayer;
 import model.ModelStatusListener;
 import model.ThreeTriosModel;
+import strategy.Move;
 import view.IGameView;
 
 
@@ -27,9 +28,14 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   private Card selectedCard = null;
   private IPlayer selectedPlayer = null;
 
-  public Controller(ThreeTriosModel model, IGameView view) {
+  public Controller(ThreeTriosModel model, IPlayer player, IGameView view) {
     this.model = model;
+    this.selectedPlayer = player;
     this.view = view;
+
+    // Register as a listener for player actions and model status events
+    this.selectedPlayer.addPlayerActionListener(this);
+    this.model.addModelStatusListener(this);
   }
 
 
@@ -86,6 +92,11 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
         view.showError("Invalid move: " + e.getMessage());
       }
     }
+  }
+
+  @Override
+  public void onMoveSelected(Move move) {
+
   }
 
 
