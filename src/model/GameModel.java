@@ -19,6 +19,8 @@ public class GameModel implements ThreeTriosModel {
   private Player pRed;
   private Player pBlue;
   private boolean isGameOver;
+  private final List<ModelStatusListener> modelStatusListeners = new ArrayList<>();
+
 
   /**
    * Creates a new game model. Doesn't need to be passed in anything as this is basically a
@@ -43,6 +45,10 @@ public class GameModel implements ThreeTriosModel {
     this.grid = grid;
     if (shuffle) {
       Collections.shuffle(cards);
+    }
+
+    if (!modelStatusListeners.isEmpty()) {
+      modelStatusListeners.get(0).onPlayerTurn(getRedPlayer());
     }
 
     int numCardCells = grid.getNumCardCells();
@@ -123,6 +129,9 @@ public class GameModel implements ThreeTriosModel {
 
     // Switch the current player
     currentPlayer = currentPlayer.equals(pRed) ? pBlue : pRed;
+    if (!modelStatusListeners.isEmpty()) {
+      modelStatusListeners.get(0).onPlayerTurn(currentPlayer);
+    }
     isGameOver = isGameOver();
   }
 
@@ -167,6 +176,16 @@ public class GameModel implements ThreeTriosModel {
     Player owner = cardCell.getOwner();
 
     processBattlePhase(owner, row, col);
+  }
+
+  @Override
+  public void addModelStatusListener(ModelStatusListener listener) {
+    modelStatusListeners.add(listener);
+  }
+
+  @Override
+  public void removeModelStatusListener(ModelStatusListener listener) {
+    modelStatusListeners.remove(listener);
   }
 
   @Override

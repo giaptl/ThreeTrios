@@ -54,7 +54,7 @@ public class HandPanelManager {
       cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
-          controller.handleCardClick(player, index);
+          controller.onCardSelected(player, index);
         }
       });
 
@@ -83,7 +83,7 @@ public class HandPanelManager {
       cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
         @Override
         public void mouseClicked(java.awt.event.MouseEvent e) {
-          controller.handleCardClick(player, index);
+          controller.onCardSelected(player, index);
         }
       });
       handPanel.add(cardPanel);

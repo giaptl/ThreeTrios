@@ -90,6 +90,16 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
+  public void addModelStatusListener(ModelStatusListener listener) {
+    // Not used.
+  }
+
+  @Override
+  public void removeModelStatusListener(ModelStatusListener listener) {
+    // not used.
+  }
+
+  @Override
   public Grid getGrid() {
     return this.grid;
   }

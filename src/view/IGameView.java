@@ -1,5 +1,6 @@
 package view;
 
+import controller.PlayerActionListener;
 import model.Card;
 import model.Player;
 
@@ -53,5 +54,15 @@ public interface IGameView {
    * @param card the card that is selected
    */
   void updateCardSelection(Player player, Card card);
+
+
+
+  /**
+   * Adds a player action listener to the view.
+   *
+   * @param listener the listener to be added
+   */
+  void addPlayerActionListener(PlayerActionListener listener);
+  void removePlayerActionListener(PlayerActionListener listener);
 
 }

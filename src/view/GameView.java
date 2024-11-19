@@ -3,13 +3,14 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import controller.Controller;
-import controller.ControllerFeatures;
+import controller.PlayerActionListener;
 import model.Card;
 import model.Player;
 import model.ReadOnlyThreeTriosModel;
@@ -43,7 +44,8 @@ public class GameView extends JFrame implements IGameView {
   private JPanel previouslySelectedCardPanel = null;
   private final GridPanelManager gridPanelManager;
   private final HandPanelManager handPanelManager;
-  private ControllerFeatures features;
+  private PlayerActionListener features;
+  private final List<PlayerActionListener> playerActionListeners = new ArrayList<>();
 
   /**
    * Constructs a GameView with the specified model.
@@ -103,6 +105,16 @@ public class GameView extends JFrame implements IGameView {
       cardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
       previouslySelectedCardPanel = cardPanel;
     }
+  }
+
+  @Override
+  public void addPlayerActionListener(PlayerActionListener listener) {
+    playerActionListeners.add(listener);
+  }
+
+  @Override
+  public void removePlayerActionListener(PlayerActionListener listener) {
+    playerActionListeners.remove(listener);
   }
 
   @Override

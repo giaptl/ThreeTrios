@@ -63,7 +63,7 @@ public class GridPanelManager {
         cellPanel.addMouseListener(new java.awt.event.MouseAdapter() {
           @Override
           public void mouseClicked(java.awt.event.MouseEvent e) {
-            controller.handleGridClick(finalRow, finalCol);
+            controller.onGridCellSelected(finalRow, finalCol);
           }
         });
 

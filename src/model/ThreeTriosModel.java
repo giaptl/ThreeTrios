@@ -65,4 +65,12 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
   void startBattlePhase(int row, int col);
 
 
+  /**
+   * Adds a model status listener to the model.
+   *
+   * @param listener the listener to be added
+   */
+  void addModelStatusListener(ModelStatusListener listener);
+
+  void removeModelStatusListener(ModelStatusListener listener);
 }

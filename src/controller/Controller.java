@@ -1,8 +1,7 @@
 package controller;
 
-import configuration.PlayerActions;
 import model.Card;
-import model.ModelFeatures;
+import model.ModelStatusListener;
 import model.Player;
 import model.ThreeTriosModel;
 import view.IGameView;
@@ -22,7 +21,7 @@ import view.IGameView;
  * 7. Game ends when all card cells are filled
  * 8. Winner is determined by the most cards on the grid and in hand
  */
-public class Controller implements ControllerFeatures, ModelFeatures {
+public class Controller implements PlayerActionListener, ModelStatusListener {
   private final ThreeTriosModel model;
   private final IGameView view;
   private Card selectedCard = null;
@@ -33,8 +32,17 @@ public class Controller implements ControllerFeatures, ModelFeatures {
     this.view = view;
   }
 
+
+  /**
+   * Handles the event when a card in a player's hand is clicked.
+   * If the clicked card is already selected, it will be deselected.
+   * Otherwise, the clicked card will be selected.
+   *
+   * @param player the player who clicked the card
+   * @param cardIndex the index of the clicked card in the player's hand
+   */
   @Override
-  public void handleCardClick(Player player, int cardIndex) {
+  public void onCardSelected(Player player, int cardIndex) {
     Card clickedCard = model.getPlayerHand(player).get(cardIndex);
 
     if (selectedPlayer == player && clickedCard.equals(selectedCard)) {
@@ -53,9 +61,17 @@ public class Controller implements ControllerFeatures, ModelFeatures {
     }
   }
 
-
+  /**
+   * Handles the event when a grid cell is clicked.
+   * If a card is selected, it attempts to play the card at the specified grid cell.
+   * If the move is valid, the grid cell is updated, the card is removed from the player's hand,
+   * and the view refreshes. If the move is invalid, an error message displays.
+   *
+   * @param row the row index of the clicked grid cell
+   * @param col the column index of the clicked grid cell
+   */
   @Override
-  public void handleGridClick(int row, int col) {
+  public void onGridCellSelected(int row, int col) {
     System.out.println("Grid cell clicked at row: " + row + ", col: " + col);
 
     if (selectedCard != null && selectedPlayer != null) {
@@ -73,4 +89,13 @@ public class Controller implements ControllerFeatures, ModelFeatures {
   }
 
 
+  @Override
+  public void onPlayerTurn(Player player) {
+
+  }
+
+  @Override
+  public void gameOver(Player winner) {
+
+  }
 }
