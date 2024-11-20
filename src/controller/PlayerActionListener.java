@@ -28,4 +28,6 @@ public interface PlayerActionListener {
    * @param move the selected move
    */
   void onMoveSelected(Move move);
+
+  void onPlayerTurn(IPlayer player);
 }

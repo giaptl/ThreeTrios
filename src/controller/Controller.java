@@ -16,9 +16,9 @@ import view.IGameView;
  * 4. Distribute cards to players
  * 5. Red player starts the game
  * 6. Players take turns:
- *    a. Place a card on an empty cell
- *    b. Automatic battle phase for the placed card
- *    c. Switch to the other player
+ * a. Place a card on an empty cell
+ * b. Automatic battle phase for the placed card
+ * c. Switch to the other player
  * 7. Game ends when all card cells are filled
  * 8. Winner is determined by the most cards on the grid and in hand
  */
@@ -44,7 +44,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
    * If the clicked card is already selected, it will be deselected.
    * Otherwise, the clicked card will be selected.
    *
-   * @param player the player who clicked the card
+   * @param player    the player who clicked the card
    * @param cardIndex the index of the clicked card in the player's hand
    */
   @Override
@@ -98,9 +98,6 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   public void onMoveSelected(Move move) {
     try {
       // Apply the move to the model
-      model.applyMove(move);
-
-      // MAY WORK
       model.playCard(model.getCurrentPlayer(), move.getCard(), move.getRow(), move.getCol());
 
 
@@ -117,11 +114,19 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onPlayerTurn(IPlayer player) {
-
+    // Handle player turn
+    System.out.println("Player " + player.getName() + "'s turn.");
+    view.updateCurrentPlayer(currentPlayer);
+    if (currentPlayer.equals(player) && player.isComputer()) {
+      Move move = player.getStrategy().selectMove(player, model);
+      cellSelected(move.getRow(), move.getCol());
+    }
   }
 
   @Override
   public void gameOver(IPlayer winner) {
-
+    // Handle game over
+    System.out.println("Game over! Winner: " + winner.getName());
+    view.showGameOver(winner);
   }
 }

@@ -62,6 +62,7 @@ public interface IGameView {
    * @param listener the listener to be added
    */
   void addPlayerActionListener(PlayerActionListener listener);
+  
   void removePlayerActionListener(PlayerActionListener listener);
 
 }

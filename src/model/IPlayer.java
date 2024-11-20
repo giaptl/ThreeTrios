@@ -5,6 +5,7 @@ import java.util.List;
 import controller.PlayerActionListener;
 
 public interface IPlayer {
+
   void takeTurn(ThreeTriosModel model);
   void addPlayerActionListener(PlayerActionListener listener);
   void removePlayerActionListener(PlayerActionListener listener);
