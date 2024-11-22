@@ -57,4 +57,14 @@ public class MachinePlayer implements IPlayer {
     return new ArrayList<>(hand);
   }
 
+  @Override
+  public boolean isComputer() {
+    return true;
+  }
+
+  @Override
+  public Strategy getStrategy() {
+    return this.strategy;
+  }
+
 }

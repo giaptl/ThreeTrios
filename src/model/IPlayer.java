@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import controller.PlayerActionListener;
+import strategy.Strategy;
 
 public interface IPlayer {
 
@@ -35,4 +36,7 @@ public interface IPlayer {
    */
   List<Card> getHand();
 
+  boolean isComputer();
+
+  Strategy getStrategy();
 }

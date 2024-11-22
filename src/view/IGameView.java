@@ -65,4 +65,11 @@ public interface IGameView {
   
   void removePlayerActionListener(PlayerActionListener listener);
 
+  /**
+   * Displays the game over message with the winner and the winning score.
+   *
+   * @param winner the player who won the game
+   * @param score the winning score
+   */
+  void showGameOver(IPlayer winner, int score);
 }

@@ -75,7 +75,7 @@ public class GameModel implements ThreeTriosModel {
 
   @Override
   public IPlayer getCurrentPlayer() {
-    return currentPlayer;
+    return this.currentPlayer;
   }
 
   @Override
@@ -104,13 +104,15 @@ public class GameModel implements ThreeTriosModel {
     int blueCardCount = 0;
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
-        CardCell cell = (CardCell) grid.getCell(row, col);
-        if (cell.isOccupied()) {
-          IPlayer owner = cell.getOwner();
-          if (owner.equals(pRed)) {
-            redCardCount++;
-          } else if (owner.equals(pBlue)) {
-            blueCardCount++;
+        if (!grid.getCell(row, col).isHole()) {
+          CardCell cell = (CardCell) grid.getCell(row, col);
+          if (cell.isOccupied()) {
+            IPlayer owner = cell.getOwner();
+            if (owner.equals(pRed)) {
+              redCardCount++;
+            } else if (owner.equals(pBlue)) {
+              blueCardCount++;
+            }
           }
         }
       }

@@ -1,3 +1,4 @@
+// Controller.java
 package controller;
 
 import model.Card;
@@ -7,49 +8,35 @@ import model.ThreeTriosModel;
 import strategy.Move;
 import view.IGameView;
 
-
-/**
- * Game Setup and Flow:
- * 1. Load grid configuration from file
- * 2. Load card configuration from file
- * 3. Initialize game with grid and cards
- * 4. Distribute cards to players
- * 5. Red player starts the game
- * 6. Players take turns:
- * a. Place a card on an empty cell
- * b. Automatic battle phase for the placed card
- * c. Switch to the other player
- * 7. Game ends when all card cells are filled
- * 8. Winner is determined by the most cards on the grid and in hand
- */
 public class Controller implements PlayerActionListener, ModelStatusListener {
   private final ThreeTriosModel model;
   private final IGameView view;
   private Card selectedCard = null;
-  private IPlayer selectedPlayer = null;
+  private final IPlayer player;
 
   public Controller(ThreeTriosModel model, IPlayer player, IGameView view) {
+    if (model == null) {
+      throw new IllegalArgumentException("Model must not be null");
+    }
+    if (player == null) {
+      throw new IllegalArgumentException("Player must not be null");
+    }
+    if (view == null) {
+      throw new IllegalArgumentException("View must not be null");
+    }
     this.model = model;
-    this.selectedPlayer = player;
+    this.player = player;
     this.view = view;
 
     // Register as a listener for player actions and model status events
-    this.selectedPlayer.addPlayerActionListener(this);
+    this.player.addPlayerActionListener(this);
     this.model.addModelStatusListener(this);
   }
 
   private boolean isPlayerTurn() {
-    return model.getCurrentPlayer().equals(selectedPlayer);
+    return model.getCurrentPlayer().equals(player);
   }
 
-  /**
-   * Handles the event when a card in a player's hand is clicked.
-   * If the clicked card is already selected, it will be deselected.
-   * Otherwise, the clicked card will be selected.
-   *
-   * @param player    the player who clicked the card
-   * @param cardIndex the index of the clicked card in the player's hand
-   */
   @Override
   public void onCardSelected(IPlayer player, int cardIndex) {
     if (!isPlayerTurn()) {
@@ -57,33 +44,27 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       return;
     }
 
+    if (!this.player.equals(player)) {
+      view.showError("You cannot select cards from another player's hand.");
+      return;
+    }
+
     Card clickedCard = model.getPlayerHand(player).get(cardIndex);
 
-    if (selectedPlayer.equals(player) && clickedCard.equals(selectedCard)) {
+    if (clickedCard.equals(selectedCard)) {
       // Deselect card if clicked again
       selectedCard = null;
-      selectedPlayer = null;
       System.out.println("Deselected card from " + player.getName());
-      view.updateCardSelection(null, null);
+      view.updateCardSelection(player, null);
     } else {
       // Select new card
       selectedCard = clickedCard;
-      selectedPlayer = player;
       System.out.println("Selected card " + selectedCard.getName()
               + " from " + player.getName() + " at index: " + cardIndex);
       view.updateCardSelection(player, selectedCard);
     }
   }
 
-  /**
-   * Handles the event when a grid cell is clicked.
-   * If a card is selected, it attempts to play the card at the specified grid cell.
-   * If the move is valid, the grid cell is updated, the card is removed from the player's hand,
-   * and the view refreshes. If the move is invalid, an error message displays.
-   *
-   * @param row the row index of the clicked grid cell
-   * @param col the column index of the clicked grid cell
-   */
   @Override
   public void onGridCellSelected(int row, int col) {
     if (!isPlayerTurn()) {
@@ -91,16 +72,30 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       return;
     }
 
+    // Show error message if grid cell is selected before selecting a card from the hand.
+    if (selectedCard == null) {
+      view.showError("Player " + player.getName() + ": You must select a card before selecting a grid cell.");
+      return;
+    }
+
     System.out.println("Grid cell clicked at row: " + row + ", col: " + col);
 
-    if (selectedCard != null && selectedPlayer != null) {
+    if (selectedCard != null) {
       try {
-        model.playCard(selectedPlayer, selectedCard, row, col);
+        model.playCard(player, selectedCard, row, col);
         view.updateGridCell(row, col, selectedCard);
-        view.removeCardFromHandPanel(selectedPlayer, selectedCard);
+        view.removeCardFromHandPanel(player, selectedCard);
         view.refreshView();
-        selectedCard = null;
-        selectedPlayer = null;
+        selectedCard = null; // Reset selectedCard after playing a card
+
+        // Check if the game is over
+        if (model.isGameOver()) {
+          IPlayer winner = model.getWinner();
+          if (winner == null) {
+            gameOver(null);
+          }
+          gameOver(winner);
+        }
       } catch (IllegalArgumentException e) {
         view.showError("Invalid move: " + e.getMessage());
       }
@@ -118,7 +113,6 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       // Apply the move to the model
       model.playCard(model.getCurrentPlayer(), move.getCard(), move.getRow(), move.getCol());
 
-
       // Update the view to reflect the changes
       view.updateGridCell(move.getRow(), move.getCol(), move.getCard());
       view.removeCardFromHandPanel(model.getCurrentPlayer(), move.getCard());
@@ -129,23 +123,24 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     }
   }
 
-
   @Override
   public void onPlayerTurn(IPlayer player) {
-    // Handle player turn
-//    System.out.println("Player " + player.getName() + "'s turn.");
-//    view.updateCurrentPlayer(currentPlayer);
-//    if (currentPlayer.equals(player) && player.isComputer()) {
-//      Move move = player.getStrategy().selectMove(player, model);
-//      cellSelected(move.getRow(), move.getCol());
-//    }
+    // If the current player is a computer, select and play a move automatically
+    if (player.isComputer()) {
+      Move move = player.getStrategy().selectMove(player, model);
+      onGridCellSelected(move.getRow(), move.getCol());
+    }
   }
 
   @Override
   public void gameOver(IPlayer winner) {
-//    // Handle game over
-//    System.out.println("Game over! Winner: " + winner.getName());
-//    view.showGameOver(winner);
+    if (winner == null) {
+      int winningScore = model.getPlayerScore(player);
+      view.showGameOver(null, winningScore);
+    } else {
+      int winningScore = model.getPlayerScore(winner);
+      view.showGameOver(winner, winningScore);
+    }
   }
 
   @Override

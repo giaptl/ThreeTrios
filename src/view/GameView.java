@@ -5,10 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import controller.Controller;
 import controller.PlayerActionListener;
 import model.Card;
@@ -86,6 +88,7 @@ public class GameView extends JFrame implements IGameView {
 
   @Override
   public void updateCardSelection(IPlayer player, Card card) {
+
     if (previouslySelectedCardPanel != null) {
       previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
       previouslySelectedCardPanel = null;
@@ -151,4 +154,15 @@ public class GameView extends JFrame implements IGameView {
   public Dimension getPreferredSize() {
     return new Dimension(800, 600);
   }
+
+  @Override
+  public void showGameOver(IPlayer winner, int score) {
+    if (winner == null) {
+      JOptionPane.showMessageDialog(null, "Game over!\nIt's a tie!\nScore for both players: " + score);
+      return;
+    }
+    JOptionPane.showMessageDialog(null, "Game over!\nWinner: " + winner.getName() + "\nWinner's Score: " + score);
+  }
+
 }
+

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import controller.PlayerActionListener;
+import strategy.Strategy;
 
 /**
  * Represents a player in the game.
@@ -32,6 +33,16 @@ public class HumanPlayer implements IPlayer {
   @Override
   public List<Card> getHand() {
     return new ArrayList<>(this.hand);
+  }
+
+  @Override
+  public boolean isComputer() {
+    return false;
+  }
+
+  @Override
+  public Strategy getStrategy() {
+    return null;
   }
 
   @Override
