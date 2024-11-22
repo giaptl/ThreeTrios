@@ -132,6 +132,12 @@ public class GameModel implements ThreeTriosModel {
     if (!modelStatusListeners.isEmpty()) {
       modelStatusListeners.get(0).onPlayerTurn(currentPlayer);
     }
+
+    // Notify all listeners about the card play
+    for (ModelStatusListener listener : modelStatusListeners) {
+      listener.onCardPlayed(player, card, row, col);
+    }
+
     isGameOver = isGameOver();
   }
 

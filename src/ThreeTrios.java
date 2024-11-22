@@ -6,6 +6,7 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
+import model.IPlayer;
 import view.GameView;
 import controller.Controller;
 
@@ -41,10 +42,27 @@ public final class ThreeTrios {
 
       // Launch the GUI on the Swing event dispatch thread
       SwingUtilities.invokeLater(() -> {
-        GameView gameView = new GameView(gameModel);
-        Controller controller = new Controller(gameModel, gameModel.getCurrentPlayer(), gameView);
-        gameView.setController(controller);
-        gameView.setVisible(true);
+        // Create views for both players
+        GameView gameView1 = new GameView(gameModel);
+        GameView gameView2 = new GameView(gameModel);
+
+        // Create controllers for both players
+        Controller controller1 = new Controller(gameModel, gameModel.getCurrentPlayer(), gameView1);
+
+        IPlayer otherPlayer = gameModel.getRedPlayer();
+        if (gameModel.getCurrentPlayer().equals(gameModel.getRedPlayer())) {
+          otherPlayer = gameModel.getBluePlayer();
+        }
+
+        Controller controller2 = new Controller(gameModel, otherPlayer , gameView2);
+
+        // Set controllers for each view
+        gameView1.setController(controller1);
+        gameView2.setController(controller2);
+
+        // Make both views visible
+        gameView1.setVisible(true);
+        gameView2.setVisible(true);
       });
       System.out.print("GUI launched successfully.");
 

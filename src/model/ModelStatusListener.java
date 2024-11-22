@@ -10,4 +10,6 @@ public interface ModelStatusListener {
   void onPlayerTurn(IPlayer currentPlayer);
 
   void gameOver(IPlayer winner);
+
+  void onCardPlayed(IPlayer player, Card card, int row, int col);
 }

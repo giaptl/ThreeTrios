@@ -38,6 +38,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     this.model.addModelStatusListener(this);
   }
 
+  private boolean isPlayerTurn() {
+    return model.getCurrentPlayer().equals(selectedPlayer);
+  }
 
   /**
    * Handles the event when a card in a player's hand is clicked.
@@ -49,9 +52,14 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
    */
   @Override
   public void onCardSelected(IPlayer player, int cardIndex) {
+    if (!isPlayerTurn()) {
+      view.showError("It's not your turn.");
+      return;
+    }
+
     Card clickedCard = model.getPlayerHand(player).get(cardIndex);
 
-    if (selectedPlayer == player && clickedCard.equals(selectedCard)) {
+    if (selectedPlayer.equals(player) && clickedCard.equals(selectedCard)) {
       // Deselect card if clicked again
       selectedCard = null;
       selectedPlayer = null;
@@ -78,6 +86,11 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
    */
   @Override
   public void onGridCellSelected(int row, int col) {
+    if (!isPlayerTurn()) {
+      view.showError("It's not your turn.");
+      return;
+    }
+
     System.out.println("Grid cell clicked at row: " + row + ", col: " + col);
 
     if (selectedCard != null && selectedPlayer != null) {
@@ -96,6 +109,11 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onMoveSelected(Move move) {
+    if (!isPlayerTurn()) {
+      view.showError("It's not your turn.");
+      return;
+    }
+
     try {
       // Apply the move to the model
       model.playCard(model.getCurrentPlayer(), move.getCard(), move.getRow(), move.getCol());
@@ -115,18 +133,25 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   @Override
   public void onPlayerTurn(IPlayer player) {
     // Handle player turn
-    System.out.println("Player " + player.getName() + "'s turn.");
-    view.updateCurrentPlayer(currentPlayer);
-    if (currentPlayer.equals(player) && player.isComputer()) {
-      Move move = player.getStrategy().selectMove(player, model);
-      cellSelected(move.getRow(), move.getCol());
-    }
+//    System.out.println("Player " + player.getName() + "'s turn.");
+//    view.updateCurrentPlayer(currentPlayer);
+//    if (currentPlayer.equals(player) && player.isComputer()) {
+//      Move move = player.getStrategy().selectMove(player, model);
+//      cellSelected(move.getRow(), move.getCol());
+//    }
   }
 
   @Override
   public void gameOver(IPlayer winner) {
-    // Handle game over
-    System.out.println("Game over! Winner: " + winner.getName());
-    view.showGameOver(winner);
+//    // Handle game over
+//    System.out.println("Game over! Winner: " + winner.getName());
+//    view.showGameOver(winner);
+  }
+
+  @Override
+  public void onCardPlayed(IPlayer player, Card card, int row, int col) {
+    view.updateGridCell(row, col, card);
+    view.removeCardFromHandPanel(player, card);
+    view.refreshView();
   }
 }
