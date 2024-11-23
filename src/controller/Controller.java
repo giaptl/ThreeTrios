@@ -149,4 +149,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     view.removeCardFromHandPanel(player, card);
     view.refreshView();
   }
+
+
+  public void modelChanged() {
+    view.refreshView(); // Refresh view when the model changes
+  }
 }

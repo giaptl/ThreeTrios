@@ -67,4 +67,10 @@ public class MachinePlayer implements IPlayer {
     return this.strategy;
   }
 
+  @Override
+  public void setHand(List<Card> hand) {
+    this.hand.clear();
+    this.hand.addAll(hand);
+  }
+
 }

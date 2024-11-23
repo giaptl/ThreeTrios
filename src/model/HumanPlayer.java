@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 import controller.PlayerActionListener;
 import strategy.Strategy;
 
@@ -17,8 +18,9 @@ public class HumanPlayer implements IPlayer {
 
   /**
    * Creates a new player with the given name and hand.
+   *
    * @param playerName the name of the player
-   * @param hand the list of cards in the player's hand
+   * @param hand       the list of cards in the player's hand
    */
   public HumanPlayer(String playerName, List<Card> hand) {
     this.name = playerName;
@@ -43,6 +45,12 @@ public class HumanPlayer implements IPlayer {
   @Override
   public Strategy getStrategy() {
     return null;
+  }
+
+  @Override
+  public void setHand(List<Card> hand) {
+    this.hand.clear();
+    this.hand.addAll(hand);
   }
 
   @Override

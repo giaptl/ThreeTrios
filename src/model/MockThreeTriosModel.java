@@ -45,7 +45,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle) {
+  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle, IPlayer player1, IPlayer player2) {
     // will not be used since we already assigned players cards in constructor
     isGameOver = false;
   }

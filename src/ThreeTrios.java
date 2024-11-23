@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -8,7 +9,12 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
+import model.HumanPlayer;
 import model.IPlayer;
+import model.MachinePlayer;
+import strategy.CornerStrategy;
+import strategy.FlipMaximizerStrategy;
+import strategy.LeastLikelyFlippedStrategy;
 import view.GameView;
 import controller.Controller;
 
@@ -22,14 +28,14 @@ public final class ThreeTrios {
    */
   public static void main(String[] args) {
 
-//    if (args.length != 2) {
-//      System.err.println("Usage: java ThreeTrios <player1> <player2>");
-//      System.err.println("Player types: human, FlipMaximizer, corner, LeastLikelyFlipped");
-//      System.exit(1);
-//    }
-//
-//    String player1Type = args[0];
-//    String player2Type = args[1];
+    if (args.length != 2) {
+      System.err.println("Usage: java ThreeTrios <player1> <player2>");
+      System.err.println("Player types: human, flipMaximizer, corner, LeastLikelyFlipped");
+      System.exit(1);
+    }
+
+    String player1Type = args[0];
+    String player2Type = args[1];
 
     try {
       // Read the grid configuration
@@ -47,9 +53,15 @@ public final class ThreeTrios {
       List<Card> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
+      List<Card> emptyHand = new ArrayList<>();
+
+      // Create players based on command-line arguments
+      IPlayer player1 = createPlayer(player1Type, emptyHand);
+      IPlayer player2 = createPlayer(player2Type, emptyHand);
+
       // Create a new GameModel instance and start the game
       GameModel gameModel = new GameModel();
-      gameModel.startGameWithConfig(grid, cards, false);
+      gameModel.startGameWithConfig(grid, cards, false, player1, player2);
       System.out.println("Game started successfully.");
 
 
@@ -60,21 +72,15 @@ public final class ThreeTrios {
         GameView gameView2 = new GameView(gameModel);
 
         // Create controllers for both players
-        Controller controller1 = new Controller(gameModel, gameModel.getRedPlayer(), gameView1);
-
-        IPlayer otherPlayer = gameModel.getRedPlayer();
-        if (gameModel.getCurrentPlayer().equals(gameModel.getRedPlayer())) {
-          otherPlayer = gameModel.getBluePlayer();
-        }
-
-        Controller controller2 = new Controller(gameModel, gameModel.getBluePlayer(), gameView2);
+        Controller controller1 = new Controller(gameModel, player1, gameView1);
+        Controller controller2 = new Controller(gameModel, player2, gameView2);
 
         // Set controllers for each view
         gameView1.setController(controller1);
         gameView2.setController(controller2);
 
-        gameView1.setTitle("ThreeTrios Game - Player " + gameModel.getRedPlayer().getName());
-        gameView2.setTitle("ThreeTrios Game - Player " + gameModel.getBluePlayer().getName());
+        gameView1.setTitle("ThreeTrios Game - Player " + player1.getName());
+        gameView2.setTitle("ThreeTrios Game - Player " + player2.getName());
 
         // Make both views visible
         gameView1.setVisible(true);
@@ -86,6 +92,21 @@ public final class ThreeTrios {
       System.err.println("Error reading configuration files: " + e.getMessage());
     } catch (IllegalArgumentException e) {
       System.err.println("Invalid configuration: " + e.getMessage());
+    }
+  }
+
+  private static IPlayer createPlayer(String playerType, List<Card> hand) {
+    switch (playerType.toLowerCase()) {
+      case "human":
+        return new HumanPlayer("Human", hand);
+      case "flipmaximizer":
+        return new MachinePlayer("Machine", hand, new FlipMaximizerStrategy());
+      case "corner":
+        return new MachinePlayer("Machine", hand, new CornerStrategy());
+      case "leastlikelyflipped":
+        return new MachinePlayer("Machine", hand, new LeastLikelyFlippedStrategy());
+      default:
+        throw new IllegalArgumentException("Unknown player type: " + playerType);
     }
   }
 }

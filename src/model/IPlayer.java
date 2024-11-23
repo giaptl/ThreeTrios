@@ -39,4 +39,6 @@ public interface IPlayer {
   boolean isComputer();
 
   Strategy getStrategy();
+
+  void setHand(List<Card> redHand);
 }

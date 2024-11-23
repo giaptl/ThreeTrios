@@ -25,7 +25,7 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    * @throws IllegalArgumentException if the number of cards in the deck are less than the number
    *                                  of CardCells in the grid + 1
    */
-  void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle);
+  void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle, IPlayer player1, IPlayer player2);
 
 
   /**

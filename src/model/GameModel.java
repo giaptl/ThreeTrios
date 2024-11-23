@@ -41,7 +41,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle) {
+  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle, IPlayer player1, IPlayer player2) {
     this.grid = grid;
     if (shuffle) {
       Collections.shuffle(cards);
@@ -65,8 +65,13 @@ public class GameModel implements ThreeTriosModel {
     List<Card> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
     List<Card> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
 
-    pRed = new HumanPlayer("Red", redHand);
-    pBlue = new HumanPlayer("Blue", blueHand);
+    System.out.println("RedHand: " + redHand);
+    System.out.println("BlueHand: " + blueHand);
+    player1.setHand(redHand);
+    player2.setHand(blueHand);
+    pRed = player1;
+    pBlue = player2;
+
 
     currentPlayer = pRed;
     isGameOver = false;
@@ -329,7 +334,7 @@ public class GameModel implements ThreeTriosModel {
   public boolean isGameOver() {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
-        Cell cell =  grid.getCell(row, col);
+        Cell cell = grid.getCell(row, col);
         if (!cell.isHole() && cell.isEmpty()) {
           return false;
         }
