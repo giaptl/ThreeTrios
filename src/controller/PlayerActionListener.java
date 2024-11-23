@@ -29,5 +29,10 @@ public interface PlayerActionListener {
    */
   void onMoveSelected(Move move);
 
+  /**
+   * Called when it becomes a player's turn.
+   *
+   * @param player the player whose turn it is
+   */
   void onPlayerTurn(IPlayer player);
 }

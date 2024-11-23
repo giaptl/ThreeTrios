@@ -29,7 +29,6 @@ public class GameModel implements ThreeTriosModel {
    * door to the "actual" instantiation of the model which happens in startGameWithConfig.
    */
   public GameModel() {
-    this.isGameOver = false;
   }
 
   @Override
@@ -49,8 +48,6 @@ public class GameModel implements ThreeTriosModel {
     if (shuffle) {
       Collections.shuffle(cards);
     }
-
-
 
     int numCardCells = grid.getNumCardCells();
     if (numCardCells % 2 == 0) {
@@ -73,14 +70,9 @@ public class GameModel implements ThreeTriosModel {
     pRed = player1;
     pBlue = player2;
 
-    // Notify the first player that it is their turn
-//    if (!modelStatusListeners.isEmpty()) {
-//      modelStatusListeners.get(0).onPlayerTurn(getRedPlayer());
-//    }
     for (ModelStatusListener listener : modelStatusListeners) {
       listener.onPlayerTurn(currentPlayer);
     }
-
 
     currentPlayer = pRed;
     isGameOver = false;
@@ -152,9 +144,10 @@ public class GameModel implements ThreeTriosModel {
     // Notify all listeners about the card play
     for (ModelStatusListener listener : modelStatusListeners) {
       listener.onCardPlayed(player, card, row, col);
+      listener.onPlayerTurn(currentPlayer);
     }
 
-    isGameOver = isGameOver();
+    // isGameOver = isGameOver();
 
 //    if (isGameOver()) {
 //      for (ModelStatusListener listener : modelStatusListeners) {

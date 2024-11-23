@@ -1,8 +1,6 @@
 // Controller.java
 package controller;
 
-import javax.swing.*;
-
 import model.Card;
 import player.IPlayer;
 import model.ModelStatusListener;
@@ -15,6 +13,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   private final IGameView view;
   private Card selectedCard = null;
   private final IPlayer player;
+  private boolean gameOverCalled = false;
 
   public Controller(ThreeTriosModel model, IPlayer player, IGameView view) {
     if (model == null) {
@@ -31,8 +30,8 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     this.view = view;
 
     // Register as a listener for player actions and model status events
-    this.player.addPlayerActionListener(this);
     this.model.addModelStatusListener(this);
+    this.player.addPlayerActionListener(this);
     onPlayerTurn(model.getCurrentPlayer());
   }
 
@@ -87,25 +86,31 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   private void handleMachinePlayerTurn() {
     new Thread(() -> {
       try {
-        // Introduce a 1-second delay
-        Thread.sleep(1000);
+        // Introduce a 500ms delay
+        Thread.sleep(500);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         throw new RuntimeException(e);
       }
 
-      SwingUtilities.invokeLater(() -> {
-        player.takeTurn(model);
-        view.refreshView();
+      System.out.println("Machine player " + player.getName() + " is taking its turn.");
+      player.takeTurn(model);
+      view.refreshView();
 
-        if (model.isGameOver()) {
-          IPlayer winner = model.getWinner();
-          view.showGameOver(winner, model.getPlayerScore(winner));
-        } else {
-          // Set the next player and trigger their turn
-          onPlayerTurn(model.getCurrentPlayer());
+      if (model.isGameOver()) {
+        IPlayer winner = model.getWinner();
+        synchronized (this) {
+          if (!gameOverCalled) {
+            gameOverCalled = true;
+            view.showGameOver(winner, model.getPlayerScore(winner));
+          }
         }
-      });
+      } else {
+        // Set the next player and trigger their turn
+        System.out.println("Making sure that it reaches this point.");
+        onPlayerTurn(model.getCurrentPlayer());
+        System.out.println("But is this being reached?");
+      }
     }).start();
   }
 
@@ -139,11 +144,13 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onMoveSelected(Move move) {
+    if (model.isGameOver()) {
+      return;
+    }
     if (!isPlayerTurn()) {
       view.showError("It's not your turn.: onMoveSelected");
       return;
     }
-
     try {
       // Apply the move to the model
       model.playCard(model.getCurrentPlayer(), move.getCard(), move.getRow(), move.getCol());
@@ -159,6 +166,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onPlayerTurn(IPlayer player) {
+    System.out.println("It's now " + player.getName() + "'s turn.");
     if (player.equals(this.player) && player.isComputer()) {
       handleMachinePlayerTurn();
     }

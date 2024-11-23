@@ -2,6 +2,7 @@ package player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import controller.PlayerActionListener;
 import model.Card;
@@ -31,7 +32,7 @@ public class MachinePlayer implements IPlayer {
   @Override
   public void takeTurn(ThreeTriosModel model) {
     Move move = strategy.selectMove(this, model);
-    System.out.println("Card: " + move.getCard().getName() + ", Row: " + move.getRow() + ", Col: " + move.getCol());
+//    System.out.println("Card: " + move.getCard().getName() + ", Row: " + move.getRow() + ", Col: " + move.getCol());
     for (PlayerActionListener listener : listeners) {
       listener.onMoveSelected(move);
     }
@@ -81,6 +82,18 @@ public class MachinePlayer implements IPlayer {
   public void setHand(List<Card> hand) {
     this.hand.clear();
     this.hand.addAll(hand);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    MachinePlayer player = (MachinePlayer) obj;
+    return Objects.equals(name, player.name);
   }
 
 }
