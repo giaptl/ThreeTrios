@@ -8,6 +8,11 @@ import model.ThreeTriosModel;
 import strategy.Move;
 import view.IGameView;
 
+/**
+ * The Controller class is responsible for handling user interactions and updating the model and
+ * view accordingly. It implements the PlayerActionListener and ModelStatusListener interfaces to
+ * respond to player actions and model changes.
+ */
 public class Controller implements PlayerActionListener, ModelStatusListener {
   private final ThreeTriosModel model;
   private final IGameView view;
@@ -15,6 +20,14 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   private final IPlayer player;
   private boolean gameOverCalled = false;
 
+  /**
+   * Constructs a Controller with the specified model, player, and view.
+   *
+   * @param model the game model
+   * @param player the player associated with this controller
+   * @param view the game view
+   * @throws IllegalArgumentException if model, player, or view are null
+   */
   public Controller(ThreeTriosModel model, IPlayer player, IGameView view) {
     if (model == null) {
       throw new IllegalArgumentException("Model must not be null");
@@ -35,6 +48,11 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     onPlayerTurn(model.getCurrentPlayer());
   }
 
+  /**
+   * Checks if it is the player's turn.
+   *
+   * @return true if it is the player's turn, false otherwise
+   */
   private boolean isPlayerTurn() {
     return model.getCurrentPlayer().equals(player);
   }
@@ -83,6 +101,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     }
   }
 
+  /**
+   * Handles the turn for a machine player (automatic play).
+   */
   private void handleMachinePlayerTurn() {
     new Thread(() -> {
       try {
@@ -114,7 +135,12 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     }).start();
   }
 
-
+  /**
+   * Handles the turn for a human player (manual play).
+   *
+   * @param row the row index of the selected grid cell
+   * @param col the column index of the selected grid cell
+   */
   private void handleHumanPlayerTurn(int row, int col) {
     // Show error message if grid cell is selected before selecting a card from the hand.
     if (selectedCard == null) {

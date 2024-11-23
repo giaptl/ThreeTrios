@@ -29,7 +29,6 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    */
   void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle, IPlayer player1, IPlayer player2);
 
-
   /**
    * Allows a player to play a card at the specified position on the grid. That position on the
    * grid must be empty and a valid position for the card to be placed (CardCell). Card can NOT be
@@ -66,7 +65,6 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    */
   void startBattlePhase(int row, int col);
 
-
   /**
    * Adds a model status listener to the model.
    *
@@ -74,5 +72,10 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    */
   void addModelStatusListener(ModelStatusListener listener);
 
+  /**
+   * Removes a model status listener to the model.
+   *
+   * @param listener the listener to be removed
+   */
   void removeModelStatusListener(ModelStatusListener listener);
 }

@@ -4,6 +4,11 @@ package controller;
 import player.IPlayer;
 import strategy.Move;
 
+/**
+ * The PlayerActionListener interface defines methods to handle player actions in the game.
+ * Implementations of this interface will respond to various player actions such as selecting a
+ * card, selecting a grid cell, selecting a move, and when it becomes a player's turn.
+ */
 public interface PlayerActionListener {
 
   /**
