@@ -79,7 +79,7 @@ public class GameView extends JFrame implements IGameView {
    */
   public void setController(Controller controller) {
     addPlayerActionListener(controller);
-  }
+  } 
 
   @Override
   public void showError(String message) {

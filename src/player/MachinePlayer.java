@@ -10,6 +10,11 @@ import model.ThreeTriosModel;
 import strategy.Move;
 import strategy.Strategy;
 
+
+/**
+ * Class that represents the logic behind the machine player. Or the AI player, which is the player
+ * that makes moves using a passed in strategy.
+ */
 public class MachinePlayer implements IPlayer {
   private static int machinePlayerCount = 0;
   private final String name;
@@ -103,6 +108,11 @@ public class MachinePlayer implements IPlayer {
     }
     MachinePlayer player = (MachinePlayer) obj;
     return Objects.equals(name, player.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, hand, strategy);
   }
 
 }

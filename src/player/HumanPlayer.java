@@ -18,6 +18,7 @@ public class HumanPlayer implements IPlayer {
   private final String name;
   private final List<PlayerActionListener> listeners = new ArrayList<>();
   private static int humanPlayerCount = 0;
+
   /**
    * Creates a new player with the given name and hand.
    *

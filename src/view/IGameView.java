@@ -77,4 +77,5 @@ public interface IGameView {
    * @param score the winning score
    */
   void showGameOver(IPlayer winner, int score);
+
 }

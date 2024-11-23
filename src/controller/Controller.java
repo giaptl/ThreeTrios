@@ -1,4 +1,3 @@
-// Controller.java
 package controller;
 
 import model.Card;
@@ -92,12 +91,12 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       return;
     }
 
-    if (!(player.isComputer())) {
-      // Handle human player turn
-      handleHumanPlayerTurn(row, col);
-    } else {
+    if (player.isComputer()) {
       // Handle machine player turn
       handleMachinePlayerTurn();
+    } else {
+      // Handle human player turn
+      handleHumanPlayerTurn(row, col);
     }
   }
 
@@ -108,22 +107,23 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     new Thread(() -> {
       try {
         // Introduce a 500ms delay
-        Thread.sleep(500);
+        Thread.sleep(1000);
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         throw new RuntimeException(e);
       }
 
-      System.out.println("Machine player " + player.getName() + " is taking its turn.");
-      player.takeTurn(model);
-      view.refreshView();
+      if (!(model.isGameOver())) {
+        player.takeTurn(model);
+        view.refreshView();
+      }
 
       if (model.isGameOver()) {
         IPlayer winner = model.getWinner();
         synchronized (this) {
           if (!gameOverCalled) {
-            gameOverCalled = true;
             view.showGameOver(winner, model.getPlayerScore(winner));
+            gameOverCalled = true;
           }
         }
       } else {
@@ -157,7 +157,12 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       // Check if the game is over
       if (model.isGameOver()) {
         IPlayer winner = model.getWinner();
-        gameOver(winner);
+        synchronized (this) {
+          if (!gameOverCalled) {
+            gameOverCalled = true;
+            gameOver(winner);
+          }
+        }
       }
     } catch (IllegalArgumentException e) {
       view.showError("Invalid move: " + e.getMessage());
@@ -170,7 +175,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       return;
     }
     if (!isPlayerTurn()) {
-      view.showError("It's not your turn.: onMoveSelected");
+//      view.showError("It's not your turn.: onMoveSelected");
       //System.out.println("Ignoring move: It's not " + player.getName() + "'s turn.");
       return;
     }
@@ -189,7 +194,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onPlayerTurn(IPlayer player) {
-    System.out.println("It's now " + player.getName() + "'s turn.");
+    if (model.isGameOver()) {
+      return;
+    }
     if (player.equals(this.player) && player.isComputer()) {
       handleMachinePlayerTurn();
     }
@@ -197,6 +204,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void gameOver(IPlayer winner) {
+    synchronized (this) {
+      gameOverCalled = true;
+    }
     if (winner == null) {
       int winningScore = model.getPlayerScore(player);
       view.showGameOver(null, winningScore);

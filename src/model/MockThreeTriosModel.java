@@ -49,7 +49,8 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle, IPlayer player1, IPlayer player2) {
+  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
+                                  IPlayer player1, IPlayer player2) {
     // will not be used since we already assigned players cards in constructor
     isGameOver = false;
   }
@@ -328,6 +329,13 @@ public class MockThreeTriosModel implements ThreeTriosModel {
    */
   protected int parseAttackValue(String value) {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
+  }
+
+  public boolean isCardPlayed(Card card, int row, int col) {
+    if (grid.getCell(row, col).equals(card)) {
+      return true;
+    }
+    return false;
   }
 
 }

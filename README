@@ -134,3 +134,107 @@ You can find the implementations and tests for these strategies in the following
 
 ----------------------------------------------------------------------------------------------------
 Changes for part 3:
+
+Large Changes to Model:
+
+We made some small changes in the model, such as changing names and such. We also added the methods
+that would implement the listener interfaces in order to make the model more modular and easier to
+work with. We also added two new parameters the startGameWithConfig() method, where we added the
+ability to create more than just a human player every time the game is started. This allowed us
+to implement the ability to create MachinePlayers and let them play.
+
+Also in our getWinner() method we incorrectly calculated the final score of both players, which
+should have been num of cards they owned on the board + num of cards in their hand. We forgot to
+add the latter and was added in this part.
+
+### New Classes/Interfaces:
+
+PlayerActionListener - Interface
+- This interface defines the methods that must be implemented by any class that wants to listen
+for player actions, such as selecting a card or a grid cell.
+
+ModelStatusListener - Interface
+- This interface defines the methods that must be implemented by any class that wants to listen for
+changes in the model's status, such as when a card is played or the game is over.
+
+IPlayer - Interface
+- This interface defines the methods that must be implemented by any class that represents a player
+in the game. It includes methods for taking a turn, adding a card to the player's hand, and checking
+if the player is a computer.
+
+HumanPlayer - Class
+- This class implements the `IPlayer` interface and represents a human player in the game. It
+includes methods for taking a turn, adding a card to the player's hand, and checking if the
+ player is a computer.
+
+MachinePlayer - Class
+- This class implements the `IPlayer` interface and represents a machine (computer) player in the
+game. It includes methods for taking a turn, adding a card to the player's hand, and checking if the
+ player is a computer. The machine player uses a strategy to decide which move to make.
+
+CardPanelFactory - Class
+- This class is responsible for creating card panels. It includes methods for creating a card panel
+for a specific card and player.
+
+GridPanelManager - Class
+- This class is responsible for managing the grid panel. It includes methods for updating the grid
+panel and adding cards to the grid.
+
+HandPanelManager - Class
+- This class is responsible for managing the hand panels. It includes methods for updating the hand
+panels and removing cards from the hand panels.
+
+Controller - Class
+The Controller class is responsible for handling user interactions and updating the model and view
+accordingly. It implements the PlayerActionListener and ModelStatusListener interfaces to handle
+player actions and model status changes. The Controller class ensures that the game state and UI
+are always in sync and that the game logic is handled correctly.
+
+
+### Design Patterns used:
+
+* Factory Method Pattern: *
+The CardPanelFactory class is an example of the Factory Method pattern. This pattern defines an
+interface for creating an object but allows subclasses to alter the type of objects that will be
+created. In this case, the CardPanelFactory is responsible for creating card panels for specific
+cards and players.
+
+* Observer Pattern: *
+The view in this project uses the Observer pattern. This pattern is used to create a one-to-many
+dependency between objects so that when one object changes state, all its dependents are notified
+and updated automatically.
+
+The ModelStatusListener interface defines the methods that must be implemented by any class that
+wants to listen for changes in the model's status.
+
+The Controller class implements the ModelStatusListener interface and registers itself as a listener
+ to the model.
+
+When the model's state changes (e.g., a card is played or the game is over), the model notifies the
+ controller, which then updates the view to reflect the changes.
+
+* Facade Pattern: *
+The GridPanelManager and HandPanelManager classes are examples of the Facade pattern. This pattern
+provides a simplified interface to a complex subsystem, making it easier to use.
+
+The GridPanelManager class is responsible for managing the grid panel, including updating the grid
+panel and adding cards to the grid.
+
+The HandPanelManager class is responsible for managing the hand panels, including updating the hand
+panels and removing cards from the hand panels.
+
+
+
+Overall, these patterns help use reduce coupling between classes and makes our code more modular.
+
+### Listeners Implementation
+
+In the model and view, listeners are implemented to handle events and update the game state and UI
+accordingly. The PlayerActionListener interface is implemented by the Controller class to handle
+player actions, such as selecting a card or a grid cell. The ModelStatusListener interface is also
+implemented by the Controller class to handle changes in the model's status, such as when a card is
+played or the game is over.  The Controller class registers itself as a listener for both player
+actions and model status events. When a player action occurs, the Controller class updates the model
+and view accordingly. Similarly, when the model's status changes, the Controller class updates the
+view to reflect these changes.  This implementation ensures that the game state and UI are always
+in sync and that the game logic is handled correctly.

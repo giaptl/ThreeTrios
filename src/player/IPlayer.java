@@ -79,5 +79,5 @@ public interface IPlayer {
    *
    * @param hand the list of cards to set as the player's hand
    */
-  void setHand(List<Card> redHand);
+  void setHand(List<Card> hand);
 }

@@ -29,6 +29,7 @@ public class GameModel implements ThreeTriosModel {
    * door to the "actual" instantiation of the model which happens in startGameWithConfig.
    */
   public GameModel() {
+    // Empty Constructor;
   }
 
   @Override
@@ -121,7 +122,8 @@ public class GameModel implements ThreeTriosModel {
         }
       }
     }
-    return new int[]{redCardCount + getPlayerHand(pRed).size(), blueCardCount +getPlayerHand(pBlue).size()};
+    return new int[]{redCardCount + getPlayerHand(pRed).size(),
+            blueCardCount + getPlayerHand(pBlue).size()};
   }
 
   @Override
@@ -144,14 +146,6 @@ public class GameModel implements ThreeTriosModel {
       listener.onCardPlayed(player, card, row, col);
       listener.onPlayerTurn(currentPlayer);
     }
-
-    // isGameOver = isGameOver();
-
-//    if (isGameOver()) {
-//      for (ModelStatusListener listener : modelStatusListeners) {
-//        listener.gameOver(getWinner());
-//      }
-//    }
   }
 
   /**

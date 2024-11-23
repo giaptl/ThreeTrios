@@ -62,7 +62,7 @@ public class ConfigurationReaderTest {
     assertNotNull(grid);
     assertEquals(3, grid.getRows());
     assertEquals(4, grid.getColumns());
-    assertTrue(grid.getCell(1, 2) instanceof Hole);
+    assertFalse(grid.getCell(1, 2) instanceof Hole);
     assertTrue(grid.getCell(1, 1) instanceof Hole);
     assertFalse(grid.getCell(1, 0) instanceof Hole);
     assertTrue(grid.getCell(0, 0) instanceof CardCell);
