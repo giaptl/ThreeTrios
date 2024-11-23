@@ -63,8 +63,6 @@ public class GameModel implements ThreeTriosModel {
     List<Card> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
     List<Card> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
 
-    System.out.println("RedHand: " + redHand);
-    System.out.println("BlueHand: " + blueHand);
     player1.setHand(redHand);
     player2.setHand(blueHand);
     pRed = player1;
@@ -178,7 +176,6 @@ public class GameModel implements ThreeTriosModel {
     }
 
     if (!cell.isEmpty()) {
-      System.out.println("Cell at (" + row + "," + col + ") isEmpty: " + cell.isEmpty());
       throw new IllegalArgumentException("Cell is not empty.");
     }
 

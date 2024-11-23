@@ -128,9 +128,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
         }
       } else {
         // Set the next player and trigger their turn
-        System.out.println("Making sure that it reaches this point.");
         onPlayerTurn(model.getCurrentPlayer());
-        System.out.println("But is this being reached?");
       }
     }).start();
   }
@@ -148,8 +146,6 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
               ": You must select a card before selecting a grid cell.");
       return;
     }
-
-    System.out.println("Grid cell clicked at row: " + row + ", col: " + col);
 
     try {
       model.playCard(player, selectedCard, row, col);
@@ -175,6 +171,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     }
     if (!isPlayerTurn()) {
       view.showError("It's not your turn.: onMoveSelected");
+      //System.out.println("Ignoring move: It's not " + player.getName() + "'s turn.");
       return;
     }
     try {

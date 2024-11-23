@@ -22,6 +22,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   private IPlayer redPlayer;
   private IPlayer bluePlayer;
   private boolean isGameOver;
+  private final List<ModelStatusListener> modelStatusListeners = new ArrayList<>();
 
   /**
    * Constructs a new MockGameModel with a 3x3 grid and two players with cards.
@@ -94,12 +95,12 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   @Override
   public void addModelStatusListener(ModelStatusListener listener) {
-    // Not used.
+    modelStatusListeners.add(listener);
   }
 
   @Override
   public void removeModelStatusListener(ModelStatusListener listener) {
-    // not used.
+    modelStatusListeners.remove(listener);
   }
 
   @Override

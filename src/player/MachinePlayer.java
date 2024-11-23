@@ -17,7 +17,17 @@ public class MachinePlayer implements IPlayer {
   private final List<PlayerActionListener> listeners = new ArrayList<>();
   private final Strategy strategy;
 
+  /**
+   * Creates a new machine player with the given name, hand, and strategy.
+   * @param name the name of the player
+   * @param hand the list of cards in the player's hand
+   * @param strategy the strategy to use for selecting moves
+   * @throws IllegalArgumentException if the player name, hand, or strategy is null
+   */
   public MachinePlayer(String name, List<Card> hand, Strategy strategy) {
+    if (name == null || hand == null || strategy == null) {
+      throw new IllegalArgumentException("Player name, hand, or strategy cannot be null.");
+    }
     this.name = generateUniqueName(name);
     this.hand = new ArrayList<>(hand);
     this.strategy = strategy;
@@ -32,7 +42,6 @@ public class MachinePlayer implements IPlayer {
   @Override
   public void takeTurn(ThreeTriosModel model) {
     Move move = strategy.selectMove(this, model);
-//    System.out.println("Card: " + move.getCard().getName() + ", Row: " + move.getRow() + ", Col: " + move.getCol());
     for (PlayerActionListener listener : listeners) {
       listener.onMoveSelected(move);
     }

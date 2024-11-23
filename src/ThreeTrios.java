@@ -41,7 +41,7 @@ public final class ThreeTrios {
       // Read the grid configuration
       String gridConfigPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "board2x2.config";
+              + File.separator + "board.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
