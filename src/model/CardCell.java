@@ -2,6 +2,8 @@ package model;
 
 import java.util.Objects;
 
+import player.IPlayer;
+
 /**
  * Represents a cell on the grid that contains a card.
  */

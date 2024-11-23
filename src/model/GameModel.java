@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import player.IPlayer;
+
 /**
  * Represents the initial game model created for ThreeTrios.
  * This class manages the state and logic of the game, including the grid, players, and game rules.
@@ -41,15 +43,14 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle, IPlayer player1, IPlayer player2) {
+  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
+                                  IPlayer player1, IPlayer player2) {
     this.grid = grid;
     if (shuffle) {
       Collections.shuffle(cards);
     }
 
-    if (!modelStatusListeners.isEmpty()) {
-      modelStatusListeners.get(0).onPlayerTurn(getRedPlayer());
-    }
+
 
     int numCardCells = grid.getNumCardCells();
     if (numCardCells % 2 == 0) {
@@ -71,6 +72,14 @@ public class GameModel implements ThreeTriosModel {
     player2.setHand(blueHand);
     pRed = player1;
     pBlue = player2;
+
+    // Notify the first player that it is their turn
+//    if (!modelStatusListeners.isEmpty()) {
+//      modelStatusListeners.get(0).onPlayerTurn(getRedPlayer());
+//    }
+    for (ModelStatusListener listener : modelStatusListeners) {
+      listener.onPlayerTurn(currentPlayer);
+    }
 
 
     currentPlayer = pRed;
@@ -122,7 +131,7 @@ public class GameModel implements ThreeTriosModel {
         }
       }
     }
-    return new int[]{redCardCount, blueCardCount};
+    return new int[]{redCardCount + getPlayerHand(pRed).size(), blueCardCount +getPlayerHand(pBlue).size()};
   }
 
   @Override
@@ -146,6 +155,12 @@ public class GameModel implements ThreeTriosModel {
     }
 
     isGameOver = isGameOver();
+
+//    if (isGameOver()) {
+//      for (ModelStatusListener listener : modelStatusListeners) {
+//        listener.gameOver(getWinner());
+//      }
+//    }
   }
 
   /**
@@ -257,7 +272,6 @@ public class GameModel implements ThreeTriosModel {
       if (currentCell == null || currentCell.getCard() == null) {
         continue;
       }
-
       cardsFlipped += processAdjacentCells(player, currentCell.getCard(), row, col, toProcess);
     }
     return cardsFlipped;
@@ -336,18 +350,20 @@ public class GameModel implements ThreeTriosModel {
       for (int col = 0; col < grid.getColumns(); col++) {
         Cell cell = grid.getCell(row, col);
         if (!cell.isHole() && cell.isEmpty()) {
+          isGameOver = false;
           return false;
         }
       }
     }
+    isGameOver = true;
     return true;
   }
 
   @Override
   public IPlayer getWinner() {
     int[] counts = countOccupiedCells();
-    int redCardCount = counts[0];
-    int blueCardCount = counts[1];
+    int redCardCount = counts[0] + getPlayerHand(pRed).size();
+    int blueCardCount = counts[1] + getPlayerHand(pBlue).size();
 
     if (redCardCount > blueCardCount) {
       // Red Player wins

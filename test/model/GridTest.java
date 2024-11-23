@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import player.HumanPlayer;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;

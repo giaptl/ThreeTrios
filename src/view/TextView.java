@@ -6,7 +6,7 @@ import model.Card;
 import model.Cell;
 import model.Direction;
 import model.Grid;
-import model.IPlayer;
+import player.IPlayer;
 
 /**
  * A text based view for the game. Default view but will be changed to a GUI in the future.

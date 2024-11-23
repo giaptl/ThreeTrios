@@ -1,5 +1,7 @@
 package model;
 
+import player.IPlayer;
+
 public interface ModelStatusListener {
 
   /**

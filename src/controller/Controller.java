@@ -1,8 +1,10 @@
 // Controller.java
 package controller;
 
+import javax.swing.*;
+
 import model.Card;
-import model.IPlayer;
+import player.IPlayer;
 import model.ModelStatusListener;
 import model.ThreeTriosModel;
 import strategy.Move;
@@ -31,6 +33,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     // Register as a listener for player actions and model status events
     this.player.addPlayerActionListener(this);
     this.model.addModelStatusListener(this);
+    onPlayerTurn(model.getCurrentPlayer());
   }
 
   private boolean isPlayerTurn() {
@@ -68,51 +71,82 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   @Override
   public void onGridCellSelected(int row, int col) {
     if (!isPlayerTurn()) {
-      view.showError("It's not your turn.");
+      view.showError("It's not your turn.: onGridCellSelected");
       return;
     }
 
+    if (!(player.isComputer())) {
+      // Handle human player turn
+      handleHumanPlayerTurn(row, col);
+    } else {
+      // Handle machine player turn
+      handleMachinePlayerTurn();
+    }
+  }
+
+  private void handleMachinePlayerTurn() {
+    new Thread(() -> {
+      try {
+        // Introduce a 1-second delay
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw new RuntimeException(e);
+      }
+
+      SwingUtilities.invokeLater(() -> {
+        player.takeTurn(model);
+        view.refreshView();
+
+        if (model.isGameOver()) {
+          IPlayer winner = model.getWinner();
+          view.showGameOver(winner, model.getPlayerScore(winner));
+        } else {
+          // Set the next player and trigger their turn
+          onPlayerTurn(model.getCurrentPlayer());
+        }
+      });
+    }).start();
+  }
+
+
+  private void handleHumanPlayerTurn(int row, int col) {
     // Show error message if grid cell is selected before selecting a card from the hand.
     if (selectedCard == null) {
-      view.showError("Player " + player.getName() + ": You must select a card before selecting a grid cell.");
+      view.showError("Player " + player.getName() +
+              ": You must select a card before selecting a grid cell.");
       return;
     }
 
     System.out.println("Grid cell clicked at row: " + row + ", col: " + col);
 
-    if (selectedCard != null) {
-      try {
-        model.playCard(player, selectedCard, row, col);
-        view.updateGridCell(row, col, selectedCard);
-        view.removeCardFromHandPanel(player, selectedCard);
-        view.refreshView();
-        selectedCard = null; // Reset selectedCard after playing a card
+    try {
+      model.playCard(player, selectedCard, row, col);
+      view.updateGridCell(row, col, selectedCard);
+      view.removeCardFromHandPanel(player, selectedCard);
+      view.refreshView();
+      selectedCard = null; // Reset selectedCard after playing a card
 
-        // Check if the game is over
-        if (model.isGameOver()) {
-          IPlayer winner = model.getWinner();
-          if (winner == null) {
-            gameOver(null);
-          }
-          gameOver(winner);
-        }
-      } catch (IllegalArgumentException e) {
-        view.showError("Invalid move: " + e.getMessage());
+      // Check if the game is over
+      if (model.isGameOver()) {
+        IPlayer winner = model.getWinner();
+        gameOver(winner);
       }
+    } catch (IllegalArgumentException e) {
+      view.showError("Invalid move: " + e.getMessage());
     }
   }
 
   @Override
   public void onMoveSelected(Move move) {
     if (!isPlayerTurn()) {
-      view.showError("It's not your turn.");
+      view.showError("It's not your turn.: onMoveSelected");
       return;
     }
 
     try {
       // Apply the move to the model
       model.playCard(model.getCurrentPlayer(), move.getCard(), move.getRow(), move.getCol());
-
       // Update the view to reflect the changes
       view.updateGridCell(move.getRow(), move.getCol(), move.getCard());
       view.removeCardFromHandPanel(model.getCurrentPlayer(), move.getCard());
@@ -125,10 +159,8 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
 
   @Override
   public void onPlayerTurn(IPlayer player) {
-    // If the current player is a computer, select and play a move automatically
-    if (player.isComputer()) {
-      Move move = player.getStrategy().selectMove(player, model);
-      onGridCellSelected(move.getRow(), move.getCol());
+    if (player.equals(this.player) && player.isComputer()) {
+      handleMachinePlayerTurn();
     }
   }
 
@@ -148,10 +180,5 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
     view.updateGridCell(row, col, card);
     view.removeCardFromHandPanel(player, card);
     view.refreshView();
-  }
-
-
-  public void modelChanged() {
-    view.refreshView(); // Refresh view when the model changes
   }
 }

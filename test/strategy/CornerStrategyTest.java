@@ -5,7 +5,7 @@ import org.junit.Test;
 import model.Card;
 import model.CardValues;
 import model.MockThreeTriosModel;
-import model.IPlayer;
+import player.IPlayer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;

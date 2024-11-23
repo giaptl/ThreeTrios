@@ -6,7 +6,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import controller.PlayerActionListener;
 import model.Card;
-import model.IPlayer;
+import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**

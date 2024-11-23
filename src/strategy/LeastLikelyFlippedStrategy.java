@@ -5,7 +5,7 @@ import java.util.List;
 import model.Card;
 import model.CardCell;
 import model.Grid;
-import model.IPlayer;
+import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**

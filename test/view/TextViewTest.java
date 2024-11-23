@@ -13,8 +13,8 @@ import java.util.List;
 import configuration.ConfigurationReader;
 import model.Card;
 import model.Grid;
-import model.HumanPlayer;
-import model.IPlayer;
+import player.HumanPlayer;
+import player.IPlayer;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,10 +1,12 @@
-package model;
+package player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import controller.PlayerActionListener;
+import model.Card;
+import model.ThreeTriosModel;
 import strategy.Strategy;
 
 /**
@@ -15,7 +17,7 @@ public class HumanPlayer implements IPlayer {
   private final List<Card> hand;
   private final String name;
   private final List<PlayerActionListener> listeners = new ArrayList<>();
-
+  private static int humanPlayerCount = 0;
   /**
    * Creates a new player with the given name and hand.
    *
@@ -23,8 +25,14 @@ public class HumanPlayer implements IPlayer {
    * @param hand       the list of cards in the player's hand
    */
   public HumanPlayer(String playerName, List<Card> hand) {
-    this.name = playerName;
+    this.name = generateUniqueName(playerName);
     this.hand = hand;
+  }
+
+  // Much needed helper in order to generate unique names if multiple human players are created.
+  private String generateUniqueName(String baseName) {
+    humanPlayerCount++;
+    return baseName + humanPlayerCount;
   }
 
   @Override

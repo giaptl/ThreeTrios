@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import model.Card;
 import model.CardValues;
-import model.IPlayer;
+import player.IPlayer;
 import model.MockThreeTriosModel;
 import model.CardCell;
 import static org.junit.Assert.assertEquals;

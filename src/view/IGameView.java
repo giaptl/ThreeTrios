@@ -2,7 +2,7 @@ package view;
 
 import controller.PlayerActionListener;
 import model.Card;
-import model.IPlayer;
+import player.IPlayer;
 /**
  * Interface representing the view component of the ThreeTrios game.
  * The IGameView interface defines methods for updating and managing the visual

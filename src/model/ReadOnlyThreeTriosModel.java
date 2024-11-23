@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import player.IPlayer;
+
 /**
  * Represents a read-only view of the ThreeTrios game model. All these methods are immutable and
  * cannot change the state of the game. Only observe the game state. Needed for view since we do not

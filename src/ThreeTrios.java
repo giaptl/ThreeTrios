@@ -9,9 +9,9 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
-import model.HumanPlayer;
-import model.IPlayer;
-import model.MachinePlayer;
+import player.HumanPlayer;
+import player.IPlayer;
+import player.MachinePlayer;
 import strategy.CornerStrategy;
 import strategy.FlipMaximizerStrategy;
 import strategy.LeastLikelyFlippedStrategy;
@@ -41,7 +41,7 @@ public final class ThreeTrios {
       // Read the grid configuration
       String gridConfigPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "board1WithNoHoles.config";
+              + File.separator + "board2x2.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
@@ -53,11 +53,10 @@ public final class ThreeTrios {
       List<Card> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
-      List<Card> emptyHand = new ArrayList<>();
 
       // Create players based on command-line arguments
-      IPlayer player1 = createPlayer(player1Type, emptyHand);
-      IPlayer player2 = createPlayer(player2Type, emptyHand);
+      IPlayer player1 = createPlayer(player1Type);
+      IPlayer player2 = createPlayer(player2Type);
 
       // Create a new GameModel instance and start the game
       GameModel gameModel = new GameModel();
@@ -79,8 +78,8 @@ public final class ThreeTrios {
         gameView1.setController(controller1);
         gameView2.setController(controller2);
 
-        gameView1.setTitle("ThreeTrios Game - Player " + player1.getName());
-        gameView2.setTitle("ThreeTrios Game - Player " + player2.getName());
+        gameView1.setTitle("ThreeTrios Game - Player 1: " + player1.getName());
+        gameView2.setTitle("ThreeTrios Game - Player 2: " + player2.getName());
 
         // Make both views visible
         gameView1.setVisible(true);
@@ -95,7 +94,8 @@ public final class ThreeTrios {
     }
   }
 
-  private static IPlayer createPlayer(String playerType, List<Card> hand) {
+  private static IPlayer createPlayer(String playerType) {
+    List<Card> hand = new ArrayList<>();
     switch (playerType.toLowerCase()) {
       case "human":
         return new HumanPlayer("Human", hand);

@@ -3,6 +3,9 @@ package model;
 import org.junit.Test;
 import java.util.List;
 
+import player.HumanPlayer;
+import player.IPlayer;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;

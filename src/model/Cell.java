@@ -1,5 +1,7 @@
 package model;
 
+import player.IPlayer;
+
 /**
  * The Cell interface represents a cell in the game grid.
  * It provides methods to check the state of the cell and retrieve information about the card

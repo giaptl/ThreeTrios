@@ -1,27 +1,37 @@
-package model;
+package player;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import controller.PlayerActionListener;
+import model.Card;
+import model.ThreeTriosModel;
 import strategy.Move;
 import strategy.Strategy;
 
 public class MachinePlayer implements IPlayer {
+  private static int machinePlayerCount = 0;
   private final String name;
   private final List<Card> hand;
   private final List<PlayerActionListener> listeners = new ArrayList<>();
   private final Strategy strategy;
 
   public MachinePlayer(String name, List<Card> hand, Strategy strategy) {
-    this.name = name;
+    this.name = generateUniqueName(name);
     this.hand = new ArrayList<>(hand);
     this.strategy = strategy;
+  }
+
+  // Helper to generate completely unique names for machine players.
+  private String generateUniqueName(String baseName) {
+    machinePlayerCount++;
+    return baseName + machinePlayerCount;
   }
 
   @Override
   public void takeTurn(ThreeTriosModel model) {
     Move move = strategy.selectMove(this, model);
+    System.out.println("Card: " + move.getCard().getName() + ", Row: " + move.getRow() + ", Col: " + move.getCol());
     for (PlayerActionListener listener : listeners) {
       listener.onMoveSelected(move);
     }

@@ -2,6 +2,8 @@ package model;
 
 import java.util.List;
 
+import player.IPlayer;
+
 /**
  * Interface representing the model for the Three Trios game.
  * This interface defines the core functionalities required to manage the game state,

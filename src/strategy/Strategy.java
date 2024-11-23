@@ -1,6 +1,6 @@
 package strategy;
 
-import model.IPlayer;
+import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**

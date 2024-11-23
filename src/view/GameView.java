@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import controller.Controller;
 import controller.PlayerActionListener;
 import model.Card;
-import model.IPlayer;
+import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -158,11 +158,22 @@ public class GameView extends JFrame implements IGameView {
   @Override
   public void showGameOver(IPlayer winner, int score) {
     if (winner == null) {
-      JOptionPane.showMessageDialog(null, "Game over!\nIt's a tie!\nScore for both players: " + score);
+      JOptionPane.showMessageDialog(null,
+              "Game over!\nIt's a tie!\nScore for both players: " + score);
       return;
     }
-    JOptionPane.showMessageDialog(null, "Game over!\nWinner: " + winner.getName() + "\nWinner's Score: " + score);
-  }
 
+    String winnerName;
+    if (winner.equals(model.getRedPlayer())) {
+      winnerName = "Player 1";
+    } else if (winner.equals(model.getBluePlayer())) {
+      winnerName = "Player 2";
+    } else {
+      winnerName = winner.getName();
+    }
+
+    JOptionPane.showMessageDialog(null,
+            "Game over!\nWinner: " + winnerName + "\nWinner's Score: " + score);
+  }
 }
 

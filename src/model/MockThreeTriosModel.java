@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import player.HumanPlayer;
+import player.IPlayer;
+
 import static model.CardValues.A;
 
 /**

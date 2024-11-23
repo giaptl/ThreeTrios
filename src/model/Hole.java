@@ -2,6 +2,8 @@ package model;
 
 import java.util.Objects;
 
+import player.IPlayer;
+
 /**
  * Represents a hole on the grid. These are cells are not playable to.
  */

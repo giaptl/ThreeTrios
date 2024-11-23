@@ -10,7 +10,7 @@
 //import model.Direction;
 //import model.GameModel;
 //import model.Grid;
-//import model.IPlayer;
+//import player.IPlayer;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.jupiter.api.Assertions.assertFalse;

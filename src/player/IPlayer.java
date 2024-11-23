@@ -1,8 +1,10 @@
-package model;
+package player;
 
 import java.util.List;
 
 import controller.PlayerActionListener;
+import model.Card;
+import model.ThreeTriosModel;
 import strategy.Strategy;
 
 public interface IPlayer {

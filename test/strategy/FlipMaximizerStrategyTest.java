@@ -8,7 +8,7 @@ import model.Card;
 import model.CardCell;
 import model.CardValues;
 import model.MockThreeTriosModel;
-import model.IPlayer;
+import player.IPlayer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

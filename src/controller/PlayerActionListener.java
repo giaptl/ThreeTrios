@@ -1,7 +1,7 @@
 package controller;
 
 
-import model.IPlayer;
+import player.IPlayer;
 import strategy.Move;
 
 public interface PlayerActionListener {
