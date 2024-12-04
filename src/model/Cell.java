@@ -21,7 +21,7 @@ public interface Cell {
    *
    * @return the card in the cell, or null if the cell is empty.
    */
-  Card getCard();
+  ICard getCard();
 
   /**
    * Retrieves the owner of the cell.

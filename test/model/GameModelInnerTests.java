@@ -23,7 +23,7 @@ public class GameModelInnerTests {
 
   private GameModel gameModel;
   private Grid grid;
-  private List<Card> deck;
+  private List<ICard> deck;
   IPlayer player1;
   IPlayer player2;
 
@@ -68,7 +68,7 @@ public class GameModelInnerTests {
   // Test that IllegalArgumentException is thrown when the not enough cards to start the game
   @Test
   public void startGameWithConfigThrowsExceptionWhenNotEnoughCards() {
-    List<Card> smallDeck = new ArrayList<>(deck.subList(0, 3));
+    List<ICard> smallDeck = new ArrayList<>(deck.subList(0, 3));
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
       gameModel.startGameWithConfig(grid, smallDeck, false, player1, player2);
     });
@@ -80,7 +80,7 @@ public class GameModelInnerTests {
   public void playCardPlacesCardOnGridAndSwitchesPlayer() {
     gameModel.startGameWithConfig(grid, deck, false, player1, player2);
     IPlayer currentPlayer = gameModel.getCurrentPlayer();
-    Card card = currentPlayer.getHand().get(0);
+    ICard card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
     assertEquals(card, (grid.getCell(0, 0)).getCard());
     assertNotEquals(currentPlayer, gameModel.getCurrentPlayer());
@@ -92,11 +92,11 @@ public class GameModelInnerTests {
   public void playCardThrowsExceptionWhenCellNotEmpty() {
     gameModel.startGameWithConfig(grid, deck, false, player1, player2);
     IPlayer currentPlayer = gameModel.getCurrentPlayer();
-    Card card = currentPlayer.getHand().get(0);
+    ICard card = currentPlayer.getHand().get(0);
     gameModel.playCard(currentPlayer, card, 0, 0);
     // next player plays card to the same place
     IPlayer newPlayer = gameModel.getCurrentPlayer();
-    Card card2 = currentPlayer.getHand().get(0);
+    ICard card2 = currentPlayer.getHand().get(0);
     gameModel.playCard(newPlayer, card2, 0, 0);
   }
 
@@ -111,19 +111,19 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipOneAdjacentCard() {
-    Card redsCard = new Card("Card1", 1, 2, 3, 4);
-    Card bluesCard = new Card("Card2", 5, 6, 7, 8);
+    ICard redsCard = new Card("Card1", 1, 2, 3, 4);
+    ICard bluesCard = new Card("Card2", 5, 6, 7, 8);
     grid.setCell(0, 0, new CardCell(redsCard, gameModel.getRedPlayer()));
     grid.setCell(0, 1, new CardCell(bluesCard, gameModel.getBluePlayer()));
-    Card redsCard2 = new Card("Card1", 1, 2, 3, 8);
+    ICard redsCard2 = new Card("Card1", 1, 2, 3, 8);
     int numFlips = gameModel.getNumCardsAbleToFlip(gameModel.getRedPlayer(), redsCard2, 0, 2);
     assertEquals(1, numFlips);
   }
 
   @Test
   public void testGetNumCardsAbleToFlipNoFlips() {
-    Card redsCard = new Card("Card1", 1, 2, 3, 4);
-    Card bluesCard = new Card("Card2", 1, 1, 1, 1);
+    ICard redsCard = new Card("Card1", 1, 2, 3, 4);
+    ICard bluesCard = new Card("Card2", 1, 1, 1, 1);
 
     grid.setCell(1, 1, new CardCell(redsCard, gameModel.getRedPlayer()));
     grid.setCell(1, 2, new CardCell(bluesCard, gameModel.getBluePlayer()));
@@ -135,11 +135,11 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipAllAdjacentCards() {
-    Card centerCard = new Card("CenterCard", 9, 9, 9, 9);
-    Card topCard = new Card("TopCard", 1, 1, 1, 1);
-    Card rightCard = new Card("RightCard", 1, 1, 1, 1);
-    Card bottomCard = new Card("BottomCard", 1, 1, 1, 1);
-    Card leftCard = new Card("LeftCard", 1, 1, 1, 1);
+    ICard centerCard = new Card("CenterCard", 9, 9, 9, 9);
+    ICard topCard = new Card("TopCard", 1, 1, 1, 1);
+    ICard rightCard = new Card("RightCard", 1, 1, 1, 1);
+    ICard bottomCard = new Card("BottomCard", 1, 1, 1, 1);
+    ICard leftCard = new Card("LeftCard", 1, 1, 1, 1);
 
     grid.setCell(0, 1, new CardCell(topCard, gameModel.getBluePlayer()));
     grid.setCell(1, 2, new CardCell(rightCard, gameModel.getBluePlayer()));
@@ -155,9 +155,9 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipCornerCase() {
-    Card cornerCard = new Card("CornerCard", 9, 9, 9, 9);
-    Card adjacentCard1 = new Card("Adjacent1", 1, 1, 1, 1);
-    Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
+    ICard cornerCard = new Card("CornerCard", 9, 9, 9, 9);
+    ICard adjacentCard1 = new Card("Adjacent1", 1, 1, 1, 1);
+    ICard adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
 
     grid.setCell(0, 1, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
     grid.setCell(1, 0, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
@@ -168,9 +168,9 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipConsecutiveCards() {
-    Card cornerCard = new Card("Card", 9, 9, 9, 9);
-    Card adjacentCard1 = new Card("Adjacent1", 2, 2, 2, 2);
-    Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
+    ICard cornerCard = new Card("Card", 9, 9, 9, 9);
+    ICard adjacentCard1 = new Card("Adjacent1", 2, 2, 2, 2);
+    ICard adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
 
     grid.setCell(0, 1, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
     grid.setCell(0, 2, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
@@ -181,10 +181,10 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipAllThreeCards() {
-    Card centerCard = new Card("1,2", 9, 9, 9, 9);
-    Card one = new Card("0,0", 1, 1, 1, 1);
-    Card two = new Card("0,1", 2, 2, 2, 2);
-    Card three = new Card("0,2", 3, 3, 3, 3);
+    ICard centerCard = new Card("1,2", 9, 9, 9, 9);
+    ICard one = new Card("0,0", 1, 1, 1, 1);
+    ICard two = new Card("0,1", 2, 2, 2, 2);
+    ICard three = new Card("0,2", 3, 3, 3, 3);
 
     grid.setCell(0, 0, new CardCell(one, gameModel.getBluePlayer()));
     grid.setCell(0, 1, new CardCell(two, gameModel.getBluePlayer()));
@@ -198,10 +198,10 @@ public class GameModelInnerTests {
 
   @Test
   public void testGetNumCardsAbleToFlipEdgeCase() {
-    Card edgeCard = new Card("EdgeCard", 9, 9, 9, 9);
-    Card adjacentCard1 = new Card("Adjacent1", 1, 1, 1, 1);
-    Card adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
-    Card adjacentCard3 = new Card("Adjacent3", 1, 1, 1, 1);
+    ICard edgeCard = new Card("EdgeCard", 9, 9, 9, 9);
+    ICard adjacentCard1 = new Card("Adjacent1", 1, 1, 1, 1);
+    ICard adjacentCard2 = new Card("Adjacent2", 1, 1, 1, 1);
+    ICard adjacentCard3 = new Card("Adjacent3", 1, 1, 1, 1);
 
     grid.setCell(0, 0, new CardCell(adjacentCard1, gameModel.getBluePlayer()));
     grid.setCell(0, 2, new CardCell(adjacentCard2, gameModel.getBluePlayer()));
@@ -218,11 +218,11 @@ public class GameModelInnerTests {
     gameModel.startGameWithConfig(grid, deck, false, player1, player2);
 
     // Place initial cards on the grid
-    Card redCard = new Card("RedCard", 5, 5, 5, 5);
-    Card blueCard1 = new Card("BlueCard1", 2, 2, 2, 2);
-    Card blueCard2 = new Card("BlueCard2", 1, 1, 1, 1);
-    Card blueCard3 = new Card("BlueCard2", 2, 2, 2, 2);
-    Card blueCard4 = new Card("BlueCard2", 1, 1, 1, 1);
+    ICard redCard = new Card("RedCard", 5, 5, 5, 5);
+    ICard blueCard1 = new Card("BlueCard1", 2, 2, 2, 2);
+    ICard blueCard2 = new Card("BlueCard2", 1, 1, 1, 1);
+    ICard blueCard3 = new Card("BlueCard2", 2, 2, 2, 2);
+    ICard blueCard4 = new Card("BlueCard2", 1, 1, 1, 1);
 
     grid.setCell(0, 0, new CardCell(redCard, gameModel.getRedPlayer()));
     grid.setCell(0, 1, new CardCell(blueCard1, gameModel.getBluePlayer()));

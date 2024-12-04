@@ -5,6 +5,7 @@ import java.util.List;
 import model.Card;
 import model.CardCell;
 import model.Grid;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -18,13 +19,13 @@ public class LeastLikelyFlippedStrategy implements Strategy {
 
   @Override
   public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
     Move bestMove = null;
     int minFlipRisk = Integer.MAX_VALUE;
 
-    for (Card card : hand) {
+    for (ICard card : hand) {
       for (int row = 0; row < grid.getRows(); row++) {
         for (int col = 0; col < grid.getColumns(); col++) {
           if (grid.getCell(row, col).isEmpty()) {
@@ -42,17 +43,17 @@ public class LeastLikelyFlippedStrategy implements Strategy {
     return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
   }
 
-  private int calculateFlipRisk(Card card, int row, int col,
+  private int calculateFlipRisk(ICard card, int row, int col,
                                 IPlayer player, ReadOnlyThreeTriosModel model) {
     int flipRisk = 0;
     IPlayer opponent = model.getOpponent(player);
-    List<Card> opponentHand = model.getPlayerHand(opponent);
+    List<ICard> opponentHand = model.getPlayerHand(opponent);
 
     // Simulate placing the card
     Grid simulatedGrid = model.getGrid().copyOfGrid();
     simulatedGrid.setCell(row, col, new CardCell(card, player));
 
-    for (Card opponentCard : opponentHand) {
+    for (ICard opponentCard : opponentHand) {
       for (int oppRow = 0; oppRow < simulatedGrid.getRows(); oppRow++) {
         for (int oppCol = 0; oppCol < simulatedGrid.getColumns(); oppCol++) {
           if (simulatedGrid.getCell(oppRow, oppCol).isEmpty()) {

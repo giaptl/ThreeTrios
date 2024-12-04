@@ -1,6 +1,6 @@
 package controller;
 
-import model.Card;
+import model.ICard;
 import player.IPlayer;
 import model.ModelStatusListener;
 import model.ThreeTriosModel;
@@ -15,7 +15,7 @@ import view.IGameView;
 public class Controller implements PlayerActionListener, ModelStatusListener {
   private final ThreeTriosModel model;
   private final IGameView view;
-  private Card selectedCard = null;
+  private ICard selectedCard = null;
   private final IPlayer player;
   private boolean gameOverCalled = false;
 
@@ -68,7 +68,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       return;
     }
 
-    Card clickedCard = model.getPlayerHand(player).get(cardIndex);
+    ICard clickedCard = model.getPlayerHand(player).get(cardIndex);
 
     if (clickedCard.equals(selectedCard)) {
       // Deselect card if clicked again
@@ -215,7 +215,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   }
 
   @Override
-  public void onCardPlayed(IPlayer player, Card card, int row, int col) {
+  public void onCardPlayed(IPlayer player, ICard card, int row, int col) {
     view.updateGridCell(row, col, card);
     view.removeCardFromHandPanel(player, card);
     view.refreshView();

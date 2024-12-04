@@ -13,6 +13,7 @@ import java.util.List;
 import configuration.ConfigurationReader;
 import model.Card;
 import model.Grid;
+import model.ICard;
 import player.HumanPlayer;
 import player.IPlayer;
 
@@ -113,7 +114,7 @@ public class TextViewTest {
   @Test
   public void testRenderPlayerHand() {
     IPlayer player = new HumanPlayer("TestPlayer", List.of());
-    List<Card> hand = Arrays.asList(
+    List<ICard> hand = Arrays.asList(
             new Card("Card1", 1, 2, 3, 4),
             new Card("Card2", 5, 6, 7, 8)
     );

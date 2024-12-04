@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import model.Card;
 import model.Grid;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -19,14 +20,14 @@ public class FlipMaximizerStrategy implements Strategy {
 
   @Override
   public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
     Move bestMove = null;
     int maxFlips = -1;
 
     // Iterate over all cards in hand and all positions on grid
-    for (Card card : hand) {
+    for (ICard card : hand) {
       for (int row = 0; row < grid.getRows(); row++) {
         for (int col = 0; col < grid.getColumns(); col++) {
           if (grid.getCell(row, col).isEmpty()) {

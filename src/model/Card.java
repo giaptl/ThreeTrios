@@ -7,12 +7,12 @@ import java.util.Objects;
 /**
  * Represents a card in the game.
  * A card has a name and 4 attack values, one for each direction in the order of north, south, east,
- * and west.
+ * and west
  * Card Structure:
  * - Name: A unique identifier for the card
  * - Attack Values: Four integers (1-10) or 'A' (representing 10) for North, South, East, and West.
  */
-public class Card {
+public class Card implements ICard {
 
   private final String name;
   private Map<Direction, Integer> attackValues;
@@ -20,11 +20,11 @@ public class Card {
   /**
    * Creates a new card with the given name and attack values.
    *
-   * @param name the name of the card
+   * @param name  the name of the card
    * @param north the attack value for the north direction
    * @param south the attack value for the south direction
-   * @param east the attack value for the east direction
-   * @param west the attack value for the west direction
+   * @param east  the attack value for the east direction
+   * @param west  the attack value for the west direction
    * @throws IllegalArgumentException if the name is null
    * @throws IllegalArgumentException if any attack value is less than 1
    * @throws IllegalArgumentException if any attack value is greater than 10

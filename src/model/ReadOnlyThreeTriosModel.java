@@ -31,7 +31,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param player the player whose hand is to be retrieved
    * @return the list of cards in the player's hand
    */
-  List<Card> getPlayerHand(IPlayer player);
+  List<ICard> getPlayerHand(IPlayer player);
 
   /**
    * Gets the red player.
@@ -83,7 +83,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param row represents the row of the board that the card will be played to.
    * @param col represents the column of the board that the card will be played to.
    */
-  int getNumCardsAbleToFlip(IPlayer player, Card card, int row, int col);
+  int getNumCardsAbleToFlip(IPlayer player, ICard card, int row, int col);
 
   /**
    * Returns the opponent of the player who is currently playing.

@@ -6,6 +6,7 @@ import model.Card;
 import model.Cell;
 import model.Direction;
 import model.Grid;
+import model.ICard;
 import player.IPlayer;
 
 /**
@@ -49,10 +50,10 @@ public class TextView {
    * @param player the player whose hand is to be rendered
    * @param hand the list of cards in the player's hand
    */
-  protected void renderPlayerHand(IPlayer player, List<Card> hand) {
+  protected void renderPlayerHand(IPlayer player, List<ICard> hand) {
     System.out.println("Player: " + player.getName().toUpperCase());
     System.out.println("Hand:");
-    for (Card card : hand) {
+    for (ICard card : hand) {
       System.out.println(card.getName()
               + " " + card.getAttackValue(Direction.NORTH)
               + " " + card.getAttackValue(Direction.SOUTH)

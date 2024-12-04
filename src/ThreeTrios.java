@@ -9,6 +9,7 @@ import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
+import model.ICard;
 import player.HumanPlayer;
 import player.IPlayer;
 import player.MachinePlayer;
@@ -50,7 +51,7 @@ public final class ThreeTrios {
       String cardDataPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
               + File.separator + "cardsEnoughForAllBoards.config";
-      List<Card> cards = ConfigurationReader.readCardData(cardDataPath);
+      List<ICard> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
 
@@ -95,7 +96,7 @@ public final class ThreeTrios {
   }
 
   private static IPlayer createPlayer(String playerType) {
-    List<Card> hand = new ArrayList<>();
+    List<ICard> hand = new ArrayList<>();
     switch (playerType.toLowerCase()) {
       case "human":
         return new HumanPlayer("Human", hand);

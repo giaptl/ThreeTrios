@@ -27,7 +27,7 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    * @throws IllegalArgumentException if the number of cards in the deck are less than the number
    *                                  of CardCells in the grid + 1
    */
-  void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
+  void startGameWithConfig(Grid grid, List<ICard> cards, boolean shuffle,
                            IPlayer player1, IPlayer player2);
 
   /**
@@ -50,7 +50,7 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    * @throws IllegalArgumentException if the card is not placed in a valid position
    * @throws IllegalArgumentException if the game is over
    */
-  void playCard(IPlayer player, Card card, int row, int col);
+  void playCard(IPlayer player, ICard card, int row, int col);
 
   /**
    * Starts the battle phase at the specified position on the grid. The battle phase occurs between

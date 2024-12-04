@@ -3,6 +3,7 @@ package view;
 import java.awt.Color;
 import model.Card;
 import model.Direction;
+import model.ICard;
 
 /**
  * Factory class for creating CardPanel instances.
@@ -16,7 +17,7 @@ public class CardPanelFactory {
    * @param backgroundColor the background color of the card panel
    * @return a new CardPanel instance
    */
-  public static CardPanel createCardPanel(Card card, Color backgroundColor) {
+  public static CardPanel createCardPanel(ICard card, Color backgroundColor) {
     return new CardPanel(
             card.getAttackValue(Direction.NORTH),
             card.getAttackValue(Direction.SOUTH),

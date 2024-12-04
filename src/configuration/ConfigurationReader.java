@@ -12,6 +12,7 @@ import model.Card;
 import model.CardCell;
 import model.Grid;
 import model.Hole;
+import model.ICard;
 
 /**
  * Reads configuration files for the grid and card data. Very important for reading the starting
@@ -82,8 +83,8 @@ public class ConfigurationReader {
    * @return list of cards created based on file contents
    * @throws IOException if an error occurs while reading the file
    */
-  public static List<Card> readCardData(String filename) throws IOException {
-    List<Card> cards = new ArrayList<>();
+  public static List<ICard> readCardData(String filename) throws IOException {
+    List<ICard> cards = new ArrayList<>();
     Set<String> cardNames = new HashSet<>();
     try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
       String line;

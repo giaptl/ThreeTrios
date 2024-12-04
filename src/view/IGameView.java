@@ -2,6 +2,7 @@ package view;
 
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import player.IPlayer;
 
 /**
@@ -21,7 +22,7 @@ public interface IGameView {
    * @param col the column index of the grid cell to update
    * @param card the card to display in the specified grid cell
    */
-  void updateGridCell(int row, int col, Card card);
+  void updateGridCell(int row, int col, ICard card);
 
   /**
    * Removes a specific card from the player's hand panel.
@@ -30,7 +31,7 @@ public interface IGameView {
    * @param player the player whose hand panel will be updated (either red or blue player)
    * @param card the card to remove from the player's hand panel
    */
-  void removeCardFromHandPanel(IPlayer player, Card card);
+  void removeCardFromHandPanel(IPlayer player, ICard card);
 
   /**
    * Refreshes the view to reflect the latest state of the game model.
@@ -53,7 +54,7 @@ public interface IGameView {
    * @param player the player who owns the selected card (either red or blue player)
    * @param card the card that is selected
    */
-  void updateCardSelection(IPlayer player, Card card);
+  void updateCardSelection(IPlayer player, ICard card);
 
 
 

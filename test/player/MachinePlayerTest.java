@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Card;
+import model.ICard;
 import strategy.CornerStrategy;
 import strategy.FlipMaximizerStrategy;
 import strategy.Strategy;
@@ -29,7 +30,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class MachinePlayerTest {
   private MachinePlayer player;
-  private List<Card> initialHand;
+  private List<ICard> initialHand;
   private Strategy mockStrategy;
 
   @Before
@@ -73,7 +74,7 @@ public class MachinePlayerTest {
 
   @Test
   public void testGetHand() {
-    List<Card> hand = player.getHand();
+    List<ICard> hand = player.getHand();
     assertEquals(initialHand, hand);
     assertNotSame(initialHand, hand); // Ensure it's a copy
   }
@@ -90,7 +91,7 @@ public class MachinePlayerTest {
 
   @Test
   public void testSetHand() {
-    List<Card> newHand = new ArrayList<>();
+    List<ICard> newHand = new ArrayList<>();
     newHand.add(new Card("New Card", 3, 3, 3, 3));
     player.setHand(newHand);
     assertEquals(newHand, player.getHand());
@@ -103,7 +104,7 @@ public class MachinePlayerTest {
 
   @Test
   public void testRemoveCard() {
-    Card cardToRemove = initialHand.get(0);
+    ICard cardToRemove = initialHand.get(0);
     player.removeCard(cardToRemove);
     assertFalse(player.getHand().contains(cardToRemove));
   }
@@ -130,8 +131,8 @@ public class MachinePlayerTest {
 
   @Test
   public void testEqualsDifferentObjects() {
-    List<Card> hand1 = List.of(new Card("MysticEagle", 5, 10, 4, 2));
-    List<Card> hand2 = List.of(new Card("DragonWarrior", 5, 10, 4, 2));
+    List<ICard> hand1 = List.of(new Card("MysticEagle", 5, 10, 4, 2));
+    List<ICard> hand2 = List.of(new Card("DragonWarrior", 5, 10, 4, 2));
     IPlayer player1 = new HumanPlayer("Player1", hand1);
     IPlayer player2 = new MachinePlayer("Player2", hand2, new CornerStrategy());
     assertNotEquals(player1, player2);
@@ -147,7 +148,7 @@ public class MachinePlayerTest {
 
   @Test
   public void testHashCodeEqualObjects() {
-    List<Card> hand = List.of(new Card("MysticEagle", 5, 10, 4, 2));
+    List<ICard> hand = List.of(new Card("MysticEagle", 5, 10, 4, 2));
     IPlayer player1 = new HumanPlayer("Player1", hand);
     IPlayer player2 = player1;
     assertEquals(player1.hashCode(), player2.hashCode());
@@ -155,8 +156,8 @@ public class MachinePlayerTest {
 
   @Test
   public void testHashCodeDifferentObjects() {
-    List<Card> hand1 = List.of(new Card("MysticEagle", 5, 10, 4, 2));
-    List<Card> hand2 = List.of(new Card("DragonWarrior", 5, 10, 4, 2));
+    List<ICard> hand1 = List.of(new Card("MysticEagle", 5, 10, 4, 2));
+    List<ICard> hand2 = List.of(new Card("DragonWarrior", 5, 10, 4, 2));
     IPlayer player2 = new MachinePlayer("Player2", hand1, new FlipMaximizerStrategy());
     IPlayer player1 = new HumanPlayer("Player1", hand2);
     assertNotEquals(player1.hashCode(), player2.hashCode());

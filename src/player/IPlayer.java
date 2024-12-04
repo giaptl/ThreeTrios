@@ -4,6 +4,7 @@ import java.util.List;
 
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import model.ThreeTriosModel;
 import strategy.Strategy;
 
@@ -40,14 +41,14 @@ public interface IPlayer {
    *
    * @param card represents the card that will be added.
    */
-  void addCard(Card card);
+  void addCard(ICard card);
 
   /**
    * Public method which removes the card from a players hand.
    *
    * @param card represents the card that will be removed.
    */
-  void removeCard(Card card);
+  void removeCard(ICard card);
 
   /**
    * Gets the name of the player.
@@ -58,7 +59,7 @@ public interface IPlayer {
   /**
    * Returns a copy of the current player's hand at any instance in the game.
    */
-  List<Card> getHand();
+  List<ICard> getHand();
 
   /**
    * Checks if the player is a computer.
@@ -79,5 +80,5 @@ public interface IPlayer {
    *
    * @param hand the list of cards to set as the player's hand
    */
-  void setHand(List<Card> hand);
+  void setHand(List<ICard> hand);
 }

@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import controller.Controller;
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -87,7 +88,7 @@ public class GameView extends JFrame implements IGameView {
   }
 
   @Override
-  public void updateCardSelection(IPlayer player, Card card) {
+  public void updateCardSelection(IPlayer player, ICard card) {
 
     if (previouslySelectedCardPanel != null) {
       previouslySelectedCardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -120,14 +121,14 @@ public class GameView extends JFrame implements IGameView {
   }
 
   @Override
-  public void updateGridCell(int row, int col, Card card) {
+  public void updateGridCell(int row, int col, ICard card) {
     gridPanelManager.updateGridPanel();
   }
 
   @Override
-  public void removeCardFromHandPanel(IPlayer player, Card card) {
+  public void removeCardFromHandPanel(IPlayer player, ICard card) {
     JPanel handPanel = player.equals(model.getRedPlayer()) ? redHandPanel : blueHandPanel;
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
 
     for (int i = 0; i < hand.size(); i++) {
       if (hand.get(i).equals(card)) {

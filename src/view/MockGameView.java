@@ -5,6 +5,7 @@ import java.util.List;
 
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import player.IPlayer;
 
 /**
@@ -14,11 +15,11 @@ public class MockGameView implements IGameView {
 
   private String lastErrorMessage;
   private IPlayer lastUpdatedPlayer;
-  private Card lastUpdatedCard;
+  private ICard lastUpdatedCard;
   private int lastUpdatedRow;
   private int lastUpdatedCol;
   private IPlayer lastRemovedCardPlayer;
-  private Card lastRemovedCard;
+  private ICard lastRemovedCard;
   private boolean refreshCalled;
   private IPlayer gameOverWinner;
   private int gameOverScore;
@@ -35,7 +36,7 @@ public class MockGameView implements IGameView {
   }
 
   @Override
-  public void updateCardSelection(IPlayer player, Card card) {
+  public void updateCardSelection(IPlayer player, ICard card) {
     this.lastUpdatedPlayer = player;
     this.lastUpdatedCard = card;
   }
@@ -51,14 +52,14 @@ public class MockGameView implements IGameView {
   }
 
   @Override
-  public void updateGridCell(int row, int col, Card card) {
+  public void updateGridCell(int row, int col, ICard card) {
     this.lastUpdatedRow = row;
     this.lastUpdatedCol = col;
     this.lastUpdatedCard = card;
   }
 
   @Override
-  public void removeCardFromHandPanel(IPlayer player, Card card) {
+  public void removeCardFromHandPanel(IPlayer player, ICard card) {
     this.lastRemovedCardPlayer = player;
     this.lastRemovedCard = card;
   }
@@ -93,7 +94,7 @@ public class MockGameView implements IGameView {
     return lastUpdatedPlayer;
   }
 
-  public Card getLastUpdatedCard() {
+  public ICard getLastUpdatedCard() {
     return lastUpdatedCard;
   }
 
@@ -109,7 +110,7 @@ public class MockGameView implements IGameView {
     return lastRemovedCardPlayer;
   }
 
-  public Card getLastRemovedCard() {
+  public ICard getLastRemovedCard() {
     return lastRemovedCard;
   }
 

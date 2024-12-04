@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import model.ReadOnlyThreeTriosModel;
 
 /**
@@ -87,7 +88,7 @@ public class GridPanelManager {
         cellPanel.removeAll();
         cellPanel.setLayout(new BorderLayout());
 
-        Card card = model.getGrid().getCell(row, col).getCard();
+        ICard card = model.getGrid().getCell(row, col).getCard();
         if (card != null) {
           createCardPanel(row, col, cellPanel, card);
         } else {
@@ -109,7 +110,7 @@ public class GridPanelManager {
    * @param cellPanel the cell panel to add the card panel to
    * @param card the card to be displayed
    */
-  private void createCardPanel(int row, int col, JPanel cellPanel, Card card) {
+  private void createCardPanel(int row, int col, JPanel cellPanel, ICard card) {
     CardPanel cardPanel = CardPanelFactory.createCardPanel(
             card,
             model.getGrid().getCell(row, col).getOwner().equals(

@@ -4,8 +4,7 @@ package controller;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import model.Card;
+import model.ICard;
 import model.MockThreeTriosModel;
 import player.IPlayer;
 import view.MockGameView;
@@ -81,7 +80,7 @@ public class ControllerTestHumanVsHuman {
   public void testCardDeselection() {
     // Select a card
     controller1.onCardSelected(player1, 0);
-    Card selectedCard = mockModel.getPlayerHand(player1).get(0);
+    ICard selectedCard = mockModel.getPlayerHand(player1).get(0);
     assertEquals(selectedCard, mockView1.getLastUpdatedCard());
 
     // Deselect the same card
@@ -114,7 +113,7 @@ public class ControllerTestHumanVsHuman {
   public void testGameProgression() {
 
     // Round 1: Human player 1 turn
-    Card card1 = mockModel.getPlayerHand(player1).get(0);
+    ICard card1 = mockModel.getPlayerHand(player1).get(0);
 
     // Check that player 1 needs to select a card before selecting a grid cell
     controller1.onGridCellSelected(0, 0);
@@ -160,7 +159,7 @@ public class ControllerTestHumanVsHuman {
 
 
     // Round 2: Human player 2 turn
-    Card card2 = mockModel.getPlayerHand(player2).get(0);
+    ICard card2 = mockModel.getPlayerHand(player2).get(0);
 
     // Check that multiple cards can be selected from the hand
     controller2.onCardSelected(player2, 0);
@@ -187,7 +186,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 2:\n" + mockModel.getGrid());
 
     // Round 3: Human player 1 turn
-    Card card3 = mockModel.getPlayerHand(player1).get(0);
+    ICard card3 = mockModel.getPlayerHand(player1).get(0);
     controller1.onCardSelected(player1, 0);
     controller1.onGridCellSelected(1, 0);
     controller1.handleHumanPlayerTurn(1, 0);
@@ -205,7 +204,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 3:\n" + mockModel.getGrid());
 
     // Round 4: Human player 2 turn
-    Card card4 = mockModel.getPlayerHand(player2).get(2);
+    ICard card4 = mockModel.getPlayerHand(player2).get(2);
     controller2.onCardSelected(player2, 2);
     controller2.onGridCellSelected(2, 2);
     controller1.handleHumanPlayerTurn(2, 2);
@@ -224,7 +223,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 4:\n" + mockModel.getGrid());
 
     // Round 5: Human player 1 turn
-    Card card5 = mockModel.getPlayerHand(player1).get(0);
+    ICard card5 = mockModel.getPlayerHand(player1).get(0);
     controller1.onCardSelected(player1, 0);
     controller1.onGridCellSelected(0, 1);
     controller1.handleHumanPlayerTurn(0, 1);
@@ -238,7 +237,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 5:\n" + mockModel.getGrid());
 
     // Round 6: Human player 2 turn
-    Card card6 = mockModel.getPlayerHand(player2).get(0);
+    ICard card6 = mockModel.getPlayerHand(player2).get(0);
     controller2.onCardSelected(player2, 0);
     controller2.onGridCellSelected(0, 2);
     controller1.handleHumanPlayerTurn(0, 2);
@@ -252,7 +251,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 6:\n" + mockModel.getGrid());
 
     // Round 7: Human player 1 turn
-    Card card7 = mockModel.getPlayerHand(player1).get(0);
+    ICard card7 = mockModel.getPlayerHand(player1).get(0);
     controller1.onCardSelected(player1, 0);
     controller1.onGridCellSelected(2, 0);
     controller1.handleHumanPlayerTurn(2, 0);
@@ -266,7 +265,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 7:\n" + mockModel.getGrid());
 
     // Round 8: Human player 2 turn
-    Card card8 = mockModel.getPlayerHand(player2).get(0);
+    ICard card8 = mockModel.getPlayerHand(player2).get(0);
     controller2.onCardSelected(player2, 0);
     controller2.onGridCellSelected(2, 1);
     controller1.handleHumanPlayerTurn(2, 1);
@@ -280,7 +279,7 @@ public class ControllerTestHumanVsHuman {
     System.out.println("Round 8:\n" + mockModel.getGrid());
 
     // Round 9: Human player 1 turn
-    Card card9 = mockModel.getPlayerHand(player1).get(0);
+    ICard card9 = mockModel.getPlayerHand(player1).get(0);
     controller1.onCardSelected(player1, 0);
     controller1.onGridCellSelected(1, 2);
     controller1.handleHumanPlayerTurn(1, 2);

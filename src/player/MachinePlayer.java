@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import model.ThreeTriosModel;
 import strategy.Move;
 import strategy.Strategy;
@@ -18,7 +19,7 @@ import strategy.Strategy;
 public class MachinePlayer implements IPlayer {
   private static int machinePlayerCount = 0;
   private final String name;
-  private final List<Card> hand;
+  private final List<ICard> hand;
   private final List<PlayerActionListener> listeners = new ArrayList<>();
   private final Strategy strategy;
 
@@ -29,7 +30,7 @@ public class MachinePlayer implements IPlayer {
    * @param strategy the strategy to use for selecting moves
    * @throws IllegalArgumentException if the player name, hand, or strategy is null
    */
-  public MachinePlayer(String name, List<Card> hand, Strategy strategy) {
+  public MachinePlayer(String name, List<ICard> hand, Strategy strategy) {
     if (name == null || hand == null || strategy == null) {
       throw new IllegalArgumentException("Player name, hand, or strategy cannot be null.");
     }
@@ -63,12 +64,12 @@ public class MachinePlayer implements IPlayer {
   }
 
   @Override
-  public void addCard(Card card) {
+  public void addCard(ICard card) {
     this.hand.add(card);
   }
 
   @Override
-  public void removeCard(Card card) {
+  public void removeCard(ICard card) {
     this.hand.remove(card);
   }
 
@@ -78,7 +79,7 @@ public class MachinePlayer implements IPlayer {
   }
 
   @Override
-  public List<Card> getHand() {
+  public List<ICard> getHand() {
     return new ArrayList<>(hand);
   }
 
@@ -93,7 +94,7 @@ public class MachinePlayer implements IPlayer {
   }
 
   @Override
-  public void setHand(List<Card> hand) {
+  public void setHand(List<ICard> hand) {
     this.hand.clear();
     this.hand.addAll(hand);
   }

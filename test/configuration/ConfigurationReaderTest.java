@@ -11,6 +11,7 @@ import model.CardCell;
 import model.Direction;
 import model.Grid;
 import model.Hole;
+import model.ICard;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -89,12 +90,12 @@ public class ConfigurationReaderTest {
   public void testReadCardData() throws IOException {
     String cardDataPath = "src" + File.separator + "configuration"
             + File.separator + "configFiles" + File.separator + "cardsEnoughForAllBoards.config";
-    List<Card> deck = ConfigurationReader.readCardData(cardDataPath);
+    List<ICard> deck = ConfigurationReader.readCardData(cardDataPath);
 
     assertEquals(36, deck.size());
 
     // Check the first card was loaded properly
-    Card firstCard = deck.get(0);
+    ICard firstCard = deck.get(0);
     assertEquals("CorruptKing", firstCard.getName());
     assertEquals("7", firstCard.getAttackValue(Direction.NORTH));
     assertEquals("3", firstCard.getAttackValue(Direction.SOUTH));
@@ -102,7 +103,7 @@ public class ConfigurationReaderTest {
     assertEquals("A", firstCard.getAttackValue(Direction.WEST));
 
     // Check the last card was loaded properly
-    Card lastCard = deck.get(deck.size() - 1);
+    ICard lastCard = deck.get(deck.size() - 1);
     assertEquals("RubyTiger", lastCard.getName());
     assertEquals("8", lastCard.getAttackValue(Direction.NORTH));
     assertEquals("5", lastCard.getAttackValue(Direction.SOUTH));

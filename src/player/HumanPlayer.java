@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import model.ThreeTriosModel;
 import strategy.Strategy;
 
@@ -14,7 +15,7 @@ import strategy.Strategy;
  */
 public class HumanPlayer implements IPlayer {
 
-  private final List<Card> hand;
+  private final List<ICard> hand;
   private final String name;
   private final List<PlayerActionListener> listeners = new ArrayList<>();
   private static int humanPlayerCount = 0;
@@ -26,7 +27,7 @@ public class HumanPlayer implements IPlayer {
    * @param hand the list of cards in the player's hand
    * @throws IllegalArgumentException if the player name or hand is null
    */
-  public HumanPlayer(String playerName, List<Card> hand) {
+  public HumanPlayer(String playerName, List<ICard> hand) {
     if (playerName == null || hand == null) {
       throw new IllegalArgumentException("Player name or hand cannot be null.");
     }
@@ -46,7 +47,7 @@ public class HumanPlayer implements IPlayer {
   }
 
   @Override
-  public List<Card> getHand() {
+  public List<ICard> getHand() {
     return new ArrayList<>(this.hand);
   }
 
@@ -61,18 +62,18 @@ public class HumanPlayer implements IPlayer {
   }
 
   @Override
-  public void setHand(List<Card> hand) {
+  public void setHand(List<ICard> hand) {
     this.hand.clear();
     this.hand.addAll(hand);
   }
 
   @Override
-  public void removeCard(Card card) {
+  public void removeCard(ICard card) {
     this.hand.remove(card);
   }
 
   @Override
-  public void addCard(Card card) {
+  public void addCard(ICard card) {
     this.hand.add(card);
   }
 

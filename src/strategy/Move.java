@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Card;
 import model.Grid;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -11,7 +12,7 @@ import model.ReadOnlyThreeTriosModel;
  * Represents a move in the ThreeTrios game, consisting of a card and its position on the grid.
  */
 public class Move {
-  private final Card card;
+  private final ICard card;
   private final int row;
   private final int col;
 
@@ -22,13 +23,13 @@ public class Move {
    * @param row the row position on the grid
    * @param col the column position on the grid
    */
-  public Move(Card card, int row, int col) {
+  public Move(ICard card, int row, int col) {
     this.card = card;
     this.row = row;
     this.col = col;
   }
 
-  public Card getCard() {
+  public ICard getCard() {
     return card;
   }
 
@@ -51,13 +52,13 @@ public class Move {
    * @param player the player making the move
    * @return a Move representing the fallback move, or null if no valid move is found
    */
-  public static Move findFallbackMove(List<Card> hand, Grid grid,
+  public static Move findFallbackMove(List<ICard> hand, Grid grid,
                                       ReadOnlyThreeTriosModel model, IPlayer player) {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
         if (grid.getCell(row, col).isEmpty()) {
           // Select the first card in the hand for the fallback move
-          Card fallbackCard = hand.get(0);
+          ICard fallbackCard = hand.get(0);
           return new Move(fallbackCard, row, col);
         }
       }

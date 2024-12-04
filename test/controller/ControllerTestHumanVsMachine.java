@@ -4,8 +4,7 @@ package controller;
 import org.junit.Before;
 import org.junit.Test;
 
-
-import model.Card;
+import model.ICard;
 import model.MockThreeTriosModel;
 import player.IPlayer;
 import strategy.FlipMaximizerStrategy;
@@ -62,7 +61,7 @@ public class ControllerTestHumanVsMachine {
   @Test
   public void testGameProgressionHumanVsMachine() {
     // Round 1: Human player turn
-    Card card1 = mockModel.getPlayerHand(redPlayer).get(0);
+    ICard card1 = mockModel.getPlayerHand(redPlayer).get(0);
     controller1.onCardSelected(redPlayer, 0);
     controller1.onGridCellSelected(0, 0);
     controller1.handleHumanPlayerTurn(0, 0);
@@ -78,7 +77,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 1:\n" + mockModel.getGrid());
 
     // Round 2: Machine player turn
-    Card card2 = mockModel.getPlayerHand(bluePlayer).get(0);
+    ICard card2 = mockModel.getPlayerHand(bluePlayer).get(0);
     controller2.onCardSelected(bluePlayer, 0);
     controller2.onGridCellSelected(0, 1);
     controller2.handleHumanPlayerTurn(0, 1);
@@ -94,7 +93,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 2:\n" + mockModel.getGrid());
 
     // Round 3: Human player turn
-    Card card3 = mockModel.getPlayerHand(redPlayer).get(0);
+    ICard card3 = mockModel.getPlayerHand(redPlayer).get(0);
     controller1.onCardSelected(redPlayer, 0);
     controller1.onGridCellSelected(0, 2);
     controller1.handleHumanPlayerTurn(0, 2);
@@ -110,7 +109,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 3:\n" + mockModel.getGrid());
 
     // Round 4: Machine player turn
-    Card card4 = mockModel.getPlayerHand(bluePlayer).get(0);
+    ICard card4 = mockModel.getPlayerHand(bluePlayer).get(0);
     controller2.onCardSelected(bluePlayer, 0);
     controller2.onGridCellSelected(1, 2);
     controller2.handleHumanPlayerTurn(1, 2);
@@ -126,7 +125,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 4:\n" + mockModel.getGrid());
 
     // Round 5: Human player turn
-    Card card5 = mockModel.getPlayerHand(redPlayer).get(0);
+    ICard card5 = mockModel.getPlayerHand(redPlayer).get(0);
     controller1.onCardSelected(redPlayer, 0);
     controller1.onGridCellSelected(1, 1);
     controller1.handleHumanPlayerTurn(1, 1);
@@ -142,7 +141,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 5:\n" + mockModel.getGrid());
 
     // Round 6: Machine player turn
-    Card card6 = mockModel.getPlayerHand(bluePlayer).get(0);
+    ICard card6 = mockModel.getPlayerHand(bluePlayer).get(0);
     controller2.onCardSelected(bluePlayer, 0);
     controller2.onGridCellSelected(1, 0);
     controller2.handleHumanPlayerTurn(1, 0);
@@ -158,7 +157,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 6:\n" + mockModel.getGrid());
 
     // Round 7: Human player turn
-    Card card7 = mockModel.getPlayerHand(redPlayer).get(0);
+    ICard card7 = mockModel.getPlayerHand(redPlayer).get(0);
     controller1.onCardSelected(redPlayer, 0);
     controller1.onGridCellSelected(2, 0);
     controller1.handleHumanPlayerTurn(2, 0);
@@ -174,7 +173,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 7:\n" + mockModel.getGrid());
 
     // Round 8: Machine player turn
-    Card card8 = mockModel.getPlayerHand(bluePlayer).get(0);
+    ICard card8 = mockModel.getPlayerHand(bluePlayer).get(0);
     controller2.onCardSelected(bluePlayer, 0);
     controller2.onGridCellSelected(2, 1);
     controller2.handleHumanPlayerTurn(2, 1);
@@ -190,7 +189,7 @@ public class ControllerTestHumanVsMachine {
     System.out.println("Round 8:\n" + mockModel.getGrid());
 
     // Round 9: Human player turn
-    Card card9 = mockModel.getPlayerHand(redPlayer).get(0);
+    ICard card9 = mockModel.getPlayerHand(redPlayer).get(0);
     controller1.onCardSelected(redPlayer, 0);
     controller1.onGridCellSelected(2, 2);
     controller1.handleHumanPlayerTurn(2, 2);

@@ -31,5 +31,5 @@ public interface ModelStatusListener {
    * @param row the row where the card was played
    * @param col the column where the card was played
    */
-  void onCardPlayed(IPlayer player, Card card, int row, int col);
+  void onCardPlayed(IPlayer player, ICard card, int row, int col);
 }

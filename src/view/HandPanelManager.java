@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import controller.PlayerActionListener;
 import model.Card;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -39,9 +40,9 @@ public class HandPanelManager {
     handPanel.setLayout(new GridLayout(player.getHand().size(), 1));
     Color backgroundColor = player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN;
 
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
     for (int i = 0; i < hand.size(); i++) {
-      Card card = hand.get(i);
+      ICard card = hand.get(i);
       CardPanel cardPanel = CardPanelFactory.createCardPanel(card, backgroundColor);
 
       int index = i;
@@ -68,9 +69,9 @@ public class HandPanelManager {
    */
   public void updateHandPanel(JPanel handPanel, IPlayer player) {
     handPanel.removeAll();
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
     for (int i = 0; i < hand.size(); i++) {
-      Card card = hand.get(i);
+      ICard card = hand.get(i);
       CardPanel cardPanel = CardPanelFactory.createCardPanel(
               card,
               player.equals(model.getRedPlayer()) ? Color.PINK : Color.CYAN

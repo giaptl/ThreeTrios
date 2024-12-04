@@ -3,7 +3,7 @@ package controller;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.Card;
+import model.ICard;
 import model.MockThreeTriosModel;
 import player.IPlayer;
 import strategy.CornerStrategy;
@@ -94,7 +94,7 @@ public class ControllerTestMachineVsMachine {
 
   }
 
-  private void verifyMove(int expectedRow, int expectedCol, Card expectedCard, IPlayer player) {
+  private void verifyMove(int expectedRow, int expectedCol, ICard expectedCard, IPlayer player) {
     assertTrue(mockModel.isCardPlayed(expectedCard, expectedRow, expectedCol));
     assertFalse(mockModel.getPlayerHand(player).contains(expectedCard));
     assertEquals(expectedCard,

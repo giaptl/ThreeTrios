@@ -43,7 +43,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
+  public void startGameWithConfig(Grid grid, List<ICard> cards, boolean shuffle,
                                   IPlayer player1, IPlayer player2) {
     this.grid = grid;
     if (shuffle) {
@@ -61,8 +61,8 @@ public class GameModel implements ThreeTriosModel {
     }
 
     int cardsPerPlayer = (numCardCells + 1) / 2;
-    List<Card> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
-    List<Card> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
+    List<ICard> redHand = new ArrayList<>(cards.subList(0, cardsPerPlayer));
+    List<ICard> blueHand = new ArrayList<>(cards.subList(cardsPerPlayer + 1, (cardsPerPlayer * 2)));
 
     player1.setHand(redHand);
     player2.setHand(blueHand);
@@ -97,7 +97,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public List<Card> getPlayerHand(IPlayer player) {
+  public List<ICard> getPlayerHand(IPlayer player) {
     return player.getHand();
   }
 
@@ -127,7 +127,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public void playCard(IPlayer player, Card card, int row, int col) {
+  public void playCard(IPlayer player, ICard card, int row, int col) {
     playCardConditions(player, row, col, card);
 
     CardCell cardCell = new CardCell(card, player);
@@ -151,7 +151,7 @@ public class GameModel implements ThreeTriosModel {
   /**
    * Helper method to check the conditions for playing a card.
    */
-  private void playCardConditions(IPlayer player, int row, int col, Card cardToPlay) {
+  private void playCardConditions(IPlayer player, int row, int col, ICard cardToPlay) {
     Cell cell = grid.getCell(row, col);
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
@@ -201,7 +201,7 @@ public class GameModel implements ThreeTriosModel {
   }
 
   @Override
-  public int getNumCardsAbleToFlip(IPlayer player, Card card, int row, int col) {
+  public int getNumCardsAbleToFlip(IPlayer player, ICard card, int row, int col) {
     // Save the current state of the grid
     Grid originalGrid = grid.copyOfGrid();
 
@@ -265,7 +265,7 @@ public class GameModel implements ThreeTriosModel {
    * Checks to see which cells are being flipped and also flipping cards
    * that have already been flipped.
    */
-  protected int processAdjacentCells(IPlayer player, Card currentCard, int row, int col,
+  protected int processAdjacentCells(IPlayer player, ICard currentCard, int row, int col,
                                      Queue<int[]> toProcess) {
     int flipped = 0;
     for (Direction direction : Direction.values()) {
@@ -297,14 +297,14 @@ public class GameModel implements ThreeTriosModel {
    * are flipped from each turn.
    */
   protected int cardAttackDirections(Direction direction, int newRow, int newCol,
-                                     IPlayer owner, Card card) {
+                                     IPlayer owner, ICard card) {
     int cardsFlipped = 0;
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
 
       if (!(adjacentCell.isHole())) {
         CardCell adjacentCardCell = (CardCell) adjacentCell;
-        Card adjacentCard = adjacentCardCell.getCard();
+        ICard adjacentCard = adjacentCardCell.getCard();
         IPlayer adjacentOwner = adjacentCardCell.getOwner();
 
         if (adjacentCard != null && !owner.equals(adjacentOwner)) {

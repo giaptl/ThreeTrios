@@ -136,14 +136,14 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
+  public void startGameWithConfig(Grid grid, List<ICard> cards, boolean shuffle,
                                   IPlayer player1, IPlayer player2) {
     // will not be used since we already assigned players cards in constructor
     isGameOver = false;
   }
 
   @Override
-  public void playCard(IPlayer player, Card card, int row, int col) {
+  public void playCard(IPlayer player, ICard card, int row, int col) {
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
     }
@@ -192,7 +192,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
-  public List<Card> getPlayerHand(IPlayer player) {
+  public List<ICard> getPlayerHand(IPlayer player) {
     return player.getHand();
   }
 
@@ -207,7 +207,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
-  public int getNumCardsAbleToFlip(IPlayer player, Card card, int row, int col) {
+  public int getNumCardsAbleToFlip(IPlayer player, ICard card, int row, int col) {
     // Save the current state of the grid
     Grid originalGrid = grid.copyOfGrid();
 
@@ -368,7 +368,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
    * Checks to see which cells are being flipped and also flipping cards
    * that have already been flipped.
    */
-  protected int processAdjacentCells(IPlayer player, Card currentCard, int row, int col,
+  protected int processAdjacentCells(IPlayer player, ICard currentCard, int row, int col,
                                      Set<String> visited, Queue<int[]> toProcess) {
     int flipped = 0;
     for (Direction direction : Direction.values()) {
@@ -400,14 +400,14 @@ public class MockThreeTriosModel implements ThreeTriosModel {
    * are flipped from each turn.
    */
   protected int cardAttackDirections(Direction direction, int newRow, int newCol,
-                                     IPlayer owner, Card card) {
+                                     IPlayer owner, ICard card) {
     int cardsFlipped = 0;
     if (newRow >= 0 && newRow < grid.getRows() && newCol >= 0 && newCol < grid.getColumns()) {
       Cell adjacentCell = grid.getCell(newRow, newCol);
 
       if (!(adjacentCell.isHole())) {
         CardCell adjacentCardCell = (CardCell) adjacentCell;
-        Card adjacentCard = adjacentCardCell.getCard();
+        ICard adjacentCard = adjacentCardCell.getCard();
         IPlayer adjacentOwner = adjacentCardCell.getOwner();
 
         if (adjacentCard != null && !owner.equals(adjacentOwner)) {
@@ -438,7 +438,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
    * @param col the column
    * @return true if the card given is played at the specified row and column, false otherwise
    */
-  public boolean isCardPlayed(Card card, int row, int col) {
+  public boolean isCardPlayed(ICard card, int row, int col) {
     Cell cell = grid.getCell(row, col);
     if (cell instanceof CardCell) {
       CardCell cardCell = (CardCell) cell;

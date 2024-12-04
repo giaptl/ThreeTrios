@@ -13,13 +13,13 @@ public class CardTest {
 
   @Test
   public void testCardCreation() {
-    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card = new Card("MysticEagle", 5, 10, 4, 2);
     assertNotNull(card);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testCardCreationNullName() {
-    Card card = new Card(null, 5, 10, 4, 2);
+    ICard card = new Card(null, 5, 10, 4, 2);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -65,13 +65,13 @@ public class CardTest {
 
   @Test
   public void testGetName() {
-    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card = new Card("MysticEagle", 5, 10, 4, 2);
     assertEquals("MysticEagle", card.getName());
   }
 
   @Test
   public void testGetAttackValuesWorks() {
-    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card = new Card("MysticEagle", 5, 10, 4, 2);
     assertEquals("5", card.getAttackValue(Direction.NORTH));
     assertEquals("A", card.getAttackValue(Direction.SOUTH));
     assertEquals("4", card.getAttackValue(Direction.EAST));
@@ -80,47 +80,47 @@ public class CardTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void testGetAttackValueInvalidDirection() {
-    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card = new Card("MysticEagle", 5, 10, 4, 2);
     card.getAttackValue(null);
   }
 
   @Test
   public void testEqualsSameObject() {
-    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card = new Card("MysticEagle", 5, 10, 4, 2);
     assertEquals(card, card);
   }
 
   @Test
   public void testEqualsEqualObjects() {
-    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
-    Card card2 = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card2 = new Card("MysticEagle", 5, 10, 4, 2);
     assertEquals(card1, card2);
   }
 
   @Test
   public void testEqualsDifferentObjects() {
-    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
-    Card card2 = new Card("DragonWarrior", 5, 10, 4, 2);
+    ICard card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card2 = new Card("DragonWarrior", 5, 10, 4, 2);
     assertNotEquals(card1, card2);
   }
 
   @Test
   public void testEqualsNull() {
-    Card card = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card = new Card("MysticEagle", 5, 10, 4, 2);
     assertNotEquals(card, null);
   }
 
   @Test
   public void testHashCodeEqualObjects() {
-    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
-    Card card2 = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card2 = new Card("MysticEagle", 5, 10, 4, 2);
     assertEquals(card1.hashCode(), card2.hashCode());
   }
 
   @Test
   public void testHashCodeDifferentObjects() {
-    Card card1 = new Card("MysticEagle", 5, 10, 4, 2);
-    Card card2 = new Card("DragonWarrior", 5, 10, 4, 2);
+    ICard card1 = new Card("MysticEagle", 5, 10, 4, 2);
+    ICard card2 = new Card("DragonWarrior", 5, 10, 4, 2);
     assertNotEquals(card1.hashCode(), card2.hashCode());
   }
 }

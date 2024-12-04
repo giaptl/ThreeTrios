@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Card;
+import model.ICard;
 import strategy.CornerStrategy;
 import strategy.Strategy;
 
@@ -75,7 +76,7 @@ public class IPlayerTest {
 
   @Test
   public void testSetHand() {
-    List<Card> newHand = new ArrayList<>();
+    List<ICard> newHand = new ArrayList<>();
     newHand.add(new Card("New Card", 3, 3, 3, 3));
     humanPlayer.setHand(newHand);
     machinePlayer.setHand(newHand);

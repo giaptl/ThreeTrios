@@ -9,7 +9,7 @@ import player.IPlayer;
  */
 public class CardCell implements Cell {
 
-  private Card card;
+  private ICard card;
   private IPlayer owner;
 
   /**
@@ -23,7 +23,7 @@ public class CardCell implements Cell {
    * Create an instance of CardCell with a card and owner assigned to it.
    * Happens when a card is placed on the board.
    */
-  public CardCell(Card card, IPlayer owner) {
+  public CardCell(ICard card, IPlayer owner) {
     this.card = card;
     this.owner = owner;
   }
@@ -48,7 +48,7 @@ public class CardCell implements Cell {
   }
 
   @Override
-  public Card getCard() {
+  public ICard getCard() {
     return card;
   }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Card;
 import model.Grid;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -16,7 +17,7 @@ public class CornerStrategy implements Strategy {
 
   @Override
   public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
     // Define corner positions: top-left, top-right, bottom-left, bottom-right
@@ -35,7 +36,7 @@ public class CornerStrategy implements Strategy {
         continue;
       }
 
-      for (Card card : hand) {
+      for (ICard card : hand) {
         // Create a deep copy of the model for simulation
 
         // Simulate placing this card at this position
@@ -61,7 +62,7 @@ public class CornerStrategy implements Strategy {
 
 
   private int simulateOpponentBestMove(
-          Card card, int row, int col, IPlayer player, ReadOnlyThreeTriosModel model) {
+          ICard card, int row, int col, IPlayer player, ReadOnlyThreeTriosModel model) {
     // Place this player's card on the simulated grid
     // model.playCard(player, card, row, col);
 
@@ -73,13 +74,13 @@ public class CornerStrategy implements Strategy {
   }
 
   private int findMaxFlipsForOpponent(IPlayer opponent, ReadOnlyThreeTriosModel model) {
-    List<Card> hand = model.getPlayerHand(opponent);
+    List<ICard> hand = model.getPlayerHand(opponent);
     Grid grid = model.getGrid();
 
     int maxFlips = 0;
 
     // Iterate over all cards in hand and all positions on grid
-    for (Card card : hand) {
+    for (ICard card : hand) {
       for (int row = 0; row < grid.getRows(); row++) {
         for (int col = 0; col < grid.getColumns(); col++) {
           if (grid.getCell(row, col).isEmpty()) {

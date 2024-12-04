@@ -23,7 +23,7 @@ public class Hole implements Cell {
   }
 
   @Override
-  public Card getCard() {
+  public ICard getCard() {
     return null; // Holes do not have cards
   }
 

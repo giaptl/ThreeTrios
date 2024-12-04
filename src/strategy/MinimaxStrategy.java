@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Card;
 import model.Grid;
+import model.ICard;
 import player.IPlayer;
 import model.ReadOnlyThreeTriosModel;
 
@@ -20,13 +21,13 @@ public class MinimaxStrategy implements Strategy {
 
   @Override
   public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
-    List<Card> hand = model.getPlayerHand(player);
+    List<ICard> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
 
     Move bestMove = null;
     int bestScore = Integer.MIN_VALUE;
 
-    for (Card card : hand) {
+    for (ICard card : hand) {
       for (int row = 0; row < grid.getRows(); row++) {
         for (int col = 0; col < grid.getColumns(); col++) {
           if (grid.getCell(row, col).isEmpty()) {
@@ -43,7 +44,7 @@ public class MinimaxStrategy implements Strategy {
     return bestMove != null ? bestMove : Move.findFallbackMove(hand, grid, model, player);
   }
 
-  private int minimax(Card card, int row, int col, IPlayer player,
+  private int minimax(ICard card, int row, int col, IPlayer player,
                       ReadOnlyThreeTriosModel model, int depth, boolean isMaximizingPlayer) {
     if (depth == 0 || model.isGameOver()) {
       return evaluateBoard(player, model);
@@ -53,7 +54,7 @@ public class MinimaxStrategy implements Strategy {
 
     if (isMaximizingPlayer) {
       int maxEval = Integer.MIN_VALUE;
-      for (Card opponentCard : model.getPlayerHand(opponent)) {
+      for (ICard opponentCard : model.getPlayerHand(opponent)) {
         for (int r = 0; r < model.getGrid().getRows(); r++) {
           for (int c = 0; c < model.getGrid().getColumns(); c++) {
             if (model.getGrid().getCell(r, c).isEmpty()) {
@@ -69,7 +70,7 @@ public class MinimaxStrategy implements Strategy {
       return maxEval;
     } else {
       int minEval = Integer.MAX_VALUE;
-      for (Card playerCard : model.getPlayerHand(player)) {
+      for (ICard playerCard : model.getPlayerHand(player)) {
         for (int r = 0; r < model.getGrid().getRows(); r++) {
           for (int c = 0; c < model.getGrid().getColumns(); c++) {
             if (model.getGrid().getCell(r, c).isEmpty()) {
