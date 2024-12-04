@@ -238,3 +238,6 @@ actions and model status events. When a player action occurs, the Controller cla
 and view accordingly. Similarly, when the model's status changes, the Controller class updates the
 view to reflect these changes.  This implementation ensures that the game state and UI are always
 in sync and that the game logic is handled correctly.
+
+----------------------------------------------------------------------------------------------------
+Changes for part 4:
