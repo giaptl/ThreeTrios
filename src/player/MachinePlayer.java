@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import controller.PlayerActionListener;
-import model.Card;
 import model.ICard;
 import model.ThreeTriosModel;
 import strategy.Move;
@@ -25,8 +24,9 @@ public class MachinePlayer implements IPlayer {
 
   /**
    * Creates a new machine player with the given name, hand, and strategy.
-   * @param name the name of the player
-   * @param hand the list of cards in the player's hand
+   *
+   * @param name     the name of the player
+   * @param hand     the list of cards in the player's hand
    * @param strategy the strategy to use for selecting moves
    * @throws IllegalArgumentException if the player name, hand, or strategy is null
    */

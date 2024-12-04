@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import model.Card;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
