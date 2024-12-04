@@ -9,6 +9,8 @@ import java.util.Set;
 
 import player.HumanPlayer;
 import player.IPlayer;
+import player.MachinePlayer;
+import strategy.Strategy;
 
 import static model.CardValues.A;
 
@@ -25,7 +27,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   private final List<ModelStatusListener> modelStatusListeners = new ArrayList<>();
 
   /**
-   * Constructs a new MockGameModel with a 3x3 grid and two players with cards.
+   * Constructs a new MockGameModel with a 3x3 grid and two human players with cards.
    */
   public MockThreeTriosModel() {
     this.grid = new Grid(3, 3);
@@ -48,11 +50,81 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   }
 
-  @Override
-  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
-                                  IPlayer player1, IPlayer player2) {
-    // will not be used since we already assigned players cards in constructor
-    isGameOver = false;
+  /**
+   * Constructs a new MockGameModel with a 3x3 grid, 1 human player, and 1 machine player with
+   * cards.
+   * @param isComputerGame whether the game has only computer players or not
+   * @param strategy1 the strategy for the first player
+   * @param strategy2 the strategy for the second player
+   */
+  public MockThreeTriosModel(boolean isComputerGame, Strategy strategy1, Strategy strategy2) {
+    if (isComputerGame) {
+      this.grid = new Grid(3, 3);
+
+      this.redPlayer = new MachinePlayer("Red", new ArrayList<>(), strategy1);
+      redPlayer.addCard(new Card("RedCard1", 1, 1, 1, 1));
+      redPlayer.addCard(new Card("RedCard2", 3, 3, 3, 3));
+      redPlayer.addCard(new Card("RedCard3", 4, 4, 4, 4));
+      redPlayer.addCard(new Card("RedCard4", 6, 6, 6, 6));
+      redPlayer.addCard(new Card("RedCard5", A.getValue(), A.getValue(), 1, 1));
+
+      this.bluePlayer = new MachinePlayer("Blue",
+              new ArrayList<>(), strategy2);
+      bluePlayer.addCard(new Card("BlueCard1", 2, 2, 2, 2));
+      bluePlayer.addCard(new Card("BlueCard2", 5, 5, 5, 5));
+      bluePlayer.addCard(new Card("BlueCard3", 7, 7, 7, 7));
+      bluePlayer.addCard(new Card("BlueCard4", 9, 9, 9, 9));
+
+      this.currentPlayer = redPlayer;
+      this.isGameOver = false;
+    } else {
+      System.out.println("This is a computer only game."
+              + " Pass in nothing if u want a human vs human.");
+    }
+  }
+
+  /**
+   * Constructs a new MockGameModel with a 3x3 grid, 1 human player, and 1 machine player with
+   * cards.
+   * @param isComputerGame whether the game contains any computer players
+   * @param strategy1 the strategy for the computer player
+   */
+  public MockThreeTriosModel(boolean isComputerGame, Strategy strategy1) {
+    if (isComputerGame) {
+      this.grid = new Grid(3, 3);
+
+      Strategy strat1 = strategy1;
+
+      this.redPlayer = new HumanPlayer("Red", new ArrayList<>());
+      redPlayer.addCard(new Card("RedCard1", 1, 1, 1, 1));
+      redPlayer.addCard(new Card("RedCard2", 3, 3, 3, 3));
+      redPlayer.addCard(new Card("RedCard3", 4, 4, 4, 4));
+      redPlayer.addCard(new Card("RedCard4", 6, 6, 6, 6));
+      redPlayer.addCard(new Card("RedCard5", A.getValue(), A.getValue(), 1, 1));
+
+      this.bluePlayer = new MachinePlayer("Blue",
+              new ArrayList<>(), strat1);
+      bluePlayer.addCard(new Card("BlueCard1", 2, 2, 2, 2));
+      bluePlayer.addCard(new Card("BlueCard2", 5, 5, 5, 5));
+      bluePlayer.addCard(new Card("BlueCard3", 7, 7, 7, 7));
+      bluePlayer.addCard(new Card("BlueCard4", 9, 9, 9, 9));
+
+      this.currentPlayer = redPlayer;
+      this.isGameOver = false;
+    } else {
+      System.out.println("This is a computer only game."
+              + " Pass in nothing if u want a human vs human.");
+    }
+  }
+
+
+  /**
+   * Sets the cell at the specified row and column as a hole.
+   * @param row the row of the cell
+   * @param col the column of the cell
+   */
+  public void setCellAsHole(int row, int col) {
+    grid.setCell(row, col, new Hole());
   }
 
   /**
@@ -64,6 +136,13 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
+  public void startGameWithConfig(Grid grid, List<Card> cards, boolean shuffle,
+                                  IPlayer player1, IPlayer player2) {
+    // will not be used since we already assigned players cards in constructor
+    isGameOver = false;
+  }
+
+  @Override
   public void playCard(IPlayer player, Card card, int row, int col) {
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
@@ -71,16 +150,19 @@ public class MockThreeTriosModel implements ThreeTriosModel {
     if (!player.getHand().contains(card)) {
       throw new IllegalArgumentException("Card is not in player's hand.");
     }
+    if (grid.getCell(row, col).isHole()) {
+      throw new IllegalArgumentException("Card cannot be placed on a hole.");
+    }
     if (!grid.getCell(row, col).isEmpty()) {
       throw new IllegalArgumentException("Cell is not empty.");
     }
-
     grid.setCell(row, col, new CardCell(card, player));
     player.removeCard(card);
     startBattlePhase(row, col);
     currentPlayer = currentPlayer.equals(redPlayer) ? bluePlayer : redPlayer;
     isGameOver = isGameOver();
   }
+
 
   @Override
   public void startBattlePhase(int row, int col) {
@@ -203,6 +285,24 @@ public class MockThreeTriosModel implements ThreeTriosModel {
     return new int[]{redCardCount, blueCardCount};
   }
 
+  private int countOccupiedCells(IPlayer player) {
+    int count = 0;
+    for (int row = 0; row < grid.getRows(); row++) {
+      for (int col = 0; col < grid.getColumns(); col++) {
+        if (!grid.getCell(row, col).isHole()) {
+          CardCell cell = (CardCell) grid.getCell(row, col);
+          if (cell.isOccupied()) {
+            IPlayer owner = cell.getOwner();
+            if (owner.equals(player)) {
+              count++;
+            }
+          }
+        }
+      }
+    }
+    return count;
+  }
+
   @Override
   public IPlayer getRedPlayer() {
     return this.redPlayer;
@@ -215,7 +315,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   @Override
   public int getPlayerScore(IPlayer player) {
-    return getPlayerHand(player).size();
+    return getPlayerHand(player).size() + countOccupiedCells(player);
   }
 
   /**
@@ -331,11 +431,19 @@ public class MockThreeTriosModel implements ThreeTriosModel {
     return "A".equals(value) ? 10 : Integer.parseInt(value);
   }
 
+  /**
+   * Checks if a card is played at a specific row and column.
+   * @param card the card to check
+   * @param row the row
+   * @param col the column
+   * @return true if the card given is played at the specified row and column, false otherwise
+   */
   public boolean isCardPlayed(Card card, int row, int col) {
-    if (grid.getCell(row, col).equals(card)) {
-      return true;
+    Cell cell = grid.getCell(row, col);
+    if (cell instanceof CardCell) {
+      CardCell cardCell = (CardCell) cell;
+      return card.equals(cardCell.getCard());
     }
     return false;
   }
-
 }

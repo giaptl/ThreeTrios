@@ -6,12 +6,9 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.PlayerActionListener;
 import model.Card;
-import model.ThreeTriosModel;
 import strategy.CornerStrategy;
 import strategy.FlipMaximizerStrategy;
-import strategy.Move;
 import strategy.Strategy;
 
 import static org.junit.Assert.assertEquals;
@@ -22,12 +19,12 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Test class for the Machine Player class in model. Just to note that the game keeps track of how many
- * players are added, and automatically appends a number at the end of the player's name to signal
- * they were added to the game in that order. For example, the 5th player added to the game would
- * have a name of "TestPlayer5". So, for the purposes of this test, since Before is used to set up
- * players before each test, we will test player names through its substring in order to test that
- * the original name (before that number is added). This is so that in case the tests run in a
+ * Test class for the Machine Player class in model. Just to note that the game keeps track of how
+ * many players are added, and automatically appends a number at the end of the player's name to
+ * signal they were added to the game in that order. For example, the 5th player added to the game
+ * would have a name of "TestPlayer5". So, for the purposes of this test, since Before is used to
+ * set up players before each test, we will test player names through its substring in order to test
+ * that the original name (before that number is added). This is so that in case the tests run in a
  * different order for the grader it does not cause all our tests to fail.
  */
 public class MachinePlayerTest {
@@ -53,17 +50,20 @@ public class MachinePlayerTest {
 
   @Test
   public void testConstructorWithNullName() {
-    assertThrows(IllegalArgumentException.class, () -> new MachinePlayer(null, initialHand, mockStrategy));
+    assertThrows(IllegalArgumentException.class, () -> new MachinePlayer(
+            null, initialHand, mockStrategy));
   }
 
   @Test
   public void testConstructorWithNullHand() {
-    assertThrows(IllegalArgumentException.class, () -> new MachinePlayer("TestPlayer", null, mockStrategy));
+    assertThrows(IllegalArgumentException.class, () -> new MachinePlayer(
+            "TestPlayer", null, mockStrategy));
   }
 
   @Test
   public void testConstructorWithNullStrategy() {
-    assertThrows(IllegalArgumentException.class, () -> new MachinePlayer("TestPlayer", initialHand, null));
+    assertThrows(IllegalArgumentException.class, () -> new MachinePlayer(
+            "TestPlayer", initialHand, null));
   }
 
   @Test
@@ -122,29 +122,6 @@ public class MachinePlayerTest {
     assertTrue(player.getHand().contains(newCard));
   }
 
-//  @Test
-//  public void testTakeTurn() {
-//    ThreeTriosModel mockModel = mock(ThreeTriosModel.class);
-//    Move mockMove = mock(Move.class);
-//    when(mockStrategy.selectMove(player, mockModel)).thenReturn(mockMove);
-//
-//    PlayerActionListener mockListener = mock(PlayerActionListener.class);
-//    player.addPlayerActionListener(mockListener);
-//
-//    player.takeTurn(mockModel);
-//
-//    verify(mockStrategy).selectMove(player, mockModel);
-//    verify(mockListener).onMoveSelected(mockMove);
-//  }
-
-//  @Test
-//  public void testAddRemovePlayerActionListener() {
-//    PlayerActionListener mockListener = mock(PlayerActionListener.class);
-//    player.addPlayerActionListener(mockListener);
-//    player.removePlayerActionListener(mockListener);
-//    // No way to verify directly, but this tests that the methods don't throw exceptions
-//  }
-
   @Test
   public void testEqualsEqualObjects() {
     IPlayer player2 = this.player;
@@ -162,7 +139,9 @@ public class MachinePlayerTest {
 
   @Test
   public void testEqualsNull() {
-    IPlayer player = new MachinePlayer("Player1", List.of(new Card("MysticEagle", 5, 10, 4, 2)), new FlipMaximizerStrategy());
+    IPlayer player = new MachinePlayer("Player1",
+            List.of(new Card("MysticEagle", 5, 10, 4, 2)),
+            new FlipMaximizerStrategy());
     assertNotEquals(player, null);
   }
 

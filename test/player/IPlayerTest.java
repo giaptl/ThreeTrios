@@ -6,9 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.PlayerActionListener;
 import model.Card;
-import model.ThreeTriosModel;
 import strategy.CornerStrategy;
 import strategy.Strategy;
 
@@ -17,6 +15,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNull;
 
+/**
+ * Test class for the IPlayer interface.
+ */
 public class IPlayerTest {
   private IPlayer humanPlayer;
   private IPlayer machinePlayer;
@@ -32,24 +33,6 @@ public class IPlayerTest {
     humanPlayer = new HumanPlayer("HumanPlayer", new ArrayList<>(initialHand));
     machinePlayer = new MachinePlayer("MachinePlayer", new ArrayList<>(initialHand),
            mockStrategy);
-  }
-
-  @Test
-  public void testTakeTurn() {
-//    ThreeTriosModel mockModel = mock(ThreeTriosModel.class);
-//    humanPlayer.takeTurn(mockModel);
-//    machinePlayer.takeTurn(mockModel);
-//    // Verify that the machine player's strategy was called
-//    verify(mockStrategy).selectMove(eq(machinePlayer), eq(mockModel));
-  }
-
-  @Test
-  public void testAddRemovePlayerActionListener() {
-    //PlayerActionListener mockListener = mock(PlayerActionListener.class);
-//    humanPlayer.addPlayerActionListener(mockListener);
-//    humanPlayer.removePlayerActionListener(mockListener);
-//    machinePlayer.addPlayerActionListener(mockListener);
-//    machinePlayer.removePlayerActionListener(mockListener);
   }
 
   @Test

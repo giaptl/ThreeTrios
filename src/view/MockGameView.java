@@ -7,6 +7,9 @@ import controller.PlayerActionListener;
 import model.Card;
 import player.IPlayer;
 
+/**
+ * Mock for our GameView class, used for testing the controller class.
+ */
 public class MockGameView implements IGameView {
 
   private String lastErrorMessage;
@@ -19,10 +22,11 @@ public class MockGameView implements IGameView {
   private boolean refreshCalled;
   private IPlayer gameOverWinner;
   private int gameOverScore;
+  private String gameOverMessage;
   private final List<PlayerActionListener> listeners = new ArrayList<>();
 
   public MockGameView() {
-
+    // Not needed but kept for consistency/clarity while reading through code.
   }
 
   @Override
@@ -68,6 +72,16 @@ public class MockGameView implements IGameView {
   public void showGameOver(IPlayer winner, int score) {
     this.gameOverWinner = winner;
     this.gameOverScore = score;
+    if (gameOverWinner == null) {
+      gameOverMessage = "Game over!\nIt's a tie!\nScore for both players: " + gameOverScore;
+    } else {
+      gameOverMessage = "Game over!\nWinner: " + gameOverWinner.getName() + "\nWinner's Score: "
+              + gameOverScore;
+    }
+  }
+
+  public String getGameOverMessage() {
+    return gameOverMessage;
   }
 
   // Getter methods for verifying calls
@@ -99,10 +113,6 @@ public class MockGameView implements IGameView {
     return lastRemovedCard;
   }
 
-  public boolean isRefreshCalled() {
-    return refreshCalled;
-  }
-
   public IPlayer getGameOverWinner() {
     return gameOverWinner;
   }
@@ -115,19 +125,11 @@ public class MockGameView implements IGameView {
     return new ArrayList<>(listeners);
   }
 
-  // Reset method for clearing tracked data between tests
-  public void reset() {
-    lastErrorMessage = null;
-    lastUpdatedPlayer = null;
-    lastUpdatedCard = null;
-    lastUpdatedRow = -1;
-    lastUpdatedCol = -1;
-    lastRemovedCardPlayer = null;
-    lastRemovedCard = null;
+  public void resetViewRefreshed() {
     refreshCalled = false;
-    gameOverWinner = null;
-    gameOverScore = -1;
-    listeners.clear();
   }
 
+  public boolean isViewRefreshed() {
+    return refreshCalled;
+  }
 }

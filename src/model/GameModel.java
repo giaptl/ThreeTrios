@@ -122,8 +122,8 @@ public class GameModel implements ThreeTriosModel {
         }
       }
     }
-    return new int[]{redCardCount + getPlayerHand(pRed).size(),
-            blueCardCount + getPlayerHand(pBlue).size()};
+    return new int[]{redCardCount + getPlayerHand(pRed).size(), blueCardCount
+        + getPlayerHand(pBlue).size()};
   }
 
   @Override

@@ -24,7 +24,8 @@ public class GridPanelManager {
    * @param model the read-only model of the game
    * @param playerActionListeners the list of player action listeners
    */
-  public GridPanelManager(ReadOnlyThreeTriosModel model, List<PlayerActionListener> playerActionListeners) {
+  public GridPanelManager(ReadOnlyThreeTriosModel model,
+                          List<PlayerActionListener> playerActionListeners) {
     this.model = model;
     this.playerActionListeners = playerActionListeners;
     this.gridPanel = createGridPanel();

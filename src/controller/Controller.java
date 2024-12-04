@@ -87,7 +87,7 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   @Override
   public void onGridCellSelected(int row, int col) {
     if (!isPlayerTurn()) {
-      view.showError("It's not your turn.: onGridCellSelected");
+      view.showError("It's not your turn.");
       return;
     }
 
@@ -101,9 +101,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   }
 
   /**
-   * Handles the turn for a machine player (automatic play).
+   * Handles the turn for a machine player (automatic play). Set to package-private for testing.
    */
-  private void handleMachinePlayerTurn() {
+  void handleMachinePlayerTurn() {
     new Thread(() -> {
       try {
         // Introduce a 500ms delay
@@ -134,16 +134,16 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   }
 
   /**
-   * Handles the turn for a human player (manual play).
+   * Handles the turn for a human player (manual play). Set to package-private for testing.
    *
    * @param row the row index of the selected grid cell
    * @param col the column index of the selected grid cell
    */
-  private void handleHumanPlayerTurn(int row, int col) {
+  void handleHumanPlayerTurn(int row, int col) {
     // Show error message if grid cell is selected before selecting a card from the hand.
     if (selectedCard == null) {
-      view.showError("Player " + player.getName() +
-              ": You must select a card before selecting a grid cell.");
+      view.showError("Player " + player.getName()
+              + ": You must select a card before selecting a grid cell.");
       return;
     }
 
@@ -175,8 +175,6 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
       return;
     }
     if (!isPlayerTurn()) {
-//      view.showError("It's not your turn.: onMoveSelected");
-      //System.out.println("Ignoring move: It's not " + player.getName() + "'s turn.");
       return;
     }
     try {

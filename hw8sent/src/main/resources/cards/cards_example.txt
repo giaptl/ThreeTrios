@@ -1,0 +1,6 @@
+FireDragon 8 3 6 2
+IceGiant 2 7 5 9
+WindBird 7 2 5 3
+CorruptKing 7 3 9 A
+HeroKnight A 2 4 4
+SkyWhale 4 5 9 9

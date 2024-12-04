@@ -22,7 +22,8 @@ public class HandPanelManager {
    * @param model the read-only model of the game
    * @param playerActionListeners the list of player action listeners
    */
-  public HandPanelManager(ReadOnlyThreeTriosModel model, List<PlayerActionListener> playerActionListeners) {
+  public HandPanelManager(ReadOnlyThreeTriosModel model,
+                          List<PlayerActionListener> playerActionListeners) {
     this.model = model;
     this.playerActionListeners = playerActionListeners;
   }

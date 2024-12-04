@@ -13,20 +13,17 @@ import static org.junit.Assert.assertNotEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.PlayerActionListener;
 import model.Card;
-import model.MockThreeTriosModel;
-import model.ThreeTriosModel;
 import strategy.CornerStrategy;
 import strategy.FlipMaximizerStrategy;
 
 /**
- * Test class for the Human Player class in model. Just to note that the game keeps track of how many
- * players are added, and automatically appends a number at the end of the player's name to signal
- * they were added to the game in that order. For example, the 5th player added to the game would
- * have a name of "TestPlayer5". So, for the purposes of this test, since Before is used to set up
- * players before each test, we will test player names through its substring in order to test that
- * the original name (before that number is added). This is so that in case the tests run in a
+ * Test class for the Human Player class in model. Just to note that the game keeps track of how
+ * many players are added, and automatically appends a number at the end of the player's name to
+ * signal they were added to the game in that order. For example, the 5th player added to the game
+ * would have a name of "TestPlayer5". So, for the purposes of this test, since Before is used to
+ * set up players before each test, we will test player names through its substring in order to test
+ * that the original name (before that number is added). This is so that in case the tests run in a
  * different order for the grader it does not cause all our tests to fail.
  */
 public class HumanPlayerTest {
@@ -45,7 +42,7 @@ public class HumanPlayerTest {
 
   @Test
   public void testConstructor() {
-    assertEquals("TestPlayer", player.getName().substring(0, 10));;
+    assertEquals("TestPlayer", player.getName().substring(0, 10));
     assertEquals(initialHand, player.getHand());
   }
 
@@ -56,7 +53,8 @@ public class HumanPlayerTest {
 
   @Test
   public void testConstructorWithNullHand() {
-    assertThrows(IllegalArgumentException.class, () -> new HumanPlayer("TestPlayer", null));
+    assertThrows(IllegalArgumentException.class, () ->
+            new HumanPlayer("TestPlayer", null));
   }
 
   @Test
@@ -115,22 +113,6 @@ public class HumanPlayerTest {
     assertTrue(player.getHand().contains(newCard));
   }
 
-//  @Test
-//  public void testTakeTurn() {
-//    ThreeTriosModel mockModel = new MockThreeTriosModel();
-//    player.takeTurn(mockModel);
-//    // Verify that nothing happens
-//    verifyNoInteractions(mockModel);
-//  }
-
-//  @Test
-//  public void testAddRemovePlayerActionListener() {
-//    PlayerActionListener mockListener = mock(PlayerActionListener.class);
-//    player.addPlayerActionListener(mockListener);
-//    player.removePlayerActionListener(mockListener);
-//    // No way to verify directly, but this tests that the methods don't throw exceptions
-//  }
-
   @Test
   public void testEqualsEqualObjects() {
     List<Card> hand = List.of(new Card("MysticEagle", 5, 10, 4, 2));
@@ -150,7 +132,8 @@ public class HumanPlayerTest {
 
   @Test
   public void testEqualsNull() {
-    IPlayer player = new HumanPlayer("Player1", List.of(new Card("MysticEagle", 5, 10, 4, 2)));
+    IPlayer player = new HumanPlayer("Player1", List.of(new Card(
+            "MysticEagle", 5, 10, 4, 2)));
     assertNotEquals(player, null);
   }
 
