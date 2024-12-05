@@ -12,6 +12,7 @@ import model.Direction;
 import model.GameModel;
 import model.Grid;
 import model.ICard;
+import model.NormalBattleRule;
 import player.HumanPlayer;
 import player.IPlayer;
 
@@ -41,7 +42,7 @@ public class GameModelInterfaceTest {
    */
   @Before
   public void setUp() {
-    gameModel = new GameModel();
+    gameModel = new GameModel(new NormalBattleRule());
     // Load grid file
     try {
       String gridConfigPath = "src" + File.separator + "configuration"

@@ -28,4 +28,6 @@ public interface ICard {
    */
   String getAttackValue(Direction direction);
 
+  int getCardValue(Direction direction);
+
 }

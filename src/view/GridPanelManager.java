@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
 import controller.PlayerActionListener;
 import model.Card;
 import model.ICard;
@@ -18,11 +20,12 @@ public class GridPanelManager {
   private final ReadOnlyThreeTriosModel model;
   private final List<PlayerActionListener> playerActionListeners;
   private final JPanel gridPanel;
+  private GridPanelDecorator decorator;
 
   /**
    * Constructs a GridPanelManager with the specified model and listeners.
    *
-   * @param model the read-only model of the game
+   * @param model                 the read-only model of the game
    * @param playerActionListeners the list of player action listeners
    */
   public GridPanelManager(ReadOnlyThreeTriosModel model,
@@ -30,6 +33,10 @@ public class GridPanelManager {
     this.model = model;
     this.playerActionListeners = playerActionListeners;
     this.gridPanel = createGridPanel();
+  }
+
+  public void setDecorator(GridPanelDecorator decorator) {
+    this.decorator = decorator;
   }
 
   /**
@@ -94,8 +101,10 @@ public class GridPanelManager {
         } else {
           cellPanel.setBackground(model.getGrid().getCell(
                   row, col).isHole() ? Color.GRAY : Color.YELLOW);
+          if (decorator != null) {
+            decorator.decorate(cellPanel, row, col);
+          }
         }
-
         cellPanel.revalidate();
         cellPanel.repaint();
       }
@@ -105,10 +114,10 @@ public class GridPanelManager {
   /**
    * Creates a card panel for the specified position on the grid.
    *
-   * @param row the row position on the grid
-   * @param col the column position on the grid
+   * @param row       the row position on the grid
+   * @param col       the column position on the grid
    * @param cellPanel the cell panel to add the card panel to
-   * @param card the card to be displayed
+   * @param card      the card to be displayed
    */
   private void createCardPanel(int row, int col, JPanel cellPanel, ICard card) {
     CardPanel cardPanel = CardPanelFactory.createCardPanel(

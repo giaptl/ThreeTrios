@@ -82,6 +82,15 @@ public class Card implements ICard {
   }
 
   @Override
+  public int getCardValue(Direction direction) {
+    if (direction == null) {
+      throw new IllegalArgumentException("Direction cannot be null.");
+    }
+    return attackValues.get(direction);
+
+  }
+
+  @Override
   public boolean equals(Object obj) {
     if (this == obj) {
       return true;

@@ -22,14 +22,23 @@ public class GameModel implements ThreeTriosModel {
   private IPlayer pBlue;
   private boolean isGameOver;
   private final List<ModelStatusListener> modelStatusListeners = new ArrayList<>();
+  private BattleRuleStrategy battleRuleStrategy;
 
 
   /**
    * Creates a new game model. Doesn't need to be passed in anything as this is basically a
    * door to the "actual" instantiation of the model which happens in startGameWithConfig.
    */
-  public GameModel() {
-    // Empty Constructor;
+  public GameModel(BattleRuleStrategy battleRuleStrategy) {
+    this.battleRuleStrategy = battleRuleStrategy;
+  }
+
+  public void setBattleRuleStrategy(BattleRuleStrategy battleRuleStrategy) {
+    this.battleRuleStrategy = battleRuleStrategy;
+  }
+
+  public boolean shouldFlipCard(ICard cardA, ICard cardB, Direction direction) {
+    return battleRuleStrategy.shouldFlipCard(cardA, cardB, direction);
   }
 
   @Override
@@ -308,10 +317,7 @@ public class GameModel implements ThreeTriosModel {
         IPlayer adjacentOwner = adjacentCardCell.getOwner();
 
         if (adjacentCard != null && !owner.equals(adjacentOwner)) {
-          int attackValue = parseAttackValue(card.getAttackValue(direction));
-          int defenseValue = parseAttackValue(adjacentCard.getAttackValue(direction.getOpposite()));
-
-          if (attackValue > defenseValue) {
+          if (shouldFlipCard(card, adjacentCard, direction)) {
             adjacentCardCell.setOwner(owner);
             cardsFlipped++;
           }

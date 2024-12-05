@@ -5,10 +5,16 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
+import model.BattleRuleStrategy;
+import model.CombinedBattleRule;
+import model.FallenAceBattleRule;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
 import model.ICard;
+import model.NormalBattleRule;
+import model.ReverseBattleRule;
+import model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 import player.MachinePlayer;
@@ -27,8 +33,25 @@ public final class ThreeTrios {
    * Main method to run the game from.
    */
   public static void main(String[] args) {
+    List<BattleRuleStrategy> strategies = new ArrayList<>();
+    strategies.add(new NormalBattleRule());
 
-    if (args.length != 2) {
+    for (String arg : args) {
+      if (arg.equals("+reverse")) {
+        strategies.add(new ReverseBattleRule());
+      } else if (arg.equals("+fallenAce")) {
+        strategies.add(new FallenAceBattleRule());
+      }
+    }
+
+    BattleRuleStrategy battleRuleStrategy;
+    if (strategies.size() > 1) {
+      battleRuleStrategy = new CombinedBattleRule(strategies);
+    } else {
+      battleRuleStrategy = strategies.get(0);
+    }
+
+    if (args.length < 2 || args.length > 5) {
       System.err.println("Usage: java ThreeTrios <player1> <player2>");
       System.err.println("Player types: human, flipMaximizer, corner, LeastLikelyFlipped");
       System.exit(1);
@@ -59,7 +82,7 @@ public final class ThreeTrios {
       IPlayer player2 = createPlayer(player2Type);
 
       // Create a new GameModel instance and start the game
-      GameModel gameModel = new GameModel();
+      ThreeTriosModel gameModel = new GameModel(battleRuleStrategy);
       gameModel.startGameWithConfig(grid, cards, false, player1, player2);
       System.out.println("Game started successfully.");
 

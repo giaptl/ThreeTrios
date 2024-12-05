@@ -6,10 +6,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import controller.Controller;
 import controller.PlayerActionListener;
@@ -49,6 +46,10 @@ public class GameView extends JFrame implements IGameView {
   private final HandPanelManager handPanelManager;
   private PlayerActionListener features;
   private final List<PlayerActionListener> playerActionListeners = new ArrayList<>();
+  private boolean hintMode = false;
+  private JButton hintButton;
+  private IPlayer currentPlayer;
+  private ICard selectedCard;
 
   /**
    * Constructs a GameView with the specified model.
@@ -71,8 +72,22 @@ public class GameView extends JFrame implements IGameView {
     add(blueHandPanel, BorderLayout.EAST);
     add(gridPanel, BorderLayout.CENTER);
 
+    hintButton = new JButton("Toggle Hint");
+    hintButton.addActionListener(e -> toggleHintMode());
+    add(hintButton, BorderLayout.SOUTH);
+
     pack();
     setVisible(true);
+  }
+
+  private void toggleHintMode() {
+    hintMode = !hintMode;
+    if (hintMode) {
+      gridPanelManager.setDecorator(new HintGridPanelDecorator(model, currentPlayer, selectedCard));
+    } else {
+      gridPanelManager.setDecorator(null);
+    }
+    gridPanelManager.updateGridPanel();
   }
 
   /**
@@ -80,7 +95,7 @@ public class GameView extends JFrame implements IGameView {
    */
   public void setController(Controller controller) {
     addPlayerActionListener(controller);
-  } 
+  }
 
   @Override
   public void showError(String message) {
@@ -107,7 +122,14 @@ public class GameView extends JFrame implements IGameView {
 
       cardPanel.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
       previouslySelectedCardPanel = cardPanel;
+      currentPlayer = player;
+      selectedCard = card;
     }
+    // Update the decorator with the new selected card and current player
+    if (hintMode) {
+      gridPanelManager.setDecorator(new HintGridPanelDecorator(model, currentPlayer, selectedCard));
+    }
+    gridPanelManager.updateGridPanel();
   }
 
   @Override

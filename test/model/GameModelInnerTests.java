@@ -29,7 +29,7 @@ public class GameModelInnerTests {
 
   @Before
   public void setUp() {
-    gameModel = new GameModel();
+    gameModel = new GameModel(new NormalBattleRule());
     // Load grid file
     try {
       String gridConfigPath = "src" + File.separator + "configuration"
