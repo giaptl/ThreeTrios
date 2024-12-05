@@ -13,10 +13,18 @@ public class CombinedBattleRule implements BattleRuleStrategy {
   @Override
   public boolean shouldFlipCard(ICard cardA, ICard cardB, Direction direction) {
     for (BattleRuleStrategy strategy : strategies) {
-      if (!strategy.shouldFlipCard(cardA, cardB, direction)) {
+      int cardAValue = cardA.getCardValue(direction);
+      int cardBValue = cardB.getCardValue(direction.getOpposite());
+      if ((cardAValue == 1 && cardBValue == 10)) {
+        System.out.println("ReverseFallenAce: " + cardAValue + " vs " + cardBValue);
         return false;
+      } else if (cardAValue == 10 && cardBValue == 1) {
+        System.out.println("FallenAceReverse: " + cardAValue + " vs " + cardBValue);
+        return true;
+      } else if (strategy.shouldFlipCard(cardA, cardB, direction)) {
+        return true;
       }
     }
-    return true;
+    return false;
   }
 }

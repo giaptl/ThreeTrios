@@ -34,7 +34,6 @@ public final class ThreeTrios {
    */
   public static void main(String[] args) {
     List<BattleRuleStrategy> strategies = new ArrayList<>();
-    strategies.add(new NormalBattleRule());
 
     for (String arg : args) {
       if (arg.equals("+reverse")) {
@@ -42,6 +41,10 @@ public final class ThreeTrios {
       } else if (arg.equals("+fallenAce")) {
         strategies.add(new FallenAceBattleRule());
       }
+    }
+
+    if (strategies.isEmpty()) {
+      strategies.add(new NormalBattleRule());
     }
 
     BattleRuleStrategy battleRuleStrategy;

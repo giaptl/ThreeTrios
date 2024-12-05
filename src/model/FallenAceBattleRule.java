@@ -5,6 +5,7 @@ public class FallenAceBattleRule implements BattleRuleStrategy {
   public boolean shouldFlipCard(ICard cardA, ICard cardB, Direction direction) {
     int cardAValue = cardA.getCardValue(direction);
     int cardBValue = cardB.getCardValue(direction.getOpposite());
+    System.out.println("FallenAceBattleRule: " + cardAValue + " vs " + cardBValue);
     return (cardAValue == 1 && cardBValue == 10) || cardAValue > cardBValue;
   }
 }
