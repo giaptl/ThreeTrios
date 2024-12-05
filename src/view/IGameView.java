@@ -1,5 +1,7 @@
 package view;
 
+import javax.swing.*;
+
 import controller.PlayerActionListener;
 import model.Card;
 import model.ICard;
@@ -79,5 +81,14 @@ public interface IGameView {
    * @param score the winning score
    */
   void showGameOver(IPlayer winner, int score);
-
+//
+//  JPanel getRedPlayerPanel();
+//
+//  JPanel getBluePlayerPanel();
+//
+//  JPanel getGridPanel();
+//
+//  PlayerActionListener[] getPlayerActionListeners();
+//
+//  void updateCurrentPlayer(IPlayer currentPlayer);
 }
