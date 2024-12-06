@@ -1,5 +1,10 @@
 package controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.*;
+
 import model.ICard;
 import player.IPlayer;
 import model.ModelStatusListener;
@@ -22,9 +27,9 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
   /**
    * Constructs a Controller with the specified model, player, and view.
    *
-   * @param model the game model
+   * @param model  the game model
    * @param player the player associated with this controller
-   * @param view the game view
+   * @param view   the game view
    * @throws IllegalArgumentException if model, player, or view are null
    */
   public Controller(ThreeTriosModel model, IPlayer player, IGameView view) {
@@ -104,33 +109,31 @@ public class Controller implements PlayerActionListener, ModelStatusListener {
    * Handles the turn for a machine player (automatic play). Set to package-private for testing.
    */
   void handleMachinePlayerTurn() {
-    new Thread(() -> {
-      try {
-        // Introduce a 500ms delay
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-        throw new RuntimeException(e);
-      }
-
-      if (!(model.isGameOver())) {
-        player.takeTurn(model);
-        view.refreshView();
-      }
-
-      if (model.isGameOver()) {
-        IPlayer winner = model.getWinner();
-        synchronized (this) {
-          if (!gameOverCalled) {
-            view.showGameOver(winner, model.getPlayerScore(winner));
-            gameOverCalled = true;
-          }
+    // FIXED ERROR WITH THREADS
+    Timer timer = new Timer(750, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        if (!(model.isGameOver())) {
+          player.takeTurn(model);
+          view.refreshView();
         }
-      } else {
-        // Set the next player and trigger their turn
-        onPlayerTurn(model.getCurrentPlayer());
+
+        if (model.isGameOver()) {
+          IPlayer winner = model.getWinner();
+          synchronized (this) {
+            if (!gameOverCalled) {
+              view.showGameOver(winner, model.getPlayerScore(winner));
+              gameOverCalled = true;
+            }
+          }
+        } else {
+          // Set the next player and trigger their turn
+          onPlayerTurn(model.getCurrentPlayer());
+        }
       }
-    }).start();
+    });
+    timer.setRepeats(false);
+    timer.start();
   }
 
   /**
