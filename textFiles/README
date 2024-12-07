@@ -63,7 +63,7 @@ switches the current player after a card is played to either Red or Blue, which 
 methods of this class also maintain the invariant.
 
 ----------------------------------------------------------------------------------------------------
-Changes for part 2:
+Changes for part 2 (HW 6):
 
 Adding missing functionality to the ThreeTriosModel class: We added a method copyOfGrid() to the
 Grid class so that a copy of the grid can be retrieved from the model by calling this method on
@@ -133,7 +133,7 @@ You can find the implementations and tests for these strategies in the following
 - `test/strategy/MinimaxStrategyTest.java`
 
 ----------------------------------------------------------------------------------------------------
-Changes for part 3:
+Changes for part 3 (HW 7):
 
 Large Changes to Model:
 
@@ -240,4 +240,8 @@ view to reflect these changes.  This implementation ensures that the game state 
 in sync and that the game logic is handled correctly.
 
 ----------------------------------------------------------------------------------------------------
-Changes for part 4:
+Changes for part 4 (HW 8):
+
+----------------------------------------------------------------------------------------------------
+Changes for part 5 (HW 9):
+

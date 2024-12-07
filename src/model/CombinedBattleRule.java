@@ -16,15 +16,15 @@ public class CombinedBattleRule implements BattleRuleStrategy {
       int cardAValue = cardA.getCardValue(direction);
       int cardBValue = cardB.getCardValue(direction.getOpposite());
       if ((cardAValue == 1 && cardBValue == 10)) {
-        System.out.println("ReverseFallenAce: " + cardAValue + " vs " + cardBValue);
+        System.out.println("AceLosesToTen: " + cardAValue + " vs " + cardBValue);
         return false;
       } else if (cardAValue == 10 && cardBValue == 1) {
-        System.out.println("FallenAceReverse: " + cardAValue + " vs " + cardBValue);
+        System.out.println("TenLosesToAce: " + cardAValue + " vs " + cardBValue);
         return true;
-      } else if (strategy.shouldFlipCard(cardA, cardB, direction)) {
-        return true;
+      } else if (cardAValue > cardBValue && strategy.shouldFlipCard(cardA, cardB, direction)) {
+        return false;
       }
     }
-    return false;
+    return true;
   }
 }
