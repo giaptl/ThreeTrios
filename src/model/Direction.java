@@ -51,7 +51,7 @@ public enum Direction {
    * @return the opposite direction.
    * @throws IllegalArgumentException if the direction is invalid.
    */
-  Direction getOpposite() {
+  public Direction getOpposite() {
     switch (this) {
       case NORTH:
         return SOUTH;

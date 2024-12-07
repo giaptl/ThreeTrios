@@ -1,4 +1,7 @@
-package model;
+package extraFeatures;
+
+import model.Direction;
+import model.ICard;
 
 public class FallenAceBattleRule implements BattleRuleStrategy {
   @Override

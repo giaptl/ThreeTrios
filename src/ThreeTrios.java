@@ -5,15 +5,17 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import model.BattleRuleStrategy;
-import model.CombinedBattleRule;
-import model.FallenAceBattleRule;
+import extraFeatures.BattleRuleStrategy;
+import extraFeatures.CombinedBattleRule;
+import extraFeatures.FallenAceBattleRule;
+import extraFeatures.PlusBattleRule;
+import extraFeatures.SameBattleRule;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
 import model.ICard;
-import model.NormalBattleRule;
-import model.ReverseBattleRule;
+import extraFeatures.NormalBattleRule;
+import extraFeatures.ReverseBattleRule;
 import model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
@@ -33,13 +35,32 @@ public final class ThreeTrios {
    * Main method to run the game from.
    */
   public static void main(String[] args) {
+
+    if (args.length < 2) {
+      System.err.println("Usage: java ThreeTrios <player1> <player2>");
+      System.err.println("Player types: human, flipMaximizer, corner, LeastLikelyFlipped");
+      System.exit(1);
+    }
+
+    String player1Type = args[0];
+    String player2Type = args[1];
+
     List<BattleRuleStrategy> strategies = new ArrayList<>();
 
     for (String arg : args) {
-      if (arg.equals("+reverse")) {
-        strategies.add(new ReverseBattleRule());
-      } else if (arg.equals("+fallenAce")) {
-        strategies.add(new FallenAceBattleRule());
+      switch (arg.toLowerCase()) {
+        case "+reverse":
+          strategies.add(new ReverseBattleRule());
+          break;
+        case "+fallenace":
+          strategies.add(new FallenAceBattleRule());
+          break;
+        case "+same":
+          strategies.add(new SameBattleRule());
+          break;
+        case "+plus":
+          strategies.add(new PlusBattleRule());
+          break;
       }
     }
 
@@ -54,20 +75,12 @@ public final class ThreeTrios {
       battleRuleStrategy = strategies.get(0);
     }
 
-    if (args.length < 2 || args.length > 5) {
-      System.err.println("Usage: java ThreeTrios <player1> <player2>");
-      System.err.println("Player types: human, flipMaximizer, corner, LeastLikelyFlipped");
-      System.exit(1);
-    }
-
-    String player1Type = args[0];
-    String player2Type = args[1];
 
     try {
       // Read the grid configuration
       String gridConfigPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "board3WithSeparateGroupsOfCells.config";
+              + File.separator + "board1WithNoHoles.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
@@ -75,7 +88,7 @@ public final class ThreeTrios {
       // Read the card data
       String cardDataPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "cardsEnoughForAllBoards.config";
+              + File.separator + "cardsForLevel2.config";
       List<ICard> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 

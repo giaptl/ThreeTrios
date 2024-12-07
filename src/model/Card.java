@@ -16,6 +16,9 @@ public class Card implements ICard {
 
   private final String name;
   private Map<Direction, Integer> attackValues;
+  private Grid grid;
+  private int row;
+  private int col;
 
   /**
    * Creates a new card with the given name and attack values.
@@ -106,5 +109,49 @@ public class Card implements ICard {
   public int hashCode() {
     return Objects.hash(name, attackValues.get(Direction.NORTH), attackValues.get(Direction.SOUTH),
             attackValues.get(Direction.EAST), attackValues.get(Direction.WEST));
+  }
+
+  /**
+   * Sets the grid and position of the card.
+   *
+   * @param grid the grid the card is placed on
+   * @param row  the row position of the card
+   * @param col  the column position of the card
+   */
+  public void setPosition(Grid grid, int row, int col) {
+    this.grid = grid;
+    this.row = row;
+    this.col = col;
+  }
+
+  @Override
+  public ICard getAdjacentCard(Direction dir) {
+    if (grid == null) {
+      throw new IllegalStateException("Card position is not set.");
+    }
+
+    int newRow = row;
+    int newCol = col;
+
+    switch (dir) {
+      case NORTH:
+        newRow -= 1;
+        break;
+      case SOUTH:
+        newRow += 1;
+        break;
+      case EAST:
+        newCol += 1;
+        break;
+      case WEST:
+        newCol -= 1;
+        break;
+    }
+
+    if (newRow < 0 || newRow >= grid.getRows() || newCol < 0 || newCol >= grid.getColumns()) {
+      return null;
+    }
+
+    return grid.getCell(newRow, newCol).getCard();
   }
 }

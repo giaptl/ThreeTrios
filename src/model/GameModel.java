@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import extraFeatures.BattleRuleStrategy;
 import player.IPlayer;
 
 /**
@@ -30,6 +31,9 @@ public class GameModel implements ThreeTriosModel {
    * door to the "actual" instantiation of the model which happens in startGameWithConfig.
    */
   public GameModel(BattleRuleStrategy battleRuleStrategy) {
+    if (battleRuleStrategy == null) {
+      throw new IllegalArgumentException("Battle strategy cannot be null");
+    }
     this.battleRuleStrategy = battleRuleStrategy;
   }
 
@@ -132,7 +136,7 @@ public class GameModel implements ThreeTriosModel {
       }
     }
     return new int[]{redCardCount + getPlayerHand(pRed).size(), blueCardCount
-        + getPlayerHand(pBlue).size()};
+            + getPlayerHand(pBlue).size()};
   }
 
   @Override
@@ -141,6 +145,9 @@ public class GameModel implements ThreeTriosModel {
 
     CardCell cardCell = new CardCell(card, player);
     grid.setCell(row, col, cardCell);
+    if (card instanceof Card) {
+      ((Card) card).setPosition(grid, row, col);
+    }
     player.removeCard(card);
     startBattlePhase(row, col);
 

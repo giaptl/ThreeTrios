@@ -5,11 +5,17 @@ import org.junit.Test;
 
 import java.util.List;
 
+import extraFeatures.BattleRuleStrategy;
+import extraFeatures.CombinedBattleRule;
+import extraFeatures.FallenAceBattleRule;
+import extraFeatures.NormalBattleRule;
+import extraFeatures.ReverseBattleRule;
+
 import static model.CardValues.A;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class BattleRuleStrategyTest {
+public class BattleRuleStrategyTestLevel1 {
   private ICard cardA;
   private ICard cardB;
   private ICard cardC;

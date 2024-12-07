@@ -7,12 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import configuration.ConfigurationReader;
-import model.Card;
 import model.Direction;
 import model.GameModel;
 import model.Grid;
 import model.ICard;
-import model.NormalBattleRule;
+import extraFeatures.NormalBattleRule;
 import player.HumanPlayer;
 import player.IPlayer;
 

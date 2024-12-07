@@ -1,6 +1,9 @@
-package model;
+package extraFeatures;
 
 import java.util.List;
+
+import model.Direction;
+import model.ICard;
 
 public class CombinedBattleRule implements BattleRuleStrategy {
 

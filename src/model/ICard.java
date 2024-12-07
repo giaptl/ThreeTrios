@@ -30,4 +30,5 @@ public interface ICard {
 
   int getCardValue(Direction direction);
 
+  ICard getAdjacentCard(Direction dir);
 }
