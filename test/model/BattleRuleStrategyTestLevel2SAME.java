@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import extraFeatures.SameBattleRule;
+import finalProviderCode.model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 

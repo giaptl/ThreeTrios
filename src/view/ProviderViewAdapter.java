@@ -1,13 +1,5 @@
 package view;
 
-import java.awt.event.ActionListener;
-
-import javax.swing.*;
-
-import controller.PlayerActionListener;
-import model.ICard;
-import model.ThreeTriosModel;
-
 /**
  * Adapter class to make the provider's view compatible with our game.
  */

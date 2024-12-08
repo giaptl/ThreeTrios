@@ -3,9 +3,8 @@ package player;
 import java.util.List;
 
 import controller.PlayerActionListener;
-import model.Card;
 import model.ICard;
-import model.ThreeTriosModel;
+import finalProviderCode.model.ThreeTriosModel;
 import strategy.Strategy;
 
 /**

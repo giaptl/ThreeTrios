@@ -13,6 +13,7 @@ import extraFeatures.FallenAceBattleRule;
 import extraFeatures.PlusBattleRule;
 import extraFeatures.ReverseBattleRule;
 import extraFeatures.SameBattleRule;
+import finalProviderCode.model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 

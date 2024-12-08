@@ -10,10 +10,9 @@ import javax.swing.*;
 
 import controller.Controller;
 import controller.PlayerActionListener;
-import model.Card;
 import model.ICard;
 import player.IPlayer;
-import model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Represents the main game view for the ThreeTrios game, including the grid and player hands.

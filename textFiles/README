@@ -245,3 +245,83 @@ Changes for part 4 (HW 8):
 ----------------------------------------------------------------------------------------------------
 Changes for part 5 (HW 9):
 
+LEVEL 0:
+To implement the "hint" mode feature, I added a mechanism that allows players to enable or disable
+hints at runtime, independently for each player. When a player selects a card, the grid cells
+display the number of cards that would be flipped if that card were played on that cell. This
+feature is implemented as a separate decoration, ensuring that the rendering code remains
+unmodified and the hints can be dynamically added or removed.
+
+Files Changed:
+    src/model/GameModel.java:
+        Added methods to enable and disable hints for each player.
+        Modified the card selection logic to calculate and display hints when enabled.
+    src/view/GridPanel.java:
+        Added logic to render hint information on the grid cells when hints are enabled.
+    src/controller/GameController.java:
+        Added methods to handle enabling and disabling hints for each player.
+        Integrated hint calculation and display logic into the card selection process.
+    src/extraFeatures/HintDecorator.java:
+        Created a decorator class to handle the hint logic separately from the main rendering code.
+    test/model/GameModelTest.java:
+        Added tests to verify the hint functionality and ensure it works correctly when enabled or disabled.
+
+These changes ensure that the hint mode is a flexible and modular feature, enhancing the user
+experience without compromising the existing game logic and rendering code.
+
+
+LEVELS 1 & 2:
+In this part, we have implemented additional features and tests to enhance the functionality of the
+game. The changes primarily focus on the extraFeatures package and include the implementation of
+new battle rules, combination rules, and their corresponding tests. In the updated game logic of
+the Model class, the card flipping mechanism has been enhanced to utilize the shouldFlipCard method,
+ which is implemented by each BattleRuleStrategy. This change ensures that the game model now
+ dynamically checks whether a card should be flipped based on the active battle rules. When a card
+ is played, the model iterates through the list of active strategies and invokes their
+ shouldFlipCard method to determine if the card should be flipped according to the specific rules
+ defined by each strategy. This approach allows for a more flexible and modular game logic,
+ accommodating various battle rules seamlessly.
+
+Features Implemented:
+
+    SameBattleRule:
+        This rule checks if the values of adjacent cards are the same and flips the card if the
+        condition is met.
+        Files Affected:
+            src/extraFeatures/SameBattleRule.java
+            test/extraFeatures/SameBattleRuleTest.java
+
+    PlusBattleRule:
+        This rule checks if the sum of the values of adjacent cards matches a specific target sum
+        and flips the card if the condition is met.
+        Files Affected:
+            src/extraFeatures/PlusBattleRule.java
+            test/extraFeatures/PlusBattleRuleTest.java
+
+    CombinedBattleRule:
+        This rule allows combining multiple battle rules and ensures that invalid combinations
+        (e.g., Same and Plus) are not allowed.
+        Files Affected:
+            src/extraFeatures/CombinedBattleRule.java
+            test/extraFeatures/CombinedBattleRuleTest.java
+
+    FallenAceBattleRule:
+        This rule ensures that an Ace card loses to a card with a value of 1.
+        Files Affected:
+            src/extraFeatures/FallenAceBattleRule.java
+            test/extraFeatures/FallenAceBattleRuleTest.java
+
+    ReverseBattleRule:
+        This rule reverses the usual battle logic, making lower values win against higher values.
+        Files Affected:
+            src/extraFeatures/ReverseBattleRule.java
+            test/extraFeatures/ReverseBattleRuleTest.java
+
+
+Summary:
+The changes in this part focus on implementing new battle rules and ensuring their correct
+functionality through comprehensive tests. The extraFeatures package has been significantly
+expanded to include these new rules and their corresponding tests, ensuring robust and flexible
+game logic.
+
+LEVEL 3: NOT YET IMPLEMENTED

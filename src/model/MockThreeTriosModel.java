@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import finalProviderCode.model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 import player.MachinePlayer;

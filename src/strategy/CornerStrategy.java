@@ -2,11 +2,10 @@ package strategy;
 
 import java.util.List;
 
-import model.Card;
 import model.Grid;
 import model.ICard;
 import player.IPlayer;
-import model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy that selects the move which places the card in a corner position if available. If no

@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.Objects;
 
 import controller.PlayerActionListener;
-import model.Card;
 import model.ICard;
-import model.ThreeTriosModel;
+import finalProviderCode.model.ThreeTriosModel;
 import strategy.Strategy;
 
 /**

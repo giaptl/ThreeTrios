@@ -1,7 +1,7 @@
 package strategy;
 
 import player.IPlayer;
-import model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy interface for selecting a move in the Three Trios game.

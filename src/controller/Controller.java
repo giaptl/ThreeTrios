@@ -8,7 +8,7 @@ import javax.swing.*;
 import model.ICard;
 import player.IPlayer;
 import model.ModelStatusListener;
-import model.ThreeTriosModel;
+import finalProviderCode.model.ThreeTriosModel;
 import strategy.Move;
 import view.IGameView;
 

@@ -5,7 +5,7 @@ import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 import model.ICard;
 import player.IPlayer;
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Queue;
 
 import extraFeatures.BattleRuleStrategy;
+import finalProviderCode.model.ThreeTriosModel;
 import player.IPlayer;
 
 /**

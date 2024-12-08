@@ -2,11 +2,10 @@ package strategy;
 
 import java.util.List;
 
-import model.Card;
 import model.Grid;
 import model.ICard;
 import player.IPlayer;
-import model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Represents a move in the ThreeTrios game, consisting of a card and its position on the grid.

@@ -11,6 +11,7 @@ import java.util.List;
 
 
 import extraFeatures.PlusBattleRule;
+import finalProviderCode.model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 

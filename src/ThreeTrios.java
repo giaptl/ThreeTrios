@@ -16,7 +16,7 @@ import configuration.ConfigurationReader;
 import model.ICard;
 import extraFeatures.NormalBattleRule;
 import extraFeatures.ReverseBattleRule;
-import model.ThreeTriosModel;
+import finalProviderCode.model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 import player.MachinePlayer;
@@ -33,6 +33,13 @@ public final class ThreeTrios {
 
   /**
    * Main method to run the game from.
+   * Example command lines (works for any human/machine player combination):
+   *    normal game: human human
+   *    reverse game: human human +reverse
+   *    fallen ace game: human human +fallenace
+   *    combined game: human human +reverse +fallenace
+   *    plus game: human human +plus
+   *    same game: human human +same
    */
   public static void main(String[] args) {
 

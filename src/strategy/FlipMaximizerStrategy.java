@@ -3,11 +3,10 @@ package strategy;
 import java.util.List;
 import java.util.Objects;
 
-import model.Card;
 import model.Grid;
 import model.ICard;
 import player.IPlayer;
-import model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy that selects the move which maximizes the number of opponents' cards flipped. If there

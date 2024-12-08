@@ -2,6 +2,7 @@ package model;
 
 import java.util.List;
 
+import finalProviderCode.model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
 
 /**
