@@ -9,6 +9,8 @@ public class PlusBattleRule implements BattleRuleStrategy {
     // First check regular battle rule
     int attackValue = cardA.getCardValue(direction);
     int defenseValue = cardB.getCardValue(direction.getOpposite());
+
+    System.out.println("PlusBattleRule: " + attackValue + " vs " + defenseValue);
     if (attackValue > defenseValue) {
       return true;
     }

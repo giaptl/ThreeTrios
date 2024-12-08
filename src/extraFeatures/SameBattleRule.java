@@ -3,14 +3,26 @@ package extraFeatures;
 import model.Direction;
 import model.ICard;
 
+import static model.CardValues.A;
+
 public class SameBattleRule implements BattleRuleStrategy {
   @Override
   public boolean shouldFlipCard(ICard cardA, ICard cardB, Direction direction) {
     // First check regular battle rule
     int attackValue = cardA.getCardValue(direction);
     int defenseValue = cardB.getCardValue(direction.getOpposite());
+    System.out.println("SameBattleRule: " + attackValue + " vs " + defenseValue);
     boolean regularBattleWon = attackValue > defenseValue;
     boolean regularBattleLost = attackValue < defenseValue;
+
+//    // Specific check for battle between 1 and A
+//    if (attackValue == 1 && defenseValue == A.getValue()) {
+//      // Define the outcome for this specific case
+//      return false;
+//    } else if (attackValue == A.getValue() && defenseValue == 1) {
+//      // Define the outcome for this specific case
+//      return true;
+//    }
 
     // Check for "Same" rule condition
     int sameCount = 0;

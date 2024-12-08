@@ -10,7 +10,26 @@ public class CombinedBattleRule implements BattleRuleStrategy {
   private final List<BattleRuleStrategy> strategies;
 
   public CombinedBattleRule(List<BattleRuleStrategy> strategies) {
+    if (containsInvalidCombination(strategies)) {
+      throw new IllegalArgumentException("Invalid combination of battle rules: Same and Plus cannot be combined.");
+    }
     this.strategies = strategies;
+  }
+
+  private boolean containsInvalidCombination(List<BattleRuleStrategy> strategies) {
+    boolean hasSame = false;
+    boolean hasPlus = false;
+
+    for (BattleRuleStrategy strategy : strategies) {
+      if (strategy instanceof SameBattleRule) {
+        hasSame = true;
+      }
+      if (strategy instanceof PlusBattleRule) {
+        hasPlus = true;
+      }
+    }
+
+    return hasSame && hasPlus;
   }
 
   @Override
