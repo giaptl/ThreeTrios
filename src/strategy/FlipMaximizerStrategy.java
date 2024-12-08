@@ -5,8 +5,8 @@ import java.util.Objects;
 
 import model.Grid;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy that selects the move which maximizes the number of opponents' cards flipped. If there
@@ -59,7 +59,7 @@ public class FlipMaximizerStrategy implements Strategy {
     // Compare the two moves and return the one that is at the uppermost-leftmost position
     if (currentMove.getRow() < currentBest.getRow()
             || (currentMove.getRow() == currentBest.getRow()
-                    && currentMove.getCol() < currentBest.getCol())) {
+            && currentMove.getCol() < currentBest.getCol())) {
       return currentMove;
     }
     return currentBest;

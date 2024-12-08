@@ -4,8 +4,8 @@ import java.util.List;
 
 import model.Grid;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy that selects the move which minimizes the maximum gain the opponent can achieve in

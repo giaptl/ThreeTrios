@@ -5,8 +5,8 @@ import java.util.List;
 import model.CardCell;
 import model.Grid;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy that selects the move that is least likely to be flipped by the opponent.

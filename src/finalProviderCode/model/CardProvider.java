@@ -3,7 +3,7 @@ package finalProviderCode.model;
 /**
  * An interface to represent a card.
  */
-public interface Card {
+public interface CardProvider {
 
   /**
    * Gets the value associated with the north direction.

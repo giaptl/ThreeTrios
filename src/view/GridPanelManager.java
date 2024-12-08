@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import controller.PlayerActionListener;
 import model.ICard;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
+import model.ReadOnlyThreeTriosModel;
 
 /**
  * Manages the creation and updating of the grid panel in the ThreeTrios game.

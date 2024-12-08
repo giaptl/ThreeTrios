@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import controller.PlayerActionListener;
 import model.ICard;
-import finalProviderCode.model.ThreeTriosModel;
+import model.ThreeTriosModel;
 import strategy.Move;
 import strategy.Strategy;
 

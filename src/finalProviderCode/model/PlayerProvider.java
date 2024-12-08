@@ -1,12 +1,11 @@
 package finalProviderCode.model;
 
-import finalProviderCode.model.Card;
 import java.util.List;
 
 /**
  * Represents a player in the game with a specific color and a hand of cards.
  */
-public interface Player {
+public interface PlayerProvider {
 
   /**
    * Gets the color of the player (e.g., RED or BLUE).
@@ -20,21 +19,21 @@ public interface Player {
    *
    * @return a list of cards in the player's hand.
    */
-  List<Card> getHand();
+  List<CardProvider> getHand();
 
   /**
    * Adds a card to the player's hand.
    *
    * @param card the card to be added.
    */
-  void addCard(Card card);
+  void addCard(CardProvider card);
 
   /**
    * Removes a card from the player's hand.
    *
    * @param card the card to be removed.
    */
-  void removeCard(Card card);
+  void removeCard(CardProvider card);
 
   String getName();
 

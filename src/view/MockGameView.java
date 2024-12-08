@@ -3,6 +3,7 @@ package view;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.Controller;
 import controller.PlayerActionListener;
 import model.Card;
 import model.ICard;
@@ -67,6 +68,11 @@ public class MockGameView implements IGameView {
   @Override
   public void refreshView() {
     this.refreshCalled = true;
+  }
+
+  @Override
+  public void setController(Controller controller) {
+
   }
 
   @Override

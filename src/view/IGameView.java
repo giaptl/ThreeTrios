@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 
+import controller.Controller;
 import controller.PlayerActionListener;
 import model.Card;
 import model.ICard;
@@ -40,6 +41,8 @@ public interface IGameView {
    * This includes updating the grid and hand panels to display the current cards and layout.
    */
   void refreshView();
+
+  void setController(Controller controller);
 
   /**
    * Displays an error message in a dialog box, typically when an invalid move is attempted or
@@ -81,14 +84,7 @@ public interface IGameView {
    * @param score the winning score
    */
   void showGameOver(IPlayer winner, int score);
-//
-//  JPanel getRedPlayerPanel();
-//
-//  JPanel getBluePlayerPanel();
-//
-//  JPanel getGridPanel();
-//
-//  PlayerActionListener[] getPlayerActionListeners();
-//
-//  void updateCurrentPlayer(IPlayer currentPlayer);
+
+
+
 }

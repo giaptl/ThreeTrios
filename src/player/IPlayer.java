@@ -4,7 +4,8 @@ import java.util.List;
 
 import controller.PlayerActionListener;
 import model.ICard;
-import finalProviderCode.model.ThreeTriosModel;
+import finalProviderCode.model.ThreeTriosModelProvider;
+import model.ThreeTriosModel;
 import strategy.Strategy;
 
 /**
@@ -51,6 +52,7 @@ public interface IPlayer {
 
   /**
    * Gets the name of the player.
+   *
    * @return the name of the player
    */
   String getName();

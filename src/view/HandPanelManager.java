@@ -6,8 +6,8 @@ import java.util.List;
 import javax.swing.JPanel;
 import controller.PlayerActionListener;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Manages the creation and updating of the hand panels in the ThreeTrios game.

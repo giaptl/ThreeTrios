@@ -4,7 +4,7 @@ package finalProviderCode.model;
  * Represents a single cell on the game grid, which may contain a card owned by a player.
  * A cell can either be empty, filled with a card belonging to a specific owner, or be a hole.
  */
-public interface Cell {
+public interface CellInterfaceProvider {
 
   /**
    * Checks if the cell is empty (i.e., no card has been placed and it's not a hole).
@@ -20,7 +20,7 @@ public interface Cell {
    * @param owner the owner of the card, represented as a string (e.g., "RED" or "BLUE")
    * @throws IllegalStateException if the cell is a hole
    */
-  public void setCard(Card card, String owner);
+  public void setCard(CardProvider card, String owner);
 
   /**
    * Clears the cell, removing the card and its owner.
@@ -30,9 +30,9 @@ public interface Cell {
   /**
    * Retrieves the card placed in this cell.
    *
-   * @return the {@link Card} in this cell, or {@code null} if the cell is empty
+   * @return the {@link CardProvider} in this cell, or {@code null} if the cell is empty
    */
-  public Card getCard();
+  public CardProvider getCard();
 
   /**
    * Checks if the cell is a hole or a playable card cell.

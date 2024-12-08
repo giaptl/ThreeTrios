@@ -4,8 +4,8 @@ import java.util.List;
 
 import model.Grid;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Represents a move in the ThreeTrios game, consisting of a card and its position on the grid.
@@ -19,8 +19,8 @@ public class Move {
    * Constructs a Move with the specified card and position.
    *
    * @param card the card to be placed
-   * @param row the row position on the grid
-   * @param col the column position on the grid
+   * @param row  the row position on the grid
+   * @param col  the column position on the grid
    */
   public Move(ICard card, int row, int col) {
     this.card = card;
@@ -45,9 +45,9 @@ public class Move {
    * closest to the top-left corner of the grid and chooses the best card from the player's hand
    * for that position.
    *
-   * @param hand the list of cards in the player's hand
-   * @param grid the current game grid
-   * @param model the read-only model of the game
+   * @param hand   the list of cards in the player's hand
+   * @param grid   the current game grid
+   * @param model  the read-only model of the game
    * @param player the player making the move
    * @return a Move representing the fallback move, or null if no valid move is found
    */

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import controller.PlayerActionListener;
 import model.ICard;
-import finalProviderCode.model.ThreeTriosModel;
+import model.ThreeTriosModel;
 import strategy.Strategy;
 
 /**
@@ -23,7 +23,7 @@ public class HumanPlayer implements IPlayer {
    * Creates a new player with the given name and hand.
    *
    * @param playerName the name of the player
-   * @param hand the list of cards in the player's hand
+   * @param hand       the list of cards in the player's hand
    * @throws IllegalArgumentException if the player name or hand is null
    */
   public HumanPlayer(String playerName, List<ICard> hand) {

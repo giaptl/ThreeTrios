@@ -7,7 +7,7 @@ import java.util.List;
  * This interface provides access to information about the current game state
  * without allowing modifications to the game model.
  */
-public interface ReadOnlyThreeTriosModel {
+public interface ReadOnlyThreeTriosModelProvider {
 
 
   /**
@@ -24,7 +24,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param player the player whose cards are being counted
    * @return the number of cards owned by the player
    */
-  int countOwnedCards(Player player);
+  int countOwnedCards(PlayerProvider player);
 
   /**
    * Renders the game state.
@@ -43,7 +43,7 @@ public interface ReadOnlyThreeTriosModel {
    *
    * @return the winning player, or null if there is no winner
    */
-  Player getWinner();
+  PlayerProvider getWinner();
 
   /**
    * Gets a string representation of the grid.
@@ -79,7 +79,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param col the column index of the grid
    * @return true if the move is legal, false otherwise
    */
-  boolean isLegalMove(Player player, Card card, int row, int col);
+  boolean isLegalMove(PlayerProvider player, CardProvider card, int row, int col);
 
   /**
    * Checks if a specific cell in the grid is occupied.
@@ -110,21 +110,21 @@ public interface ReadOnlyThreeTriosModel {
    * @param player the player whose hand is requested
    * @return the list of cards in the player's hand
    */
-  List<Card> getPlayerHand(Player player);
+  List<CardProvider> getPlayerHand(PlayerProvider player);
 
   /**
    * Gets the red player.
    *
    * @return the red player
    */
-  Player getRedPlayer();
+  PlayerProvider getRedPlayer();
 
   /**
    * Gets the blue player.
    *
    * @return the blue player
    */
-  Player getBluePlayer();
+  PlayerProvider getBluePlayer();
 
   /**
    * Gets the number of potential card flips for a player at a specific position.
@@ -135,7 +135,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param col the column index of the grid
    * @return the number of potential flips for the move
    */
-  int getPotentialFlips(Player player, Card card, int row, int col);
+  int getPotentialFlips(PlayerProvider player, CardProvider card, int row, int col);
 
   /**
    * Gets the number of potential opponent card flips for a player at a specific position.
@@ -146,7 +146,7 @@ public interface ReadOnlyThreeTriosModel {
    * @param col the column index of the grid
    * @return the number of potential opponent flips for the move
    */
-  int getPotentialOpponentFlips(Player player, Card card, int row, int col);
+  int getPotentialOpponentFlips(PlayerProvider player, CardProvider card, int row, int col);
 
   /**
    * Gets the grid object.
@@ -160,7 +160,7 @@ public interface ReadOnlyThreeTriosModel {
    *
    * @return the current player
    */
-  Player getCurrentPlayer();
+  PlayerProvider getCurrentPlayer();
 
 
 }

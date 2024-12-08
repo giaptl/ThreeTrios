@@ -1,20 +1,20 @@
 package finalProviderCode.view;
 
-import model.ThreeTriosModel;
+import finalProviderCode.model.ThreeTriosModelProvider;
 
 /**
  * The {@code TextView} class provides a way to display the state of the game
  * and other relevant information to the console or user interface.
  */
 public class TextView {
-  private final ThreeTriosModel model;
+  private final ThreeTriosModelProvider model;
 
   /**
    * Constructs a {@code TextView} with a reference to the game model.
    *
    * @param model the {@code ThreeTriosModel} to be used for rendering the game state
    */
-  public TextView(ThreeTriosModel model) {
+  public TextView(ThreeTriosModelProvider model) {
     this.model = model;
   }
 

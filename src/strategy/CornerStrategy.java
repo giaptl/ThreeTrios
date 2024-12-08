@@ -4,8 +4,8 @@ import java.util.List;
 
 import model.Grid;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Strategy that selects the move which places the card in a corner position if available. If no
@@ -21,7 +21,7 @@ public class CornerStrategy implements Strategy {
 
     // Define corner positions: top-left, top-right, bottom-left, bottom-right
     int[][] corners = {{0, 0}, {0, grid.getColumns() - 1}, {grid.getRows() - 1, 0},
-        {grid.getRows() - 1, grid.getColumns() - 1}};
+            {grid.getRows() - 1, grid.getColumns() - 1}};
 
     Move bestMove = null;
     int minOpponentFlips = Integer.MAX_VALUE;

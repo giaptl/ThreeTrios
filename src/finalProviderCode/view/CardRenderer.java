@@ -1,7 +1,7 @@
 package finalProviderCode.view;
 
-import finalProviderCode.model.Card;
-import finalProviderCode.model.Direction;
+import finalProviderCode.model.CardProvider;
+import finalProviderCode.model.DirectionProvider;
 import java.awt.Graphics2D;
 import java.awt.FontMetrics;
 
@@ -21,7 +21,7 @@ public class CardRenderer {
    * @param centerX   the x-coordinate for the center of the card
    * @param centerY   the y-coordinate for the center of the card
    */
-  public void drawCardValue(Graphics2D g2d, String value, Direction direction,
+  public void drawCardValue(Graphics2D g2d, String value, DirectionProvider direction,
                             int centerX, int centerY) {
     FontMetrics fontMetrics = g2d.getFontMetrics();
     int x = centerX;
@@ -58,7 +58,7 @@ public class CardRenderer {
    * @param width  the width of the card
    * @param height the height of the card
    */
-  public void drawCard(Graphics2D g2d, Card card, int x, int y, int width, int height) {
+  public void drawCard(Graphics2D g2d, CardProvider card, int x, int y, int width, int height) {
     g2d.setColor(java.awt.Color.BLACK);
     FontMetrics fontMetrics = g2d.getFontMetrics();
     int centerX = x + width / 2;
@@ -68,28 +68,28 @@ public class CardRenderer {
     drawCardValue(
         g2d,
         String.valueOf(card.getNorth()),
-        Direction.NORTH,
+        DirectionProvider.NORTH,
         centerX,
         y + fontMetrics.getHeight()
     );
     drawCardValue(
         g2d,
         String.valueOf(card.getSouth()),
-        Direction.SOUTH,
+        DirectionProvider.SOUTH,
         centerX,
         y + height - fontMetrics.getDescent()
     );
     drawCardValue(
         g2d,
         String.valueOf(card.getWest()),
-        Direction.WEST,
+        DirectionProvider.WEST,
         x + fontMetrics.stringWidth("X"),
         centerY
     );
     drawCardValue(
         g2d,
         String.valueOf(card.getEast()),
-        Direction.EAST,
+        DirectionProvider.EAST,
         x + width - fontMetrics.stringWidth("X"),
         centerY
     );

@@ -10,13 +10,16 @@ import extraFeatures.CombinedBattleRule;
 import extraFeatures.FallenAceBattleRule;
 import extraFeatures.PlusBattleRule;
 import extraFeatures.SameBattleRule;
+import finalProviderCode.view.GameGUI;
+import finalProviderCode.view.ThreeTriosView;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
 import model.ICard;
 import extraFeatures.NormalBattleRule;
 import extraFeatures.ReverseBattleRule;
-import finalProviderCode.model.ThreeTriosModel;
+import adapters.ModelAdapter;
+import model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 import player.MachinePlayer;
@@ -25,6 +28,8 @@ import strategy.FlipMaximizerStrategy;
 import strategy.LeastLikelyFlippedStrategy;
 import view.GameView;
 import controller.Controller;
+import view.IGameView;
+import adapters.ViewAdapter;
 
 /**
  * Main class to run the game from.
@@ -32,29 +37,37 @@ import controller.Controller;
 public final class ThreeTrios {
 
   /**
-   * Main method to run the game from.
-   * Example command lines (works for any human/machine player combination):
-   *    normal game: human human
-   *    reverse game: human human +reverse
-   *    fallen ace game: human human +fallenace
-   *    combined game: human human +reverse +fallenace
-   *    plus game: human human +plus
-   *    same game: human human +same
+   * Main class to run the game from.
+   * Command line options:
+   * - Player types: human, flipMaximizer, corner, LeastLikelyFlipped
+   * - Battle rules: +reverse, +fallenace, +same, +plus
+   * - View options: --provider-view (uses provider's view for Player 2)
+   * Examples:
+   * - Normal game: java ThreeTrios human human
+   * - With provider view: java ThreeTrios human human --provider-view
+   * - With battle rules: java ThreeTrios human human +reverse +fallenace
+   * - Combined: java ThreeTrios human human --provider-view +same
    */
   public static void main(String[] args) {
 
+    // Check if the correct number of command-line arguments is provided
     if (args.length < 2) {
       System.err.println("Usage: java ThreeTrios <player1> <player2>");
       System.err.println("Player types: human, flipMaximizer, corner, LeastLikelyFlipped");
       System.exit(1);
     }
 
+    // Extract player types
     String player1Type = args[0];
     String player2Type = args[1];
 
+    // Extract battle rule strategies & Check if the provider view should be used for player 2
+    boolean useProviderViewForPlayer2 = false;
     List<BattleRuleStrategy> strategies = new ArrayList<>();
-
     for (String arg : args) {
+      if (arg.equals("--use-provider-view")) {
+        useProviderViewForPlayer2 = true;
+      }
       switch (arg.toLowerCase()) {
         case "+reverse":
           strategies.add(new ReverseBattleRule());
@@ -71,6 +84,7 @@ public final class ThreeTrios {
       }
     }
 
+    // Handle strategy creation
     if (strategies.isEmpty()) {
       strategies.add(new NormalBattleRule());
     }
@@ -111,25 +125,36 @@ public final class ThreeTrios {
 
 
       // Launch the GUI on the Swing event dispatch thread
+      boolean useProviderView = useProviderViewForPlayer2;
       SwingUtilities.invokeLater(() -> {
-        // Create views for both players
-        GameView gameView1 = new GameView(gameModel);
-        GameView gameView2 = new GameView(gameModel);
+        // Player 1 always uses your view implementation
+        IGameView gameView1 = new GameView(gameModel);
 
-        // Create controllers for both players
+        // Player 2 can use either your view or the provider's view
+        IGameView gameView2;
+        if (useProviderView) {
+          ThreeTriosView providerView = new GameGUI(new ModelAdapter(gameModel, player1, player2));
+          gameView2 = new ViewAdapter(providerView, gameModel);
+        } else {
+          gameView2 = new GameView(gameModel);
+        }
+
+        // Create and set up controllers
         Controller controller1 = new Controller(gameModel, player1, gameView1);
         Controller controller2 = new Controller(gameModel, player2, gameView2);
 
-        // Set controllers for each view
-        gameView1.setController(controller1);
-        gameView2.setController(controller2);
+        // Set controllers
+        (gameView1).setController(controller1);
+        (gameView2).setController(controller2);
 
-        gameView1.setTitle("ThreeTrios Game - Player 1: " + player1.getName());
-        gameView2.setTitle("ThreeTrios Game - Player 2: " + player2.getName());
+        // Set titles
+        String view2Type = useProviderView ? "(Provider View)" : "";
+        ((GameView) gameView1).setTitle("ThreeTrios - Player 1: " + player1.getName());
+        ((GameView) gameView2).setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
 
-        // Make both views visible
-        gameView1.setVisible(true);
-        gameView2.setVisible(true);
+        // Make views visible
+        ((GameView)gameView1).setVisible(true);
+        ((GameView) gameView2).setVisible(true);
       });
       System.out.print("GUI launched successfully.");
 
@@ -155,4 +180,5 @@ public final class ThreeTrios {
         throw new IllegalArgumentException("Unknown player type: " + playerType);
     }
   }
+
 }

@@ -1,6 +1,6 @@
 package finalProviderCode.controller;
 
-import finalProviderCode.model.Card;
+import finalProviderCode.model.CardProvider;
 
 
 /**
@@ -14,7 +14,7 @@ public interface PlayerAction {
    *
    * @param card The selected card.
    */
-  void onHandCardSelected(Card card);
+  void onHandCardSelected(CardProvider card);
 
   /**
    * Called when a player wants to place a card onto the grid.
@@ -23,7 +23,7 @@ public interface PlayerAction {
    * @param rows The row location.
    * @param cols The column location.
    */
-  void onCardPlaced(Card card, int rows, int cols);
+  void onCardPlaced(CardProvider card, int rows, int cols);
 
   /**
    * Called when a player ends their turn.
@@ -49,5 +49,5 @@ public interface PlayerAction {
    * @param rows The row location for the preview.
    * @param cols The column location for the preview.
    */
-  void onPreviewMove(Card card, int rows, int cols);
+  void onPreviewMove(CardProvider card, int rows, int cols);
 }

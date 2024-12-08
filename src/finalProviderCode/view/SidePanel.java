@@ -1,7 +1,7 @@
 package finalProviderCode.view;
 
-import finalProviderCode.model.Card;
-import finalProviderCode.model.Player;
+import finalProviderCode.model.CardProvider;
+import finalProviderCode.model.PlayerProvider;
 
 
 import javax.swing.JPanel;
@@ -32,14 +32,14 @@ public class SidePanel extends JPanel {
    * @param player the {@code Player} whose cards will be displayed
    * @param backgroundColor the {@code Color} of the panel background
    */
-  public SidePanel(Player player, Color backgroundColor) {
+  public SidePanel(PlayerProvider player, Color backgroundColor) {
     setBackground(backgroundColor);
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS)); // Vertical alignment for cards
 
-    List<Card> hand = player.getHand();
+    List<CardProvider> hand = player.getHand();
 
     // Iterate through each card in the player's hand
-    for (Card card : hand) {
+    for (CardProvider card : hand) {
       JPanel cardPanel = createCardPanel(card);
       cardPanel.setBackground(backgroundColor);
       add(cardPanel);
@@ -56,7 +56,7 @@ public class SidePanel extends JPanel {
    * @param card the {@code Card} to be displayed
    * @return a {@code JPanel} containing the card's details
    */
-  private JPanel createCardPanel(Card card) {
+  private JPanel createCardPanel(CardProvider card) {
     JPanel cardPanel = new JPanel(new GridLayout(3, 3));
     cardPanel.setPreferredSize(new Dimension(100, 100));
     cardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));

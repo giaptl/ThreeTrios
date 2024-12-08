@@ -2,7 +2,6 @@ package model;
 
 import java.util.List;
 
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
 
 /**
@@ -21,8 +20,8 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    * grid. The number of card cells also must be odd.  Each player receives (N+1)/2 cards, where N
    * is the number of card cells on the grid. Player red goes first
    *
-   * @param grid the grid on which the game will be played
-   * @param cards the list of cards to be used in the game
+   * @param grid    the grid on which the game will be played
+   * @param cards   the list of cards to be used in the game
    * @param shuffle true if the cards should be shuffled, false otherwise
    * @throws IllegalArgumentException if the number of card cells is not odd
    * @throws IllegalArgumentException if the number of cards in the deck are less than the number
@@ -80,4 +79,14 @@ public interface ThreeTriosModel extends ReadOnlyThreeTriosModel {
    * @param listener the listener to be removed
    */
   void removeModelStatusListener(ModelStatusListener listener);
+
+  /**
+   * Used to see if a card can be placed there.
+   *
+   * @param player player that is making the move.
+   * @param row the row index of the grid where the card is being placed.
+   * @param col the column index of the grid where the card is being placed.
+   * @param cardToPlay that is being placed.
+   */
+  void playCardConditions(IPlayer player, int row, int col, ICard cardToPlay);
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import finalProviderCode.model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 import player.MachinePlayer;
@@ -54,9 +53,10 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   /**
    * Constructs a new MockGameModel with a 3x3 grid, 1 human player, and 1 machine player with
    * cards.
+   *
    * @param isComputerGame whether the game has only computer players or not
-   * @param strategy1 the strategy for the first player
-   * @param strategy2 the strategy for the second player
+   * @param strategy1      the strategy for the first player
+   * @param strategy2      the strategy for the second player
    */
   public MockThreeTriosModel(boolean isComputerGame, Strategy strategy1, Strategy strategy2) {
     if (isComputerGame) {
@@ -87,8 +87,9 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   /**
    * Constructs a new MockGameModel with a 3x3 grid, 1 human player, and 1 machine player with
    * cards.
+   *
    * @param isComputerGame whether the game contains any computer players
-   * @param strategy1 the strategy for the computer player
+   * @param strategy1      the strategy for the computer player
    */
   public MockThreeTriosModel(boolean isComputerGame, Strategy strategy1) {
     if (isComputerGame) {
@@ -121,6 +122,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   /**
    * Sets the cell at the specified row and column as a hole.
+   *
    * @param row the row of the cell
    * @param col the column of the cell
    */
@@ -188,6 +190,11 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   }
 
   @Override
+  public void playCardConditions(IPlayer player, int row, int col, ICard cardToPlay) {
+
+  }
+
+  @Override
   public Grid getGrid() {
     return this.grid;
   }
@@ -235,7 +242,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
   public boolean isGameOver() {
     for (int row = 0; row < grid.getRows(); row++) {
       for (int col = 0; col < grid.getColumns(); col++) {
-        Cell cell =  grid.getCell(row, col);
+        Cell cell = grid.getCell(row, col);
         if (!cell.isHole() && cell.isEmpty()) {
           return false;
         }
@@ -434,9 +441,10 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   /**
    * Checks if a card is played at a specific row and column.
+   *
    * @param card the card to check
-   * @param row the row
-   * @param col the column
+   * @param row  the row
+   * @param col  the column
    * @return true if the card given is played at the specified row and column, false otherwise
    */
   public boolean isCardPlayed(ICard card, int row, int col) {

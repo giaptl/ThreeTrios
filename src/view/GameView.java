@@ -11,8 +11,8 @@ import javax.swing.*;
 import controller.Controller;
 import controller.PlayerActionListener;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
 
 /**
  * Represents the main game view for the ThreeTrios game, including the grid and player hands.
@@ -92,6 +92,7 @@ public class GameView extends JFrame implements IGameView {
   /**
    * Sets the controller for the manager classes.
    */
+  @Override
   public void setController(Controller controller) {
     addPlayerActionListener(controller);
   }

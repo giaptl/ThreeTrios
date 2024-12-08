@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import model.ICard;
+import model.ThreeTriosModel;
 import player.IPlayer;
 import model.ModelStatusListener;
-import finalProviderCode.model.ThreeTriosModel;
 import strategy.Move;
 import view.IGameView;
 

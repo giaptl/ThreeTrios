@@ -48,7 +48,7 @@ public class TextView {
    * attack values in the four directions (north, south, east, and west).
    *
    * @param player the player whose hand is to be rendered
-   * @param hand the list of cards in the player's hand
+   * @param hand   the list of cards in the player's hand
    */
   protected void renderPlayerHand(IPlayer player, List<ICard> hand) {
     System.out.println("Player: " + player.getName().toUpperCase());

@@ -5,8 +5,9 @@ import java.awt.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import finalProviderCode.model.ReadOnlyThreeTriosModel;
+import finalProviderCode.model.ReadOnlyThreeTriosModelProvider;
 import model.ICard;
+import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
 
 public class HintGridPanelDecorator implements GridPanelDecorator {

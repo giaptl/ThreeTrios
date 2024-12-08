@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Queue;
 
 import extraFeatures.BattleRuleStrategy;
-import finalProviderCode.model.ThreeTriosModel;
 import player.IPlayer;
 
 /**
@@ -25,7 +24,6 @@ public class GameModel implements ThreeTriosModel {
   private boolean isGameOver;
   private final List<ModelStatusListener> modelStatusListeners = new ArrayList<>();
   private BattleRuleStrategy battleRuleStrategy;
-
 
   /**
    * Creates a new game model. Doesn't need to be passed in anything as this is basically a
@@ -167,8 +165,10 @@ public class GameModel implements ThreeTriosModel {
 
   /**
    * Helper method to check the conditions for playing a card.
+   * Decided to make this public to access in model adaptor.
    */
-  private void playCardConditions(IPlayer player, int row, int col, ICard cardToPlay) {
+  @Override
+  public void playCardConditions(IPlayer player, int row, int col, ICard cardToPlay) {
     Cell cell = grid.getCell(row, col);
     if (!player.equals(currentPlayer)) {
       throw new IllegalArgumentException("It is not " + player.getName() + "'s turn.");
@@ -216,6 +216,7 @@ public class GameModel implements ThreeTriosModel {
   public void removeModelStatusListener(ModelStatusListener listener) {
     modelStatusListeners.remove(listener);
   }
+
 
   @Override
   public int getNumCardsAbleToFlip(IPlayer player, ICard card, int row, int col) {
