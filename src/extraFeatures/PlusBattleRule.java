@@ -17,7 +17,7 @@ public class PlusBattleRule implements BattleRuleStrategy {
 
     // Check for "Plus" rule condition
     Direction opposite = direction.getOpposite();
-    int sum1 = cardA.getCardValue(opposite) + cardB.getCardValue(direction);
+    int sum1 = cardA.getCardValue(direction) + cardB.getCardValue(opposite);
 
     // Compare with other adjacent cards' sums
     return checkAdjacentSums(cardA, cardB, sum1);
@@ -26,8 +26,8 @@ public class PlusBattleRule implements BattleRuleStrategy {
   private boolean checkAdjacentSums(ICard cardA, ICard cardB, int targetSum) {
     int matchingPairs = 0;
     for (Direction dir : Direction.values()) {
-      if (cardA.getCardValue(dir.getOpposite()) +
-              cardB.getCardValue(dir) == targetSum) {
+      ICard adjacentCard = cardA.getAdjacentCard(dir);
+      if (adjacentCard != null && cardA.getCardValue(dir) + adjacentCard.getCardValue(dir.getOpposite()) == targetSum) {
         matchingPairs++;
       }
     }

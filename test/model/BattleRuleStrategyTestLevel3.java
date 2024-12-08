@@ -58,8 +58,8 @@ public class BattleRuleStrategyTestLevel3 {
   public void testReversePlusCombination() {
     // Combine Reverse (Level 1) with Plus (Level 2)
     List<BattleRuleStrategy> strategies = Arrays.asList(
-            new ReverseBattleRule(),
-            new PlusBattleRule()
+            new PlusBattleRule(),
+            new ReverseBattleRule()
     );
     combinedModel = new GameModel(new CombinedBattleRule(strategies));
     combinedModel.startGameWithConfig(grid, cards, false, redPlayer, bluePlayer);

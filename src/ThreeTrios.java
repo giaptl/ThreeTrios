@@ -88,7 +88,7 @@ public final class ThreeTrios {
       // Read the card data
       String cardDataPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "cardsForLevel2.config";
+              + File.separator + "cardsForLevel3.config";
       List<ICard> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
