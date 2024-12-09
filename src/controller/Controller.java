@@ -3,8 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
-
+import javax.swing.Timer;
 import model.ICard;
 import model.ThreeTriosModel;
 import player.IPlayer;

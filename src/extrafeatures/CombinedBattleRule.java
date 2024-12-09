@@ -1,17 +1,26 @@
-package extraFeatures;
+package extrafeatures;
 
 import java.util.List;
 
 import model.Direction;
 import model.ICard;
 
+/**
+ * Represents a combined strategy for determining the winner of a battle.
+ */
 public class CombinedBattleRule implements BattleRuleStrategy {
 
   private final List<BattleRuleStrategy> strategies;
 
+  /**
+   * Creates a new combined battle rule with the given strategies.
+   *
+   * @param strategies represents the strategies that need to be combined.
+   */
   public CombinedBattleRule(List<BattleRuleStrategy> strategies) {
     if (containsInvalidCombination(strategies)) {
-      throw new IllegalArgumentException("Invalid combination of battle rules: Same and Plus cannot be combined.");
+      throw new IllegalArgumentException("Invalid combination of battle rules: Same and Plus "
+              + "cannot be combined.");
     }
     this.strategies = strategies;
   }

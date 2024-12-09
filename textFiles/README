@@ -62,6 +62,9 @@ that modify currentPlayer ensure it is set to either pRed or pBlue. For example,
 switches the current player after a card is played to either Red or Blue, which proves that the
 methods of this class also maintain the invariant.
 
+COMMAND-LINE ARGS:
+Players: human vs machine(using corner strategy)
+
 ----------------------------------------------------------------------------------------------------
 Changes for part 2 (HW 6):
 
@@ -261,7 +264,7 @@ Files Changed:
     src/controller/GameController.java:
         Added methods to handle enabling and disabling hints for each player.
         Integrated hint calculation and display logic into the card selection process.
-    src/extraFeatures/HintDecorator.java:
+    src/extrafeatures/HintDecorator.java:
         Created a decorator class to handle the hint logic separately from the main rendering code.
     test/model/GameModelTest.java:
         Added tests to verify the hint functionality and ensure it works correctly when enabled or disabled.
@@ -272,7 +275,7 @@ experience without compromising the existing game logic and rendering code.
 
 LEVELS 1 & 2:
 In this part, we have implemented additional features and tests to enhance the functionality of the
-game. The changes primarily focus on the extraFeatures package and include the implementation of
+game. The changes primarily focus on the extrafeatures package and include the implementation of
 new battle rules, combination rules, and their corresponding tests. In the updated game logic of
 the Model class, the card flipping mechanism has been enhanced to utilize the shouldFlipCard method,
  which is implemented by each BattleRuleStrategy. This change ensures that the game model now
@@ -288,39 +291,39 @@ Features Implemented:
         This rule checks if the values of adjacent cards are the same and flips the card if the
         condition is met.
         Files Affected:
-            src/extraFeatures/SameBattleRule.java
-            test/extraFeatures/SameBattleRuleTest.java
+            src/extrafeatures/SameBattleRule.java
+            test/extrafeatures/SameBattleRuleTest.java
 
     PlusBattleRule:
         This rule checks if the sum of the values of adjacent cards matches a specific target sum
         and flips the card if the condition is met.
         Files Affected:
-            src/extraFeatures/PlusBattleRule.java
-            test/extraFeatures/PlusBattleRuleTest.java
+            src/extrafeatures/PlusBattleRule.java
+            test/extrafeatures/PlusBattleRuleTest.java
 
     CombinedBattleRule:
         This rule allows combining multiple battle rules and ensures that invalid combinations
         (e.g., Same and Plus) are not allowed.
         Files Affected:
-            src/extraFeatures/CombinedBattleRule.java
-            test/extraFeatures/CombinedBattleRuleTest.java
+            src/extrafeatures/CombinedBattleRule.java
+            test/extrafeatures/CombinedBattleRuleTest.java
 
     FallenAceBattleRule:
         This rule ensures that an Ace card loses to a card with a value of 1.
         Files Affected:
-            src/extraFeatures/FallenAceBattleRule.java
-            test/extraFeatures/FallenAceBattleRuleTest.java
+            src/extrafeatures/FallenAceBattleRule.java
+            test/extrafeatures/FallenAceBattleRuleTest.java
 
     ReverseBattleRule:
         This rule reverses the usual battle logic, making lower values win against higher values.
         Files Affected:
-            src/extraFeatures/ReverseBattleRule.java
-            test/extraFeatures/ReverseBattleRuleTest.java
+            src/extrafeatures/ReverseBattleRule.java
+            test/extrafeatures/ReverseBattleRuleTest.java
 
 
 Summary:
 The changes in this part focus on implementing new battle rules and ensuring their correct
-functionality through comprehensive tests. The extraFeatures package has been significantly
+functionality through comprehensive tests. The extrafeatures package has been significantly
 expanded to include these new rules and their corresponding tests, ensuring robust and flexible
 game logic.
 

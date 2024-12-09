@@ -191,7 +191,7 @@ public class MockThreeTriosModel implements ThreeTriosModel {
 
   @Override
   public void playCardConditions(IPlayer player, int row, int col, ICard cardToPlay) {
-
+    // Empty since this is not needed in the mock model.
   }
 
   @Override

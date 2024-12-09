@@ -1,21 +1,31 @@
 package view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import finalProviderCode.model.ReadOnlyThreeTriosModelProvider;
 import model.ICard;
 import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
 
+/**
+ * Represents a decorator for a JPanel in a grid panel that displays the number of cards that can
+ * be flipped by selecting a card at that cell.
+ */
 public class HintGridPanelDecorator implements GridPanelDecorator {
   private final ReadOnlyThreeTriosModel model;
   private final IPlayer currentPlayer;
   private final ICard selectedCard;
 
-  public HintGridPanelDecorator(ReadOnlyThreeTriosModel model, IPlayer currentPlayer, ICard selectedCard) {
+  /**
+   * Constructs a HintGridPanelDecorator.
+   * @param model the read-only model of the game
+   * @param currentPlayer the current player
+   * @param selectedCard the selected card
+   */
+  public HintGridPanelDecorator(ReadOnlyThreeTriosModel model, IPlayer currentPlayer,
+                                ICard selectedCard) {
     this.model = model;
     this.currentPlayer = currentPlayer;
     this.selectedCard = selectedCard;

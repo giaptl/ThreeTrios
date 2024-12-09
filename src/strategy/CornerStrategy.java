@@ -18,10 +18,10 @@ public class CornerStrategy implements Strategy {
   public Move selectMove(IPlayer player, ReadOnlyThreeTriosModel model) {
     List<ICard> hand = model.getPlayerHand(player);
     Grid grid = model.getGrid();
+    int cols = grid.getColumns() - 1;
 
     // Define corner positions: top-left, top-right, bottom-left, bottom-right
-    int[][] corners = {{0, 0}, {0, grid.getColumns() - 1}, {grid.getRows() - 1, 0},
-            {grid.getRows() - 1, grid.getColumns() - 1}};
+    int[][] corners = {{0, 0}, {0, cols}, {grid.getRows() - 1, 0}, {grid.getRows() - 1, cols}};
 
     Move bestMove = null;
     int minOpponentFlips = Integer.MAX_VALUE;

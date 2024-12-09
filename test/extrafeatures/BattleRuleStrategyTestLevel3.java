@@ -1,4 +1,4 @@
-package model;
+package extrafeatures;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import extraFeatures.BattleRuleStrategy;
-import extraFeatures.CombinedBattleRule;
-import extraFeatures.FallenAceBattleRule;
-import extraFeatures.PlusBattleRule;
-import extraFeatures.ReverseBattleRule;
-import extraFeatures.SameBattleRule;
+import model.Card;
+import model.GameModel;
+import model.Grid;
+import model.ICard;
+import model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 

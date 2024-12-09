@@ -4,13 +4,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
 
 import controller.Controller;
 import controller.PlayerActionListener;
-import finalProviderCode.model.GridProvider;
 import finalProviderCode.view.ThreeTriosView;
-import model.Grid;
 import model.ICard;
 import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;

@@ -1,8 +1,11 @@
-package extraFeatures;
+package extrafeatures;
 
 import model.Direction;
 import model.ICard;
 
+/**
+ * This strategy 2 adjacent cards' sums to determine the winner.
+ */
 public class PlusBattleRule implements BattleRuleStrategy {
   @Override
   public boolean shouldFlipCard(ICard cardA, ICard cardB, Direction direction) {
@@ -27,7 +30,8 @@ public class PlusBattleRule implements BattleRuleStrategy {
     int matchingPairs = 0;
     for (Direction dir : Direction.values()) {
       ICard adjacentCard = cardA.getAdjacentCard(dir);
-      if (adjacentCard != null && cardA.getCardValue(dir) + adjacentCard.getCardValue(dir.getOpposite()) == targetSum) {
+      if (adjacentCard != null && cardA.getCardValue(dir) + adjacentCard.getCardValue(
+              dir.getOpposite()) == targetSum) {
         matchingPairs++;
       }
     }

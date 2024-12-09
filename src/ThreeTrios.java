@@ -5,19 +5,19 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import extraFeatures.BattleRuleStrategy;
-import extraFeatures.CombinedBattleRule;
-import extraFeatures.FallenAceBattleRule;
-import extraFeatures.PlusBattleRule;
-import extraFeatures.SameBattleRule;
+import extrafeatures.BattleRuleStrategy;
+import extrafeatures.CombinedBattleRule;
+import extrafeatures.FallenAceBattleRule;
+import extrafeatures.PlusBattleRule;
+import extrafeatures.SameBattleRule;
 import finalProviderCode.view.GameGUI;
 import finalProviderCode.view.ThreeTriosView;
 import model.GameModel;
 import model.Grid;
 import configuration.ConfigurationReader;
 import model.ICard;
-import extraFeatures.NormalBattleRule;
-import extraFeatures.ReverseBattleRule;
+import extrafeatures.NormalBattleRule;
+import extrafeatures.ReverseBattleRule;
 import adapters.ModelAdapter;
 import model.ThreeTriosModel;
 import player.HumanPlayer;
@@ -81,6 +81,8 @@ public final class ThreeTrios {
         case "+plus":
           strategies.add(new PlusBattleRule());
           break;
+        default:
+          break;
       }
     }
 
@@ -101,7 +103,7 @@ public final class ThreeTrios {
       // Read the grid configuration
       String gridConfigPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "board2WithReachableCells.config";
+              + File.separator + "board1WithNoHoles.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
@@ -109,7 +111,7 @@ public final class ThreeTrios {
       // Read the card data
       String cardDataPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "cardsEnoughForAllBoards.config";
+              + File.separator + "cardsForLevel2.config";
       List<ICard> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
@@ -152,10 +154,13 @@ public final class ThreeTrios {
         gameView1.setTitle("ThreeTrios - Player 1: " + player1.getName());
         gameView1.setVisible(true);
         if (gameView2 instanceof GameView) {
-          ((GameView) gameView2).setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
+          ((GameView) gameView2)
+                  .setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
           ((GameView) gameView2).setVisible(true);
         } else if (gameView2 instanceof ViewAdapter) {
-          ((ViewAdapter) gameView2).getProviderView().setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
+          ((ViewAdapter) gameView2)
+                  .getProviderView()
+                  .setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
           ((ViewAdapter) gameView2).getProviderView().setVisible(true);
         }
       });

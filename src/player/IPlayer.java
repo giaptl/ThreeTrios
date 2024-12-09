@@ -4,7 +4,6 @@ import java.util.List;
 
 import controller.PlayerActionListener;
 import model.ICard;
-import finalProviderCode.model.ThreeTriosModelProvider;
 import model.ThreeTriosModel;
 import strategy.Strategy;
 

@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Map;
-
 /**
  * Represents a card in the game.
  * A card has a name and 4 attack values, one for each direction in the order of north, south, east,

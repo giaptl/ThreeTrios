@@ -1,7 +1,7 @@
 package view;
 
 import java.awt.Color;
-import model.Card;
+
 import model.Direction;
 import model.ICard;
 
@@ -13,7 +13,7 @@ public class CardPanelFactory {
   /**
    * Creates a CardPanel for the given card with the specified background color.
    *
-   * @param card the card for which the panel is to be created
+   * @param card            the card for which the panel is to be created
    * @param backgroundColor the background color of the card panel
    * @return a new CardPanel instance
    */

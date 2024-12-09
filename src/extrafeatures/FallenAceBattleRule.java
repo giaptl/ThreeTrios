@@ -1,8 +1,11 @@
-package extraFeatures;
+package extrafeatures;
 
 import model.Direction;
 import model.ICard;
 
+/**
+ * This strategy allows A to beat 1.
+ */
 public class FallenAceBattleRule implements BattleRuleStrategy {
   @Override
   public boolean shouldFlipCard(ICard cardA, ICard cardB, Direction direction) {

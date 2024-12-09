@@ -1,8 +1,11 @@
-package extraFeatures;
+package extrafeatures;
 
 import model.Direction;
 import model.ICard;
 
+/**
+ * This strategy represents normal battle rules (high > low card).
+ */
 public class NormalBattleRule implements BattleRuleStrategy {
 
   @Override

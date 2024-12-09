@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import configuration.ConfigurationReader;
-import extraFeatures.NormalBattleRule;
+import extrafeatures.NormalBattleRule;
 import player.HumanPlayer;
 import player.IPlayer;
 

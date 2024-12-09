@@ -1,4 +1,4 @@
-package model;
+package extrafeatures;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import extraFeatures.PlusBattleRule;
+import model.Card;
+import model.GameModel;
+import model.Grid;
+import model.ICard;
+import model.ThreeTriosModel;
 import player.HumanPlayer;
 import player.IPlayer;
 

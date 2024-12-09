@@ -6,7 +6,11 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import controller.Controller;
 import controller.PlayerActionListener;
@@ -46,7 +50,6 @@ public class GameView extends JFrame implements IGameView {
   private PlayerActionListener features;
   private final List<PlayerActionListener> playerActionListeners = new ArrayList<>();
   private boolean hintMode = false;
-  private JButton hintButton;
   private IPlayer currentPlayer;
   private ICard selectedCard;
 
@@ -71,7 +74,7 @@ public class GameView extends JFrame implements IGameView {
     add(blueHandPanel, BorderLayout.EAST);
     add(gridPanel, BorderLayout.CENTER);
 
-    hintButton = new JButton("Toggle Hint");
+    JButton hintButton = new JButton("Toggle Hint");
     hintButton.addActionListener(e -> toggleHintMode());
     add(hintButton, BorderLayout.SOUTH);
 

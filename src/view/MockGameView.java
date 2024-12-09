@@ -5,7 +5,6 @@ import java.util.List;
 
 import controller.Controller;
 import controller.PlayerActionListener;
-import model.Card;
 import model.ICard;
 import player.IPlayer;
 
@@ -72,7 +71,7 @@ public class MockGameView implements IGameView {
 
   @Override
   public void setController(Controller controller) {
-
+    // Not needed for mock model.
   }
 
   @Override

@@ -1,10 +1,7 @@
 package view;
 
-import javax.swing.*;
-
 import controller.Controller;
 import controller.PlayerActionListener;
-import model.Card;
 import model.ICard;
 import player.IPlayer;
 

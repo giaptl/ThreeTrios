@@ -11,7 +11,7 @@ import model.Direction;
 import model.GameModel;
 import model.Grid;
 import model.ICard;
-import extraFeatures.NormalBattleRule;
+import extrafeatures.NormalBattleRule;
 import player.HumanPlayer;
 import player.IPlayer;
 

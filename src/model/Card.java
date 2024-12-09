@@ -146,6 +146,8 @@ public class Card implements ICard {
       case WEST:
         newCol -= 1;
         break;
+      default:
+        throw new IllegalArgumentException("Invalid direction.");
     }
 
     if (newRow < 0 || newRow >= grid.getRows() || newCol < 0 || newCol >= grid.getColumns()) {

@@ -2,7 +2,6 @@ package view;
 
 import java.util.List;
 
-import model.Card;
 import model.Cell;
 import model.Direction;
 import model.Grid;

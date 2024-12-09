@@ -1,15 +1,13 @@
-package model;
+package extrafeatures;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import extraFeatures.BattleRuleStrategy;
-import extraFeatures.CombinedBattleRule;
-import extraFeatures.FallenAceBattleRule;
-import extraFeatures.NormalBattleRule;
-import extraFeatures.ReverseBattleRule;
+import model.Card;
+import model.Direction;
+import model.ICard;
 
 import static model.CardValues.A;
 import static org.junit.Assert.assertFalse;
