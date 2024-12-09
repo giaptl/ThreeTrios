@@ -1,9 +1,7 @@
 package adapters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import finalProviderCode.model.CardProvider;
@@ -18,17 +16,14 @@ import player.IPlayer;
 
 public class ModelAdapter implements ThreeTriosModelProvider {
   private final ThreeTriosModel adaptee;
-  private final Map<PlayerProvider, IPlayer> playerMap;
+  private final PlayerProvider redPlayerProvider;
+  private final PlayerProvider bluePlayerProvider;
   private final List<ModelStatusListener> listeners = new ArrayList<>();
-
 
   public ModelAdapter(ThreeTriosModel adaptee, IPlayer redPlayer, IPlayer bluePlayer) {
     this.adaptee = adaptee;
-    this.playerMap = new HashMap<>();
-    PlayerProvider redPlayerProvider = new PlayerAdapter(redPlayer);
-    PlayerProvider bluePlayerProvider = new PlayerAdapter(bluePlayer);
-    this.playerMap.put(redPlayerProvider, redPlayer);
-    this.playerMap.put(bluePlayerProvider, bluePlayer);
+    this.redPlayerProvider = new PlayerAdapter(redPlayer);
+    this.bluePlayerProvider = new PlayerAdapter(bluePlayer);
   }
 
   @Override
@@ -48,7 +43,7 @@ public class ModelAdapter implements ThreeTriosModelProvider {
 
   @Override
   public List<CardProvider> getPlayerHand(PlayerProvider player) {
-    IPlayer mappedPlayer = playerMap.get(player);
+    IPlayer mappedPlayer = getPlayer(player);
     return mappedPlayer.getHand().stream()
             .map(card -> (CardProvider) card) // Replace with actual conversion logic
             .collect(Collectors.toList());
@@ -56,23 +51,23 @@ public class ModelAdapter implements ThreeTriosModelProvider {
 
   @Override
   public PlayerProvider getRedPlayer() {
-    return new PlayerAdapter(adaptee.getRedPlayer());
+    return redPlayerProvider;
   }
 
   @Override
   public PlayerProvider getBluePlayer() {
-    return new PlayerAdapter(adaptee.getBluePlayer());
+    return bluePlayerProvider;
   }
 
   @Override
   public int getPotentialFlips(PlayerProvider player, CardProvider card, int row, int col) {
-    IPlayer mappedPlayer = playerMap.get(player);
+    IPlayer mappedPlayer = getPlayer(player);
     return adaptee.getNumCardsAbleToFlip(mappedPlayer, (ICard) card, row, col);
   }
 
   @Override
   public int getPotentialOpponentFlips(PlayerProvider player, CardProvider card, int row, int col) {
-    IPlayer mappedPlayer = playerMap.get(player);
+    IPlayer mappedPlayer = getPlayer(player);
     IPlayer opponent = mappedPlayer.equals(adaptee.getRedPlayer()) ? adaptee.getBluePlayer() : adaptee.getRedPlayer();
     return adaptee.getNumCardsAbleToFlip(opponent, (ICard) card, row, col);
   }
@@ -93,7 +88,7 @@ public class ModelAdapter implements ThreeTriosModelProvider {
             adaptee.getGrid().getCell(row, col).getOwner() == null) {
       return "";
     }
-    return adaptee.getGrid().getCell(row, col).getOwner().getName();
+    return adaptee.getGrid().getCell(row, col).getOwner().toString();
   }
 
   @Override
@@ -121,7 +116,7 @@ public class ModelAdapter implements ThreeTriosModelProvider {
 
   @Override
   public int countOwnedCards(PlayerProvider player) {
-    IPlayer mappedPlayer = playerMap.get(player);
+    IPlayer mappedPlayer = getPlayer(player);
     return mappedPlayer.getHand().size();
   }
 
@@ -166,7 +161,7 @@ public class ModelAdapter implements ThreeTriosModelProvider {
   @Override
   public boolean placeCard(PlayerProvider player, CardProvider card, int row, int col) {
     try {
-      adaptee.playCard(playerMap.get(player), ((CardAdapter) card).getAdaptee(), row, col);
+      adaptee.playCard(getPlayer(player), ((CardAdapter) card).getAdaptee(), row, col);
       notifyModelUpdated(); // Notify listeners after placing the card
       return true;
     } catch (IllegalArgumentException e) {
@@ -177,7 +172,7 @@ public class ModelAdapter implements ThreeTriosModelProvider {
   @Override
   public boolean isLegalMove(PlayerProvider player, CardProvider card, int row, int col) {
     try {
-      adaptee.playCardConditions(playerMap.get(player), row, col, (ICard) card);
+      adaptee.playCardConditions(getPlayer(player), row, col, (ICard) card);
       return true;
     } catch (IllegalArgumentException e) {
       return false;
@@ -186,10 +181,20 @@ public class ModelAdapter implements ThreeTriosModelProvider {
 
   @Override
   public CardProvider getNextCardForPlayer(PlayerProvider currentPlayer) {
-    IPlayer mappedPlayer = playerMap.get(currentPlayer);
+    IPlayer mappedPlayer = getPlayer(currentPlayer);
     if (mappedPlayer == null) {
-      throw new IllegalArgumentException("Player not found in playerMap: " + currentPlayer);
+      throw new IllegalArgumentException("Player not found: " + currentPlayer);
     }
     return mappedPlayer.getHand().isEmpty() ? null : new CardAdapter(mappedPlayer.getHand().get(0));
+  }
+
+  private IPlayer getPlayer(PlayerProvider playerProvider) {
+    if (playerProvider.equals(redPlayerProvider)) {
+      return adaptee.getRedPlayer();
+    } else if (playerProvider.equals(bluePlayerProvider)) {
+      return adaptee.getBluePlayer();
+    } else {
+      throw new IllegalArgumentException("Unknown player: " + playerProvider);
+    }
   }
 }

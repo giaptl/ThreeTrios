@@ -54,4 +54,5 @@ public class PlayerAdapter implements PlayerProvider {
   public void removeCard(CardProvider card) {
     adaptee.removeCard(((CardAdapter) card).getAdaptee());
   }
+
 }

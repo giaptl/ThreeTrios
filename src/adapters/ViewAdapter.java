@@ -66,7 +66,7 @@ public class ViewAdapter implements IGameView {
 
   @Override
   public void refreshView() {
-    providerView.getGridPanel().repaint();
+    providerView.getGridPanel().updateUI();
     providerView.getLeftPanel().repaint();
     providerView.getRightPanel().repaint();
   }

@@ -107,4 +107,14 @@ public class HumanPlayer implements IPlayer {
   public void removePlayerActionListener(PlayerActionListener listener) {
     listeners.remove(listener);
   }
+
+  @Override
+  public String toString() {
+    // Assuming the player's name is either "RED" or "BLUE"
+    if (getName().equals("Human1")) {
+      return "RED";
+    } else {
+      return "BLUE";
+    }
+  }
 }
