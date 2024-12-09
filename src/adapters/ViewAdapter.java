@@ -8,7 +8,9 @@ import javax.swing.*;
 
 import controller.Controller;
 import controller.PlayerActionListener;
+import finalProviderCode.model.GridProvider;
 import finalProviderCode.view.ThreeTriosView;
+import model.Grid;
 import model.ICard;
 import model.ReadOnlyThreeTriosModel;
 import player.IPlayer;
@@ -22,6 +24,7 @@ public class ViewAdapter implements IGameView {
   private final List<PlayerActionListener> listeners;
   private final ReadOnlyThreeTriosModel model;
 
+
   public ViewAdapter(ThreeTriosView providerView, ReadOnlyThreeTriosModel model) {
     if (providerView == null) {
       throw new IllegalArgumentException("Provider view cannot be null");
@@ -29,6 +32,10 @@ public class ViewAdapter implements IGameView {
     this.providerView = providerView;
     this.model = model;
     this.listeners = new ArrayList<>();
+  }
+
+  public ThreeTriosView getProviderView() {
+    return providerView;
   }
 
   @Override
@@ -44,6 +51,8 @@ public class ViewAdapter implements IGameView {
   @Override
   public void updateGridCell(int row, int col, ICard card) {
     providerView.getGridPanel().repaint();
+    providerView.getLeftPanel().repaint();
+    providerView.getRightPanel().repaint();
   }
 
   @Override
@@ -85,6 +94,7 @@ public class ViewAdapter implements IGameView {
         JButton button = new JButton();
         buttons[row][col] = button;
         ActionListener cellListener = providerView.createCellClickListener(row, col, button);
+        button.addActionListener(cellListener);
         int finalRow = row;
         int finalCol = col;
         button.addActionListener(e -> listener.onGridCellSelected(finalRow, finalCol));

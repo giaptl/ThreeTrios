@@ -16,6 +16,19 @@ public class PlayerAdapter implements PlayerProvider {
   }
 
   @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    PlayerAdapter that = (PlayerAdapter) obj;
+    return adaptee.equals(that.adaptee);
+  }
+
+  @Override
+  public int hashCode() {
+    return adaptee.hashCode();
+  }
+
+  @Override
   public String getName() {
     return adaptee.getName();
   }
@@ -28,17 +41,17 @@ public class PlayerAdapter implements PlayerProvider {
   @Override
   public List<CardProvider> getHand() {
     return adaptee.getHand().stream()
-            .map(card -> (CardProvider) card) // Replace with actual conversion logic
+            .map(card -> new CardAdapter(card)) // Use CardAdapter to convert ICard to CardProvider
             .collect(Collectors.toList());
   }
 
   @Override
   public void addCard(CardProvider card) {
-    adaptee.addCard((ICard) card);
+    adaptee.addCard(((CardAdapter) card).getAdaptee());
   }
 
   @Override
   public void removeCard(CardProvider card) {
-    adaptee.removeCard((ICard) card);
+    adaptee.removeCard(((CardAdapter) card).getAdaptee());
   }
 }

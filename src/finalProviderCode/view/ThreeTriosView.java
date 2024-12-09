@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import finalProviderCode.model.GridProvider;
+
 public interface ThreeTriosView {
 
   /**
@@ -57,5 +59,24 @@ public interface ThreeTriosView {
    * @param playerName player's turn
    */
   public void updateTurnIndicator(String playerName);
+
+  /**
+   * These methods were added by US not the provider to make the view compatible.
+   * The provider's were missing a lot of features and we had to add this in order to make
+   * their view even work since they didn't even have a setVisible in their view.
+   *
+   * @param title filler text.
+   */
+  void setTitle(String title);
+
+  /**
+   * These methods were added by US not the provider to make the view compatible.
+   * The provider's were missing a lot of features and we had to add this in order to make
+   * their view even work since they didn't even have a setVisible in their view.
+   *
+   * @param visible filler text.
+   */
+  void setVisible(boolean visible);
+
 
 }

@@ -42,6 +42,11 @@ public interface IGameView {
    */
   void refreshView();
 
+  /**
+   * Sets the controller for the view class. Allows us to send user actions to controller.
+   *
+   * @param controller is the controller we want ot set
+   */
   void setController(Controller controller);
 
   /**
@@ -84,7 +89,5 @@ public interface IGameView {
    * @param score the winning score
    */
   void showGameOver(IPlayer winner, int score);
-
-
 
 }

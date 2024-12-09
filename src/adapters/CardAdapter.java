@@ -16,6 +16,18 @@ public class CardAdapter implements CardProvider {
     return adaptee.getCardValue(Direction.NORTH);
   }
 
+  public ICard getAdaptee() {
+    return adaptee;
+  }
+
+  @Override
+  public String toString() {
+    return adaptee.getCardValue(Direction.NORTH) + " " +
+            adaptee.getCardValue(Direction.EAST) + " " +
+            adaptee.getCardValue(Direction.SOUTH) + " " +
+            adaptee.getCardValue(Direction.WEST);
+  }
+
   @Override
   public int getEast() {
     return adaptee.getCardValue(Direction.EAST);

@@ -79,6 +79,14 @@ public class GameView extends JFrame implements IGameView {
     setVisible(true);
   }
 
+  public void setTitle(String title) {
+    super.setTitle(title);
+  }
+
+  public void setVisible(boolean visible) {
+    super.setVisible(visible);
+  }
+
   private void toggleHintMode() {
     hintMode = !hintMode;
     if (hintMode) {

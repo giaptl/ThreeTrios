@@ -101,7 +101,7 @@ public final class ThreeTrios {
       // Read the grid configuration
       String gridConfigPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "board1WithNoHoles.config";
+              + File.separator + "board2WithReachableCells.config";
       Grid grid = ConfigurationReader.readGridConfig(gridConfigPath);
       System.out.println("Grid loaded successfully with " + grid.getRows() + " rows and "
               + grid.getColumns() + " columns.");
@@ -109,7 +109,7 @@ public final class ThreeTrios {
       // Read the card data
       String cardDataPath = "src" + File.separator + "configuration"
               + File.separator + "configFiles"
-              + File.separator + "cardsForLevel3.config";
+              + File.separator + "cardsEnoughForAllBoards.config";
       List<ICard> cards = ConfigurationReader.readCardData(cardDataPath);
       System.out.println("Card data loaded successfully with " + cards.size() + " cards.");
 
@@ -128,7 +128,7 @@ public final class ThreeTrios {
       boolean useProviderView = useProviderViewForPlayer2;
       SwingUtilities.invokeLater(() -> {
         // Player 1 always uses your view implementation
-        IGameView gameView1 = new GameView(gameModel);
+        GameView gameView1 = new GameView(gameModel);
 
         // Player 2 can use either your view or the provider's view
         IGameView gameView2;
@@ -149,12 +149,15 @@ public final class ThreeTrios {
 
         // Set titles
         String view2Type = useProviderView ? "(Provider View)" : "";
-        ((GameView) gameView1).setTitle("ThreeTrios - Player 1: " + player1.getName());
-        ((GameView) gameView2).setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
-
-        // Make views visible
-        ((GameView)gameView1).setVisible(true);
-        ((GameView) gameView2).setVisible(true);
+        gameView1.setTitle("ThreeTrios - Player 1: " + player1.getName());
+        gameView1.setVisible(true);
+        if (gameView2 instanceof GameView) {
+          ((GameView) gameView2).setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
+          ((GameView) gameView2).setVisible(true);
+        } else if (gameView2 instanceof ViewAdapter) {
+          ((ViewAdapter) gameView2).getProviderView().setTitle("ThreeTrios - Player 2: " + player2.getName() + " " + view2Type);
+          ((ViewAdapter) gameView2).getProviderView().setVisible(true);
+        }
       });
       System.out.print("GUI launched successfully.");
 

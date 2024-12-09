@@ -1,5 +1,6 @@
 package adapters;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,23 +12,38 @@ import finalProviderCode.model.PlayerProvider;
 import finalProviderCode.model.ThreeTriosModelProvider;
 import model.Grid;
 import model.ICard;
+import model.ModelStatusListener;
 import model.ThreeTriosModel;
 import player.IPlayer;
 
 public class ModelAdapter implements ThreeTriosModelProvider {
   private final ThreeTriosModel adaptee;
   private final Map<PlayerProvider, IPlayer> playerMap;
+  private final List<ModelStatusListener> listeners = new ArrayList<>();
+
 
   public ModelAdapter(ThreeTriosModel adaptee, IPlayer redPlayer, IPlayer bluePlayer) {
     this.adaptee = adaptee;
     this.playerMap = new HashMap<>();
-    this.playerMap.put(new PlayerAdapter(redPlayer), redPlayer);
-    this.playerMap.put(new PlayerAdapter(bluePlayer), bluePlayer);
+    PlayerProvider redPlayerProvider = new PlayerAdapter(redPlayer);
+    PlayerProvider bluePlayerProvider = new PlayerAdapter(bluePlayer);
+    this.playerMap.put(redPlayerProvider, redPlayer);
+    this.playerMap.put(bluePlayerProvider, bluePlayer);
   }
 
   @Override
   public int getGridRows() {
     return adaptee.getGrid().getRows();
+  }
+
+  public void addModelStatusListener(ModelStatusListener listener) {
+    listeners.add(listener);
+  }
+
+  private void notifyModelUpdated() {
+    for (ModelStatusListener listener : listeners) {
+      listener.onPlayerTurn(adaptee.getCurrentPlayer());
+    }
   }
 
   @Override
@@ -73,6 +89,10 @@ public class ModelAdapter implements ThreeTriosModelProvider {
 
   @Override
   public String getCellOwner(int row, int col) {
+    if (adaptee.getGrid().getCell(row, col) == null ||
+            adaptee.getGrid().getCell(row, col).getOwner() == null) {
+      return "";
+    }
     return adaptee.getGrid().getCell(row, col).getOwner().getName();
   }
 
@@ -107,7 +127,7 @@ public class ModelAdapter implements ThreeTriosModelProvider {
 
   @Override
   public void render() {
-
+    getGridView();
   }
 
   @Override
@@ -146,7 +166,8 @@ public class ModelAdapter implements ThreeTriosModelProvider {
   @Override
   public boolean placeCard(PlayerProvider player, CardProvider card, int row, int col) {
     try {
-      adaptee.playCard(playerMap.get(player), (ICard) card, row, col);
+      adaptee.playCard(playerMap.get(player), ((CardAdapter) card).getAdaptee(), row, col);
+      notifyModelUpdated(); // Notify listeners after placing the card
       return true;
     } catch (IllegalArgumentException e) {
       return false;
@@ -166,6 +187,9 @@ public class ModelAdapter implements ThreeTriosModelProvider {
   @Override
   public CardProvider getNextCardForPlayer(PlayerProvider currentPlayer) {
     IPlayer mappedPlayer = playerMap.get(currentPlayer);
-    return mappedPlayer.getHand().isEmpty() ? null : (CardProvider) mappedPlayer.getHand().get(0);
+    if (mappedPlayer == null) {
+      throw new IllegalArgumentException("Player not found in playerMap: " + currentPlayer);
+    }
+    return mappedPlayer.getHand().isEmpty() ? null : new CardAdapter(mappedPlayer.getHand().get(0));
   }
 }
