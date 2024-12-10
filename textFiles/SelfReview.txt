@@ -1,0 +1,69 @@
+Design/Implementation Reflection:
+After implementing the adapter pattern to integrate the provider's view with our game, several
+design improvements became obvious. We should have designed our interfaces with more flexibility
+in mind, specifically regarding view state management and event handling. The provider's code
+showed us the importance of having clear separation between UI components and game logic, but
+their implementation had its own limitations. Their use of separate renderer classes for cards and
+grid components was a good practice we could have benefited from adopted earlier.
+
+The adaptation process made us realize that parts of our implementation could have been more
+flexible. For example, our view implementation could have better separated the rendering logic
+from state management. The provider's approach to card rendering using a dedicated CardRenderer
+class was efficient, though we had to work around their limited view functionality.
+
+Customer Experience:
+We had a good experience while working with our customer group. They asked us for a 1 or 2 files
+that we forgot to include in our initial submission, and we were able to provide them with those files
+within the first couple days that we sent it. After that, we assumed that this group had no other
+issues with our code as we did not hear back from them.
+
+Provider Experience:
+Our experience with the providers was challenging and highlighted important lessons in code sharing
+and documentation. The initial communication involved over 10+ email exchanges just to receive the
+correct code files, which we had to still scour through the past emails to find the correct files as
+ they could not properly send us the code in 1 "send". Their first submission included their entire
+ project (src, out, tests, and configuration files), making it difficult to identify the required
+ components. Later requests for properly organized code resulted in incomplete submissions, missing
+ crucial components like view implementations and necessary model enums required for our adapters.
+ Eventually, we received a kind of correct version of the submission, and ended up manually having
+ to add in files from the original submission of the full project.
+
+Features We Couldn't Implement:
+   - Controller Integration: The provider's view lacked the ability to accept a controller, making
+   it impossible to implement setController() in our adapter. Although our controller could control
+   some of their components, our game was not updating properly due to their lack of listeners in
+   their view, which they stated was a design flaw because they were missing a lot of the components
+   needed for a correctly working view. We have a screenshot of the email if necessary.
+   - View State Management: Their ThreeTriosView interface was missing essential methods like
+   setVisible and setTitle, requiring us to add these ourselves. They were also missing some other
+   methods, such as updateGrid, which itself was a flawed method as it accepts their grid object but
+   their grid is stored as a JPanel in their view, which led to us not being able to correctly
+   update the grid in their view after each turn, which became a major issue we spent time trying
+   to solve.
+   - Card Selection Feedback: The provider's view didn't properly implement card highlighting
+   functionality. There were also gaps between cards in player's hands in the provider's view, which
+   is what we ended up assuming was the cause that they were not able to highlight the card properly
+   when clicked on. Even if the card was highlighted, we could not unselect the card and select
+   another card to highlight.
+   - Grid Update Mechanism: Their view lacked proper refresh mechanisms, forcing us to rely on basic
+   repaint calls. So when we tried to play a card from the hand to the board on our own view, it
+   would not refresh on the provider's view until they played a card as well. Also, the cards from
+   the hands did not end up displaying on the board's view, and we noticed that only the name of that
+   object stored in memory was displaying on the grid with the card's color, which was not what we
+   had. For this reason, we were limited in our abilities to adapt the feature where the card was
+   actually placed on the board. However, because our own view worked perfectly, after we played a
+   card down to the provider's view, our own view was still updating properly, so we were still able
+   to play the game out by look at the view for player 1 (our view) when deciding moves.
+
+The timing of this assignment during finals week added a lot of pressure, but our commitment to
+finishing the integration allowed us to overcome these obstacles. While we mostly implemented
+the provider's view for Player 2 while maintaining our view for Player 1, the process took an
+additional week beyond the original timeline, requiring us to request an extension. This experience
+emphasized the importance of clear communication, complete documentation, and thorough interface
+design in collaborative software sharing. However, we definitely think that this assignment would have
+taken us less time if we had communicated with our provider group in person.
+
+The most valuable lesson we learned was the importance of designing interfaces that are both
+comprehensive and flexible enough to accommodate different implementations and can be easily read by
+others. Future projects would benefit from establishing clearer requirements for code sharing and
+better documentation of integration points between components.

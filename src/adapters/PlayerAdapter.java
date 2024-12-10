@@ -3,7 +3,6 @@ package adapters;
 import finalProviderCode.model.CardProvider;
 import finalProviderCode.model.PlayerProvider;
 import player.IPlayer;
-import model.ICard;
 
 import java.util.List;
 import java.util.stream.Collectors;
